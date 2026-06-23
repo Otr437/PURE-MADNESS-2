@@ -1,0 +1,8 @@
+{
+  "name": "@crypto-monorepo/key-derivation",
+  "version": "1.0.0",
+  "description": "HKDF, PBKDF2, and scrypt key derivation functions",
+  "main": "src/index.js",
+  "keywords": ["hkdf", "pbkdf2", "scrypt", "kdf", "key-derivation", "crypto"],
+  "dependencies": {}
+}

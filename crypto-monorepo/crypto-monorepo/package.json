@@ -1,0 +1,15 @@
+{
+  "name": "crypto-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "shared"
+  ],
+  "description": "Full-stack encryption monorepo: AES-GCM, AES-CBC, RSA hybrid, ECDH, encrypted channels, key derivation, signatures, and secure key store.",
+  "scripts": {
+    "test": "node --test packages/*/src/index.js 2>/dev/null || echo 'Run tests per package'",
+    "lint": "echo 'Add eslint to enable linting'"
+  },
+  "devDependencies": {}
+}

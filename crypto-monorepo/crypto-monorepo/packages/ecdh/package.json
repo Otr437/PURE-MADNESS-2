@@ -1,0 +1,10 @@
+{
+  "name": "@crypto-monorepo/ecdh",
+  "version": "1.0.0",
+  "description": "ECDH key exchange with HKDF-based AES key derivation",
+  "main": "src/index.js",
+  "keywords": ["ecdh", "key-exchange", "hkdf", "elliptic-curve", "crypto"],
+  "dependencies": {
+    "@crypto-monorepo/aes-gcm": "1.0.0"
+  }
+}

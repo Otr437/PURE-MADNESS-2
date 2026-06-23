@@ -1,0 +1,10 @@
+{
+  "name": "@crypto-monorepo/secure-key-store",
+  "version": "1.0.0",
+  "description": "AES-256-GCM encrypted in-memory key store with rotation and audit tracking",
+  "main": "src/index.js",
+  "keywords": ["key-store", "aes-gcm", "key-management", "crypto"],
+  "dependencies": {
+    "@crypto-monorepo/aes-gcm": "1.0.0"
+  }
+}

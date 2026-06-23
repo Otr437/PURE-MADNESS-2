@@ -1,0 +1,8 @@
+{
+  "name": "@crypto-monorepo/aes-gcm",
+  "version": "1.0.0",
+  "description": "AES-256-GCM authenticated encryption",
+  "main": "src/index.js",
+  "keywords": ["aes", "gcm", "encryption", "crypto"],
+  "dependencies": {}
+}
