@@ -1,8 +1,0 @@
-{
-  "name": "@crypto-monorepo/crypto-utils",
-  "version": "1.0.0",
-  "description": "Low-level crypto primitives: random bytes, SHA-2, HMAC, XOR, Base64url, timing-safe compare",
-  "main": "src/index.js",
-  "keywords": ["sha256", "hmac", "random", "base64url", "crypto", "utils"],
-  "dependencies": {}
-}
