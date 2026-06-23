@@ -1,0 +1,45 @@
+{
+  "name": "crypto-trading-bot",
+  "version": "4.0.0",
+  "description": "Crypto trading bots — each strategy is its own process, zero coupling",
+  "scripts": {
+    "api":                  "node api/server.js",
+    "dev":                  "NODE_ENV=development DRY_RUN=true node api/server.js",
+
+    "bot:cross-arb":        "node src/strategies/cross-exchange-arb/index.js",
+    "bot:tri-arb":          "node src/strategies/triangular-arb/index.js",
+    "bot:cash-carry":       "node src/strategies/cash-carry/index.js",
+    "bot:dca":              "node src/strategies/dca/index.js",
+    "bot:grid":             "node src/strategies/grid/index.js",
+    "bot:trend":            "node src/strategies/trend-following/index.js",
+    "bot:scalp":            "node src/strategies/momentum-scalp/index.js",
+    "bot:mean-reversion":   "node src/strategies/mean-reversion/index.js",
+    "bot:seasonal":         "node src/strategies/seasonal/index.js",
+
+    "data:ingest":          "node src/strategies/seasonal/ingestion/index.js",
+    "data:patterns":        "node src/strategies/seasonal/engine.js",
+
+    "db:migrate":           "node scripts/migrate.js",
+    "db:seed":              "node scripts/seed.js",
+    "db:reset":             "node scripts/reset.js --confirm"
+  },
+  "dependencies": {
+    "@solana/spl-token":    "^0.4.0",
+    "@solana/web3.js":      "^1.91.0",
+    "axios":                "^1.7.0",
+    "bs58":                 "^5.0.0",
+    "cors":                 "^2.8.5",
+    "dotenv":               "^16.4.0",
+    "ethers":               "^6.12.0",
+    "express":              "^4.19.0",
+    "express-async-errors": "^3.1.1",
+    "helmet":               "^7.1.0",
+    "ioredis":              "^5.3.2",
+    "jsonwebtoken":         "^9.0.2",
+    "jwks-rsa":             "^3.1.0",
+    "node-cron":            "^3.0.3",
+    "pg":                   "^8.12.0",
+    "uuid":                 "^9.0.1"
+  },
+  "engines": { "node": ">=18.0.0" }
+}

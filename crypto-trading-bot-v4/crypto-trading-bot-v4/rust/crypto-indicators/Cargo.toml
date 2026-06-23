@@ -1,0 +1,51 @@
+[package]
+name = "crypto-indicators"
+version = "1.0.0"
+edition = "2021"
+authors = ["crypto-trading-bot"]
+description = "High-performance off-chain math engine for crypto trading strategies. Compiled to native binary and called from Node.js via stdio JSON bridge."
+license = "MIT"
+
+[[bin]]
+name = "crypto-indicators"
+path = "src/main.rs"
+
+[lib]
+name = "crypto_indicators"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[[bench]]
+name = "indicators"
+harness = false
+
+[dependencies]
+# Serialization — bridge protocol with Node.js
+serde       = { version = "1", features = ["derive"] }
+serde_json  = "1"
+
+# Error handling
+thiserror   = "1"
+anyhow      = "1"
+
+# Logging
+log         = "0.4"
+env_logger  = "0.11"
+
+# Date/time — used in main.rs log formatter and seasonal timestamp helpers
+chrono      = { version = "0.4", features = ["serde"] }
+
+[dev-dependencies]
+criterion   = { version = "0.5", features = ["html_reports"] }
+approx      = "0.5"
+
+[profile.release]
+opt-level   = 3
+lto         = true
+codegen-units = 1
+panic       = "abort"
+strip       = true
+
+[profile.dev]
+opt-level   = 0
+debug       = true
