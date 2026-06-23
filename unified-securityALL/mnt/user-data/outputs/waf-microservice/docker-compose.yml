@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  waf:
+    build: .
+    container_name: waf-microservice
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+      - ./config.toml:/app/config.toml
+      - ./logs:/app/logs
+    environment:
+      - RUST_LOG=info
+      - DATABASE_URL=sqlite:///app/data/waf_data.db
+    restart: unless-stopped
+    networks:
+      - waf-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: waf-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+    networks:
+      - waf-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: waf-grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    networks:
+      - waf-network
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  waf-network:
+    driver: bridge
