@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"   # proxy
+      - "9000:9000"   # admin API
+      - "9090:9090"   # prometheus metrics
+    environment:
+      NODE_ENV: production
+      LOG_LEVEL: info
+      PORT: 8080
+      ADMIN_PORT: 9000
+      METRICS_PORT: 9090
+      LB_ALGORITHM: round-robin
+      BACKEND_NODES: backend1:3000,backend2:3000,backend3:3000
+      HEALTH_CHECK_INTERVAL_MS: 10000
+      HEALTH_CHECK_PATH: /health
+      SHARDING_ENABLED: "false"
+      SHARD_STRATEGY: consistent-hash
+      SHARD_COUNT: 64
+      CB_RECOVERY_MS: 30000
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # Example backends (replace with real services)
+  backend1:
+    image: node:20-alpine
+    working_dir: /app
+    command: node -e "
+      const http = require('http');
+      http.createServer((req,res)=>{
+        if(req.url==='/health'){res.writeHead(200);res.end(JSON.stringify({ok:true,node:'backend1'}));return;}
+        res.writeHead(200);res.end(JSON.stringify({node:'backend1',path:req.url,ts:Date.now()}));
+      }).listen(3000,()=>console.log('backend1 :3000'));
+    "
+    expose: ["3000"]
+
+  backend2:
+    image: node:20-alpine
+    working_dir: /app
+    command: node -e "
+      const http = require('http');
+      http.createServer((req,res)=>{
+        if(req.url==='/health'){res.writeHead(200);res.end(JSON.stringify({ok:true,node:'backend2'}));return;}
+        res.writeHead(200);res.end(JSON.stringify({node:'backend2',path:req.url,ts:Date.now()}));
+      }).listen(3000,()=>console.log('backend2 :3000'));
+    "
+    expose: ["3000"]
+
+  backend3:
+    image: node:20-alpine
+    working_dir: /app
+    command: node -e "
+      const http = require('http');
+      http.createServer((req,res)=>{
+        if(req.url==='/health'){res.writeHead(200);res.end(JSON.stringify({ok:true,node:'backend3'}));return;}
+        res.writeHead(200);res.end(JSON.stringify({node:'backend3',path:req.url,ts:Date.now()}));
+      }).listen(3000,()=>console.log('backend3 :3000'));
+    "
+    expose: ["3000"]
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9091:9090"
+    depends_on:
+      - gateway

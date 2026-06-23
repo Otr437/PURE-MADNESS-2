@@ -1,0 +1,30 @@
+{
+  "name": "lb-sharding-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "eslint 'packages/**/*.ts' 'apps/**/*.ts'",
+    "clean": "find . -name 'dist' -not -path '*/node_modules/*' | xargs rm -rf",
+    "start:gateway": "npm run start --workspace=apps/gateway",
+    "dev:gateway": "npm run dev --workspace=apps/gateway",
+    "typecheck": "tsc --build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

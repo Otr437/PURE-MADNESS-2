@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api-server/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - MATH_ENGINE_API__HOST=0.0.0.0
+      - MATH_ENGINE_API__PORT=8080
+      - MATH_ENGINE_DATABASE__PATH=/data/math_engine.db
+    volumes:
+      - math_data:/data
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin-server/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - MATH_ENGINE_ADMIN__HOST=0.0.0.0
+      - MATH_ENGINE_ADMIN__PORT=8081
+      - MATH_ENGINE_API__HOST=api
+      - MATH_ENGINE_API__PORT=8080
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  math_data:

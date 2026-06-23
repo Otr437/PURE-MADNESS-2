@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "rootDir": "./src", "outDir": "./dist" },
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../packages/load-balancer" },
+    { "path": "../../packages/shard-manager" },
+    { "path": "../../packages/health-checker" },
+    { "path": "../../packages/metrics" }
+  ]
+}

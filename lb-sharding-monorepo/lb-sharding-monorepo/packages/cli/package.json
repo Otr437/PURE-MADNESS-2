@@ -1,0 +1,14 @@
+{
+  "name": "@lb-sharding/cli",
+  "version": "1.0.0",
+  "bin": { "lbctl": "./dist/cli.js" },
+  "main": "./dist/cli.js",
+  "scripts": { "build": "tsc -p tsconfig.json", "typecheck": "tsc --noEmit" },
+  "dependencies": {
+    "@lb-sharding/core": "*",
+    "@lb-sharding/load-balancer": "*",
+    "@lb-sharding/shard-manager": "*",
+    "@lb-sharding/metrics": "*"
+  },
+  "devDependencies": { "typescript": "^5.3.3" }
+}
