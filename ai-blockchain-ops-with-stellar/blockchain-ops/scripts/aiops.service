@@ -1,0 +1,51 @@
+# systemd service file for AI Blockchain Ops
+# Install: sudo cp scripts/aiops.service /etc/systemd/system/
+#          sudo systemctl daemon-reload
+#          sudo systemctl enable aiops
+#          sudo systemctl start aiops
+
+[Unit]
+Description=AI Blockchain Ops System
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=aiops
+Group=aiops
+WorkingDirectory=/opt/aiops
+ExecStartPre=/usr/bin/node --version
+ExecStart=/usr/bin/env npx tsx main.ts
+ExecStop=/bin/kill -SIGTERM $MAINPID
+ExecReload=/bin/kill -SIGHUP $MAINPID
+
+# Restart policy
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+# Load .env file
+EnvironmentFile=/opt/aiops/.env
+
+# Security hardening
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/aiops/logs /opt/aiops/.blockchain-workspace
+ProtectHome=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+# Resource limits
+LimitNOFILE=65535
+LimitNPROC=4096
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=aiops
+
+[Install]
+WantedBy=multi-user.target

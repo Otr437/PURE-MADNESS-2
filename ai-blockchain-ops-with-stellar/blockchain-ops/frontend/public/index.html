@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AIOPS — Blockchain Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & Root ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black:    #050507;
+  --bg:       #090b0f;
+  --bg2:      #0e1118;
+  --bg3:      #141820;
+  --bg4:      #1a2030;
+  --border:   #1e2535;
+  --border2:  #252d3f;
+  --green:    #00ff88;
+  --green2:   #00cc6a;
+  --green-dim:#003d20;
+  --red:      #ff3355;
+  --red-dim:  #3d0010;
+  --yellow:   #ffcc00;
+  --yellow-dim:#3d3000;
+  --blue:     #00aaff;
+  --blue-dim: #002a3d;
+  --purple:   #aa44ff;
+  --text:     #c8d4e8;
+  --text2:    #6a7a94;
+  --text3:    #3a4a5e;
+  --mono:     'IBM Plex Mono', monospace;
+  --sans:     'Space Grotesk', sans-serif;
+  --display:  'Orbitron', sans-serif;
+  --r:        4px;
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 13px; overflow: hidden; }
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.04) 2px, rgba(0,0,0,.04) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── App Shell ─────────────────────────────────────────── */
+#app { display: grid; grid-template-columns: 220px 1fr; grid-template-rows: 48px 1fr; height: 100vh; }
+
+/* ── Top Bar ─────────────────────────────────────────────── */
+#topbar {
+  grid-column: 1/-1;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px;
+  background: var(--black);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+#topbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: .3;
+}
+.logo {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: .15em;
+  color: var(--green);
+  text-shadow: 0 0 20px rgba(0,255,136,.4);
+  white-space: nowrap;
+}
+.logo span { color: var(--text3); }
+#topbar-chain { display: flex; align-items: center; gap: 8px; }
+.chain-pill {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s;
+}
+.chain-pill.active { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+#topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.ws-indicator { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; color: var(--text3); }
+.ws-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); transition: background .3s; }
+.ws-dot.live { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:.5; } }
+#wallet-btn {
+  padding: 5px 14px;
+  background: var(--green-dim);
+  border: 1px solid var(--green);
+  border-radius: var(--r);
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .15s;
+}
+#wallet-btn:hover { background: var(--green); color: var(--black); }
+#wallet-addr { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+#auth-state { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+#auth-toggle {
+  padding: 5px 12px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  border-radius: var(--r);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .15s;
+}
+#auth-toggle:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ── Sidebar Nav ────────────────────────────────────────── */
+#nav {
+  background: var(--black);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-section {
+  padding: 14px 16px 4px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text2);
+  border-left: 2px solid transparent;
+  transition: all .12s;
+  position: relative;
+  user-select: none;
+}
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,.02); }
+.nav-item.active {
+  color: var(--green);
+  border-left-color: var(--green);
+  background: rgba(0,255,136,.04);
+}
+.nav-icon { width: 14px; text-align: center; font-size: 13px; }
+.nav-badge {
+  margin-left: auto;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--green-dim);
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 9px;
+}
+
+/* ── Main Content ───────────────────────────────────────── */
+#main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg);
+  position: relative;
+}
+
+/* ── Pages ──────────────────────────────────────────────── */
+.page { display: none; padding: 24px; }
+.page.active { display: block; }
+.page-title {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ── Cards ──────────────────────────────────────────────── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2), transparent);
+}
+.card-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ── Stats ──────────────────────────────────────────────── */
+.stat { display: flex; flex-direction: column; gap: 4px; }
+.stat-label { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); }
+.stat-val { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
+.stat-val.green { color: var(--green); text-shadow: 0 0 20px rgba(0,255,136,.3); }
+.stat-val.yellow { color: var(--yellow); }
+.stat-val.red { color: var(--red); }
+.stat-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+
+/* ── Forms ──────────────────────────────────────────────── */
+.fg { margin-bottom: 12px; }
+.fg label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); margin-bottom: 5px; }
+input, textarea, select {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 8px 10px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  outline: none;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(0,255,136,.08); }
+textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
+select { cursor: pointer; }
+option { background: var(--bg3); }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.frow3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.btn:hover { border-color: var(--text2); color: var(--text); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-green { border-color: var(--green); color: var(--green); }
+.btn-green:hover:not(:disabled) { background: var(--green); color: var(--black); box-shadow: 0 0 20px rgba(0,255,136,.2); }
+.btn-red { border-color: var(--red); color: var(--red); }
+.btn-red:hover:not(:disabled) { background: var(--red); color: var(--black); }
+.btn-blue { border-color: var(--blue); color: var(--blue); }
+.btn-blue:hover:not(:disabled) { background: var(--blue); color: var(--black); }
+.btn-ghost { border-color: transparent; }
+.btn-ghost:hover { border-color: var(--border); }
+.btn-sm { padding: 5px 10px; font-size: 10px; }
+.btn-lg { padding: 11px 24px; font-size: 12px; }
+.spinner { width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: currentColor; border-radius: 50%; animation: spin .5s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Tables ─────────────────────────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th { text-align: left; padding: 7px 10px; font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: rgba(255,255,255,.015); }
+.tbl .mono { font-family: var(--mono); }
+
+/* ── Badges ─────────────────────────────────────────────── */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+.badge-green { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); }
+.badge-red { background: var(--red-dim); border: 1px solid var(--red); color: var(--red); }
+.badge-yellow { background: var(--yellow-dim); border: 1px solid var(--yellow); color: var(--yellow); }
+.badge-blue { background: var(--blue-dim); border: 1px solid var(--blue); color: var(--blue); }
+.badge-dim { background: var(--bg3); border: 1px solid var(--border2); color: var(--text3); }
+
+/* ── Code Block ─────────────────────────────────────────── */
+.codeblock {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 400px;
+  overflow-y: auto;
+  color: var(--text);
+}
+.codeblock.success { border-color: var(--green); }
+.codeblock.error { border-color: var(--red); }
+.code-label { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+
+/* ── Events Feed ────────────────────────────────────────── */
+.event-feed { max-height: 340px; overflow-y: auto; }
+.event-item { display: flex; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 10px; align-items: flex-start; transition: background .1s; }
+.event-item:hover { background: rgba(255,255,255,.01); }
+.event-time { color: var(--text3); white-space: nowrap; min-width: 70px; }
+.event-type { color: var(--green); min-width: 200px; }
+.event-type.blockchain { color: var(--blue); }
+.event-type.error { color: var(--red); }
+.event-payload { color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Gas Meter ──────────────────────────────────────────── */
+.gas-val { font-family: var(--mono); font-size: 32px; font-weight: 700; color: var(--yellow); text-shadow: 0 0 20px rgba(255,204,0,.3); line-height: 1; }
+
+/* ── Toggle Switch ──────────────────────────────────────── */
+.toggle-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-slider { position: absolute; inset: 0; background: var(--bg4); border: 1px solid var(--border2); border-radius: 999px; cursor: pointer; transition: .2s; }
+.toggle-slider::before { content: ''; position: absolute; height: 12px; width: 12px; left: 3px; top: 3px; background: var(--text3); border-radius: 50%; transition: .2s; }
+.toggle input:checked + .toggle-slider { background: var(--green-dim); border-color: var(--green); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(16px); background: var(--green); }
+.toggle-label { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+
+/* ── Tabs ───────────────────────────────────────────────── */
+.tabs { display: flex; gap: 2px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.tab { padding: 8px 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--text3); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s; }
+.tab:hover { color: var(--text2); }
+.tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+/* ── Terminal Output ────────────────────────────────────── */
+.terminal {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  padding: 12px;
+  min-height: 120px;
+  max-height: 500px;
+  overflow-y: auto;
+  color: var(--text);
+}
+.term-line { margin-bottom: 2px; }
+.term-line.cmd { color: var(--green); }
+.term-line.err { color: var(--red); }
+.term-line.warn { color: var(--yellow); }
+.term-line.info { color: var(--blue); }
+.term-line.dim { color: var(--text3); }
+
+/* ── Toast ──────────────────────────────────────────────── */
+#toasts { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 10000; }
+.toast {
+  padding: 10px 16px;
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 11px;
+  max-width: 340px;
+  animation: slideup .2s ease;
+  border: 1px solid;
+  display: flex; gap: 10px; align-items: center;
+}
+@keyframes slideup { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.toast.success { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+.toast.error   { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+.toast.info    { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
+.toast.warn    { background: var(--yellow-dim); border-color: var(--yellow); color: var(--yellow); }
+
+/* ── Modal ──────────────────────────────────────────────── */
+#modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+#modal-overlay.open { display: flex; }
+#modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--r); padding: 24px; min-width: 400px; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
+#modal-title { font-family: var(--display); font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--green); text-transform: uppercase; margin-bottom: 20px; }
+#modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; line-height: 1; }
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* ── Divider ────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); margin: 16px 0; }
+.mt8 { margin-top: 8px; } .mt12 { margin-top: 12px; } .mt16 { margin-top: 16px; } .mt24 { margin-top: 24px; }
+.flex { display: flex; } .items-center { align-items: center; }
+.gap8 { gap: 8px; } .gap12 { gap: 12px; }
+.ml-auto { margin-left: auto; }
+.text-green { color: var(--green); } .text-red { color: var(--red); } .text-yellow { color: var(--yellow); }
+.text-mono { font-family: var(--mono); font-size: 11px; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Animations ─────────────────────────────────────────── */
+@keyframes glow { 0%,100%{ text-shadow: 0 0 10px rgba(0,255,136,.3); } 50%{ text-shadow: 0 0 30px rgba(0,255,136,.6); } }
+.glow { animation: glow 3s ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- TOP BAR -->
+<header id="topbar">
+  <div class="logo">AI<span>OPS</span> ⬡</div>
+  <div id="topbar-chain">
+    <div class="chain-pill active" data-chain="31337" onclick="setChain(31337,this)">LOCAL</div>
+    <div class="chain-pill" data-chain="11155111" onclick="setChain(11155111,this)">SEPOLIA</div>
+    <div class="chain-pill" data-chain="8453" onclick="setChain(8453,this)">BASE</div>
+    <div class="chain-pill" data-chain="1" onclick="setChain(1,this)">ETH</div>
+    <div class="chain-pill" data-chain="42161" onclick="setChain(42161,this)">ARB</div>
+  </div>
+  <div id="topbar-right">
+    <div class="ws-indicator"><div class="ws-dot" id="ws-dot"></div><span id="ws-label">DISCONNECTED</span></div>
+    <span id="wallet-addr">NO WALLET</span>
+    <button id="wallet-btn" onclick="connectWallet()">CONNECT</button>
+    <span id="auth-state">NOT AUTH</span>
+    <button id="auth-toggle" onclick="showPage('auth')">LOGIN</button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<nav id="nav">
+  <div class="nav-section">System</div>
+  <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')"><span class="nav-icon">◈</span>Dashboard</div>
+  <div class="nav-item" data-page="events" onclick="showPage('events')"><span class="nav-icon">◉</span>Live Events<span class="nav-badge" id="events-badge">0</span></div>
+
+  <div class="nav-section">Blockchain</div>
+  <div class="nav-item" data-page="gas" onclick="showPage('gas')"><span class="nav-icon">◎</span>Gas Tracker</div>
+  <div class="nav-item" data-page="wallet" onclick="showPage('wallet')"><span class="nav-icon">◇</span>Wallet</div>
+  <div class="nav-item" data-page="tx" onclick="showPage('tx')"><span class="nav-icon">⇌</span>Transactions</div>
+  <div class="nav-item" data-page="contracts" onclick="showPage('contracts')"><span class="nav-icon">⬡</span>Contracts</div>
+
+  <div class="nav-section">Deploy</div>
+  <div class="nav-item" data-page="compile" onclick="showPage('compile')"><span class="nav-icon">⊞</span>Compile</div>
+  <div class="nav-item" data-page="deploy" onclick="showPage('deploy')"><span class="nav-icon">⬆</span>Deploy</div>
+  <div class="nav-item" data-page="meme" onclick="showPage('meme')"><span class="nav-icon">🐸</span>Meme Launch</div>
+
+  <div class="nav-section">AI Ops</div>
+  <div class="nav-item" data-page="ai" onclick="showPage('ai')"><span class="nav-icon">◭</span>AI Assistant</div>
+  <div class="nav-item" data-page="gate" onclick="showPage('gate')"><span class="nav-icon">⧖</span>Gate Monitor</div>
+  <div class="nav-item" data-page="mcp" onclick="showPage('mcp')"><span class="nav-icon">⌬</span>MCP Tools</div>
+
+  <div class="nav-section">Admin</div>
+  <div class="nav-item" data-page="admin" onclick="showPage('admin')"><span class="nav-icon">⊛</span>System Admin</div>
+  <div class="nav-item" data-page="auth" onclick="showPage('auth')"><span class="nav-icon">⊕</span>Auth</div>
+  <div class="nav-item" data-page="settings" onclick="showPage('settings')"><span class="nav-icon">⊙</span>Settings</div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="page-title">Dashboard</div>
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card">
+      <div class="stat-label">Chain</div>
+      <div class="stat-val green glow" id="dash-chain">—</div>
+      <div class="stat-sub" id="dash-chainid">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Gas (gwei)</div>
+      <div class="stat-val yellow" id="dash-gas">—</div>
+      <div class="stat-sub">base fee</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Balance</div>
+      <div class="stat-val" id="dash-balance">—</div>
+      <div class="stat-sub">ETH</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Contracts</div>
+      <div class="stat-val green" id="dash-contracts">—</div>
+      <div class="stat-sub">deployed</div>
+    </div>
+  </div>
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card">
+      <div class="stat-label">Tasks Run</div>
+      <div class="stat-val" id="dash-tasks">—</div>
+      <div class="stat-sub">total</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Success Rate</div>
+      <div class="stat-val green" id="dash-success">—</div>
+      <div class="stat-sub">pipeline</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Gate Approval</div>
+      <div class="stat-val" id="dash-gate-rate">—</div>
+      <div class="stat-sub">approval rate</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Modules Online</div>
+      <div class="stat-val green" id="dash-modules">—</div>
+      <div class="stat-sub">of 12</div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-title">Recent Transactions</div>
+      <div id="dash-txs"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Live Events <span id="dash-events-count" style="color:var(--text3)"></span></div>
+      <div class="event-feed" id="dash-events-feed" style="max-height:200px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE EVENTS -->
+<div class="page" id="page-events">
+  <div class="page-title">Live Events</div>
+  <div class="flex gap8 items-center" style="margin-bottom:16px">
+    <select id="events-filter" style="width:200px" onchange="filterEvents()">
+      <option value="">All events</option>
+      <option value="blockchain">blockchain.*</option>
+      <option value="task">task.*</option>
+      <option value="auth">auth.*</option>
+      <option value="gate">gate.*</option>
+      <option value="mcp">mcp.*</option>
+      <option value="secret">secret.*</option>
+    </select>
+    <button class="btn btn-ghost btn-sm" onclick="clearEvents()">CLEAR</button>
+    <span id="events-total" style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:8px">0 events</span>
+    <div class="ml-auto flex gap8">
+      <div class="ws-indicator"><div class="ws-dot" id="ws-dot2"></div><span id="ws-label2">DISCONNECTED</span></div>
+    </div>
+  </div>
+  <div class="card" style="padding:0">
+    <div class="event-feed" id="events-main-feed" style="max-height:calc(100vh - 200px)"></div>
+  </div>
+</div>
+
+<!-- GAS TRACKER -->
+<div class="page" id="page-gas">
+  <div class="page-title">Gas Tracker</div>
+  <div class="flex gap8 items-center" style="margin-bottom:16px">
+    <select id="gas-chain-sel" style="width:160px" onchange="fetchGas()">
+      <option value="1">Ethereum</option>
+      <option value="8453">Base</option>
+      <option value="42161">Arbitrum</option>
+      <option value="10">Optimism</option>
+      <option value="137">Polygon</option>
+      <option value="56">BSC</option>
+      <option value="11155111">Sepolia</option>
+      <option value="31337" selected>Localhost</option>
+    </select>
+    <button class="btn btn-sm" onclick="fetchGas()">REFRESH</button>
+    <span id="gas-updated" style="font-family:var(--mono);font-size:10px;color:var(--text3)"></span>
+  </div>
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="card" style="text-align:center">
+      <div class="card-title">Base Fee</div>
+      <div class="gas-val" id="gas-base">—</div>
+      <div class="stat-sub mt8">gwei</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="card-title">Max Priority Fee</div>
+      <div class="gas-val" id="gas-priority">—</div>
+      <div class="stat-sub mt8">gwei</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="card-title">Max Fee</div>
+      <div class="gas-val" id="gas-max">—</div>
+      <div class="stat-sub mt8">gwei</div>
+    </div>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <div class="card-title">Transfer Cost (21k gas)</div>
+      <div style="font-family:var(--mono);font-size:18px;color:var(--text)" id="gas-cost-eth">—</div>
+      <div class="stat-sub mt8" id="gas-cost-usd">—</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Deploy Est. (3M gas)</div>
+      <div style="font-family:var(--mono);font-size:18px;color:var(--text)" id="gas-deploy-eth">—</div>
+      <div class="stat-sub mt8" id="gas-deploy-usd">—</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Confidence</div>
+      <div style="font-family:var(--mono);font-size:18px" id="gas-confidence">—</div>
+      <div class="stat-sub mt8" id="gas-chain-name">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- WALLET -->
+<div class="page" id="page-wallet">
+  <div class="page-title">Wallet</div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Connect or Query Wallet</div>
+        <div class="frow">
+          <div class="fg">
+            <label>Address</label>
+            <input id="wallet-input" placeholder="0x..." />
+          </div>
+          <div class="fg">
+            <label>Chain</label>
+            <select id="wallet-chain-sel">
+              <option value="1">Ethereum</option>
+              <option value="8453">Base</option>
+              <option value="42161">Arbitrum</option>
+              <option value="10">Optimism</option>
+              <option value="137">Polygon</option>
+              <option value="31337" selected>Localhost</option>
+              <option value="11155111">Sepolia</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap8">
+          <button class="btn btn-green" onclick="fetchWallet()">QUERY</button>
+          <button class="btn btn-blue" onclick="connectWallet()">🦊 METAMASK</button>
+        </div>
+      </div>
+      <div class="card" id="wallet-result-card" style="display:none">
+        <div class="card-title">Wallet Info</div>
+        <div style="margin-bottom:12px">
+          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--green)" id="wr-balance">—</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:4px" id="wr-addr">—</div>
+        </div>
+        <div class="flex gap8">
+          <span class="badge badge-blue" id="wr-chain">—</span>
+          <span class="badge badge-dim">NONCE: <span id="wr-nonce">—</span></span>
+          <span class="badge badge-dim" id="wr-source">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Raw RPC Call</div>
+      <div class="frow" style="margin-bottom:12px">
+        <div class="fg">
+          <label>Method</label>
+          <input id="rpc-method" value="eth_blockNumber" />
+        </div>
+        <div class="fg">
+          <label>Chain</label>
+          <select id="rpc-chain">
+            <option value="31337" selected>Localhost</option>
+            <option value="1">Ethereum</option>
+            <option value="8453">Base</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Params (JSON array)</label>
+        <input id="rpc-params" value="[]" />
+      </div>
+      <button class="btn btn-sm btn-green" onclick="callRpc()">EXECUTE</button>
+      <div id="rpc-result" class="mt12" style="display:none">
+        <div class="code-label">Result</div>
+        <div class="codeblock" id="rpc-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSACTIONS -->
+<div class="page" id="page-tx">
+  <div class="page-title">Transactions</div>
+  <div class="grid g2" style="align-items:start;margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Send Transaction</div>
+      <div class="frow">
+        <div class="fg"><label>Chain</label>
+          <select id="tx-chain">
+            <option value="31337" selected>Localhost</option>
+            <option value="11155111">Sepolia</option>
+            <option value="8453">Base</option>
+            <option value="1">Ethereum</option>
+          </select>
+        </div>
+        <div class="fg"><label>From</label><input id="tx-from" placeholder="0x..." /></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>To</label><input id="tx-to" placeholder="0x..." /></div>
+        <div class="fg"><label>Value (wei)</label><input id="tx-value" placeholder="0" /></div>
+      </div>
+      <div class="fg"><label>Calldata (hex)</label><input id="tx-data" placeholder="0x" /></div>
+      <div class="fg"><label>Description</label><input id="tx-desc" placeholder="Transfer ETH" /></div>
+      <div class="flex gap8">
+        <button class="btn btn-sm btn-blue" onclick="simulateTx()">SIMULATE</button>
+        <button class="btn btn-sm btn-green" id="tx-send-btn" onclick="sendTx()">SEND TX</button>
+      </div>
+    </div>
+    <div id="tx-result-card" class="card" style="display:none">
+      <div class="code-label" id="tx-result-label">Result</div>
+      <div class="codeblock" id="tx-result-body"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="flex items-center gap8" style="margin-bottom:12px">
+      <div class="card-title" style="margin:0">Transaction History</div>
+      <div class="ml-auto">
+        <button class="btn btn-ghost btn-sm" onclick="loadTxHistory()">REFRESH</button>
+      </div>
+    </div>
+    <div id="tx-history"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+  </div>
+</div>
+
+<!-- CONTRACTS -->
+<div class="page" id="page-contracts">
+  <div class="page-title">Deployed Contracts</div>
+  <div class="flex gap8 items-center" style="margin-bottom:16px">
+    <select id="contracts-chain" style="width:160px" onchange="loadContracts()">
+      <option value="">All chains</option>
+      <option value="31337">Localhost</option>
+      <option value="11155111">Sepolia</option>
+      <option value="8453">Base</option>
+      <option value="1">Ethereum</option>
+    </select>
+    <button class="btn btn-ghost btn-sm" onclick="loadContracts()">REFRESH</button>
+  </div>
+  <div class="card" style="padding:0">
+    <div id="contracts-table"><div style="padding:16px;color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+  </div>
+</div>
+
+<!-- COMPILE -->
+<div class="page" id="page-compile">
+  <div class="page-title">Compile Solidity</div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <div class="frow" style="margin-bottom:12px">
+        <div class="fg"><label>Contract Name</label><input id="compile-name" value="MyContract" /></div>
+        <div class="fg"><label>Solidity Version</label><input id="compile-ver" value="0.8.24" /></div>
+      </div>
+      <div class="fg">
+        <div class="flex items-center gap8" style="margin-bottom:5px">
+          <label style="margin:0">Source Code</label>
+          <button class="btn btn-ghost btn-sm ml-auto" onclick="loadExampleSolidity()">LOAD EXAMPLE</button>
+        </div>
+        <textarea id="compile-src" style="min-height:340px;font-family:var(--mono)"
+>// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract MyContract {
+    string public message;
+    address public owner;
+
+    constructor(string memory _msg) {
+        message = _msg;
+        owner = msg.sender;
+    }
+
+    function setMessage(string memory _msg) external {
+        require(msg.sender == owner, "Not owner");
+        message = _msg;
+    }
+}</textarea>
+      </div>
+      <button class="btn btn-lg btn-green" id="compile-btn" onclick="compileSolidity()">COMPILE</button>
+    </div>
+    <div>
+      <div id="compile-result" style="display:none">
+        <div class="code-label" id="compile-label">Output</div>
+        <div class="codeblock" id="compile-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEPLOY -->
+<div class="page" id="page-deploy">
+  <div class="page-title">Deploy Contract</div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <div class="frow">
+        <div class="fg"><label>Contract Name</label><input id="deploy-name" placeholder="MyContract" /></div>
+        <div class="fg"><label>Chain</label>
+          <select id="deploy-chain">
+            <option value="31337" selected>Localhost (anvil)</option>
+            <option value="11155111">Sepolia</option>
+            <option value="84532">Base Sepolia</option>
+            <option value="8453">Base Mainnet</option>
+            <option value="1">Ethereum Mainnet</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>From Address</label><input id="deploy-from" placeholder="0x..." /></div>
+      <div class="fg"><label>ABI (JSON array)</label>
+        <textarea id="deploy-abi" style="min-height:80px" placeholder='[{"type":"constructor","inputs":[{"name":"_msg","type":"string"}]}]'></textarea>
+      </div>
+      <div class="fg"><label>Bytecode (0x...)</label>
+        <textarea id="deploy-bytecode" style="min-height:60px" placeholder="0x6080..."></textarea>
+      </div>
+      <div class="fg"><label>Constructor Args (JSON array)</label>
+        <input id="deploy-args" placeholder='["Hello World"]' />
+      </div>
+      <div class="frow">
+        <div class="fg"><label>ETH Value (wei)</label><input id="deploy-value" placeholder="0" /></div>
+        <div class="fg" style="display:flex;align-items:flex-end;padding-bottom:12px">
+          <div class="toggle-row" style="margin:0">
+            <label class="toggle"><input type="checkbox" id="deploy-verify" /><span class="toggle-slider"></span></label>
+            <span class="toggle-label">Verify on explorer</span>
+          </div>
+        </div>
+      </div>
+      <div class="fg" id="deploy-apikey-row" style="display:none"><label>Explorer API Key</label><input id="deploy-apikey" /></div>
+      <button class="btn btn-lg btn-green" id="deploy-btn" onclick="deployContract()">DEPLOY</button>
+      <button class="btn btn-lg btn-blue mt8" style="margin-left:8px" onclick="compileAndDeploy()">COMPILE + DEPLOY</button>
+    </div>
+    <div id="deploy-result" style="display:none">
+      <div class="code-label" id="deploy-label">Result</div>
+      <div class="codeblock" id="deploy-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MEME LAUNCH -->
+<div class="page" id="page-meme">
+  <div class="page-title">🐸 Meme Token Launch</div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Token Config</div>
+        <div class="frow">
+          <div class="fg"><label>Token Name</label><input id="meme-name" placeholder="Pepe Rocket" /></div>
+          <div class="fg"><label>Symbol</label><input id="meme-symbol" placeholder="PRKT" maxlength="10" /></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Total Supply</label><input id="meme-supply" value="1000000000" /></div>
+          <div class="fg"><label>Decimals</label><input id="meme-decimals" type="number" value="18" min="0" max="18" /></div>
+        </div>
+        <div class="flex gap8">
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="meme-mintable" /><span class="toggle-slider"></span></label>
+            <span class="toggle-label">Mintable</span>
+          </div>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="meme-burnable" checked /><span class="toggle-slider"></span></label>
+            <span class="toggle-label">Burnable</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Tax Config</div>
+        <div class="frow3">
+          <div class="fg"><label>Buy Tax %</label><input id="meme-buy-tax" type="number" value="3" min="0" max="25" /></div>
+          <div class="fg"><label>Sell Tax %</label><input id="meme-sell-tax" type="number" value="5" min="0" max="25" /></div>
+          <div class="fg"><label>Tax Wallet</label><input id="meme-tax-wallet" placeholder="0x... (deployer)" /></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Anti-Whale Limits</div>
+        <div class="frow">
+          <div class="fg"><label>Max Wallet %</label><input id="meme-max-wallet" type="number" value="2" min="0" max="100" /></div>
+          <div class="fg"><label>Max Tx %</label><input id="meme-max-tx" type="number" value="1" min="0" max="100" /></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Deployment</div>
+        <div class="frow">
+          <div class="fg"><label>Chain</label>
+            <select id="meme-chain">
+              <option value="31337" selected>Localhost</option>
+              <option value="11155111">Sepolia</option>
+              <option value="84532">Base Sepolia</option>
+              <option value="8453">Base Mainnet</option>
+              <option value="1">Ethereum Mainnet</option>
+            </select>
+          </div>
+          <div class="fg"><label>Deployer Address</label><input id="meme-from" placeholder="0x..." /></div>
+        </div>
+        <div class="flex gap8">
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="meme-verify" /><span class="toggle-slider"></span></label>
+            <span class="toggle-label">Verify</span>
+          </div>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="meme-deploy-only" checked /><span class="toggle-slider"></span></label>
+            <span class="toggle-label">Deploy Only (no LP)</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap8">
+        <button class="btn btn-blue" onclick="previewMeme()">PREVIEW SOURCE</button>
+        <button class="btn btn-lg btn-green" id="meme-btn" onclick="launchMeme()">🚀 LAUNCH TOKEN</button>
+      </div>
+    </div>
+    <div>
+      <div id="meme-result" style="display:none;margin-bottom:16px">
+        <div class="code-label" id="meme-label">Launch Result</div>
+        <div class="codeblock" id="meme-body"></div>
+      </div>
+      <div id="meme-source" style="display:none">
+        <div class="code-label">Generated Solidity</div>
+        <div class="codeblock" id="meme-src-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI ASSISTANT -->
+<div class="page" id="page-ai">
+  <div class="page-title">AI Assistant</div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Task Instruction</div>
+        <div class="fg">
+          <textarea id="ai-input" style="min-height:120px" placeholder="Write a production ERC20 token with 3% buy tax and 5% sell tax...
+Audit this Solidity contract for security vulnerabilities...
+Explain reentrancy attacks and how to prevent them...
+Write a Uniswap V3 liquidity management contract..."></textarea>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Priority</label>
+            <select id="ai-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+          <div class="fg" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:12px">
+            <div class="flex gap8">
+              <div class="toggle-row" style="margin:0">
+                <label class="toggle"><input type="checkbox" id="ai-audit" checked /><span class="toggle-slider"></span></label>
+                <span class="toggle-label">Audit</span>
+              </div>
+              <div class="toggle-row" style="margin:0">
+                <label class="toggle"><input type="checkbox" id="ai-mcp" /><span class="toggle-slider"></span></label>
+                <span class="toggle-label">MCP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-lg btn-green" id="ai-btn" onclick="runAI()">◭ RUN AI</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Task History</div>
+        <button class="btn btn-ghost btn-sm" style="margin-bottom:12px" onclick="loadTasks()">REFRESH</button>
+        <div id="ai-task-history"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="flex items-center gap8" style="margin-bottom:12px">
+        <div class="card-title" style="margin:0">Output</div>
+        <div id="ai-status" style="margin-left:auto"></div>
+      </div>
+      <div id="ai-output" class="terminal" style="min-height:400px;white-space:pre-wrap">Waiting for task...</div>
+    </div>
+  </div>
+</div>
+
+<!-- GATE MONITOR -->
+<div class="page" id="page-gate">
+  <div class="page-title">Gate Monitor</div>
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card">
+      <div class="stat-label">Total Checks</div>
+      <div class="stat-val" id="gate-total">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Approval Rate</div>
+      <div class="stat-val green" id="gate-approval">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Avg Score</div>
+      <div class="stat-val" id="gate-avg">—</div>
+      <div class="stat-sub">/100</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Circuit State</div>
+      <div class="stat-val" id="gate-circuit">—</div>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Manual Check</div>
+      <div class="fg"><label>Content Type</label>
+        <select id="gate-check-type">
+          <option value="solidity">Solidity</option>
+          <option value="code">Code</option>
+          <option value="prompt">Prompt</option>
+          <option value="output">Output</option>
+          <option value="package">Package</option>
+        </select>
+      </div>
+      <div class="fg"><label>Content</label>
+        <textarea id="gate-check-content" style="min-height:100px" placeholder="Paste Solidity or code to check..."></textarea>
+      </div>
+      <button class="btn btn-green btn-sm" onclick="runGateCheck()">CHECK</button>
+      <div id="gate-check-result" class="mt12" style="display:none">
+        <div class="codeblock" id="gate-check-body"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Cache & Circuit</div>
+      <div class="flex gap8" style="margin-bottom:16px">
+        <button class="btn btn-sm btn-yellow" onclick="resetCircuit()">RESET CIRCUIT</button>
+        <button class="btn btn-sm btn-red" onclick="clearGateCache()">CLEAR CACHE</button>
+        <button class="btn btn-sm" onclick="loadGateMetrics()">REFRESH</button>
+      </div>
+      <div class="code-label">Caller Stats</div>
+      <div class="codeblock" id="gate-callers" style="max-height:150px">Loading...</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="flex items-center gap8" style="margin-bottom:12px">
+      <div class="card-title" style="margin:0">Recent Decisions</div>
+      <select id="gate-decisions-filter" style="width:120px" onchange="loadGateDecisions()">
+        <option value="">All</option>
+        <option value="true">Approved</option>
+        <option value="false">Rejected</option>
+      </select>
+    </div>
+    <div id="gate-decisions-table"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+  </div>
+</div>
+
+<!-- MCP TOOLS -->
+<div class="page" id="page-mcp">
+  <div class="page-title">MCP Tools</div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Call Tool</div>
+        <div class="fg"><label>Tool</label>
+          <select id="mcp-tool-sel" onchange="updateMcpSchema()">
+            <option value="web_fetch">web_fetch</option>
+            <option value="package_lookup">package_lookup</option>
+            <option value="run_typescript">run_typescript</option>
+            <option value="cast_call">cast_call</option>
+            <option value="eth_rpc">eth_rpc</option>
+            <option value="forge_build">forge_build</option>
+            <option value="abi_decode">abi_decode</option>
+            <option value="gas_estimate">gas_estimate</option>
+          </select>
+        </div>
+        <div class="fg"><label>Input (JSON)</label>
+          <textarea id="mcp-input" style="min-height:80px;font-family:var(--mono)" id="mcp-input-area"></textarea>
+        </div>
+        <button class="btn btn-green" id="mcp-call-btn" onclick="callMcpTool()">EXECUTE TOOL</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Tool Metrics</div>
+        <div id="mcp-metrics-list"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="flex items-center gap8" style="margin-bottom:12px">
+        <div class="card-title" style="margin:0">Output</div>
+        <button class="btn btn-ghost btn-sm ml-auto" onclick="loadMcpHistory()">HISTORY</button>
+      </div>
+      <div class="codeblock" id="mcp-output" style="min-height:300px">Select a tool and execute...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <div class="page-title">System Admin</div>
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card">
+      <div class="stat-label">Total Tasks</div>
+      <div class="stat-val" id="admin-tasks">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Active Users</div>
+      <div class="stat-val green" id="admin-users">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Active Tokens</div>
+      <div class="stat-val" id="admin-tokens">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Expiring Secrets</div>
+      <div class="stat-val yellow" id="admin-secrets">—</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchAdminTab('modules')">MODULES</div>
+    <div class="tab" onclick="switchAdminTab('events')">EVENTS</div>
+    <div class="tab" onclick="switchAdminTab('secrets')">SECRETS</div>
+    <div class="tab" onclick="switchAdminTab('audit')">AUDIT LOGS</div>
+  </div>
+  <div id="admin-tab-modules">
+    <div class="card">
+      <div class="flex items-center gap8" style="margin-bottom:12px">
+        <div class="card-title" style="margin:0">Module Status</div>
+        <button class="btn btn-ghost btn-sm ml-auto" onclick="loadAdminSystem()">REFRESH</button>
+      </div>
+      <div id="admin-modules-grid" class="grid g4"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+    </div>
+  </div>
+  <div id="admin-tab-events" style="display:none">
+    <div class="card">
+      <div class="flex items-center gap8" style="margin-bottom:12px">
+        <div class="card-title" style="margin:0">System Events</div>
+        <button class="btn btn-ghost btn-sm ml-auto" onclick="loadAdminEvents()">REFRESH</button>
+      </div>
+      <div id="admin-events-list"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+    </div>
+  </div>
+  <div id="admin-tab-secrets" style="display:none">
+    <div class="card">
+      <div class="flex items-center gap8" style="margin-bottom:12px">
+        <div class="card-title" style="margin:0">Secrets</div>
+        <button class="btn btn-ghost btn-sm ml-auto" onclick="loadAdminSecrets()">REFRESH</button>
+      </div>
+      <div id="admin-secrets-list"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+    </div>
+  </div>
+  <div id="admin-tab-audit" style="display:none">
+    <div class="card">
+      <div class="flex items-center gap8" style="margin-bottom:12px">
+        <div class="card-title" style="margin:0">Audit Logs</div>
+        <button class="btn btn-ghost btn-sm ml-auto" onclick="loadAuditLogs()">REFRESH</button>
+      </div>
+      <div id="admin-audit-list"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Loading...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div class="page" id="page-auth">
+  <div class="page-title">Authentication</div>
+  <div class="grid g2">
+    <div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchAuthTab('login')">LOGIN</div>
+        <div class="tab" onclick="switchAuthTab('register')">REGISTER</div>
+        <div class="tab" onclick="switchAuthTab('client')">OAUTH CLIENT</div>
+      </div>
+      <div id="auth-tab-login" class="card">
+        <div class="fg"><label>Email</label><input id="login-email" type="email" placeholder="admin@ops.local" /></div>
+        <div class="fg"><label>Password</label><input id="login-pass" type="password" /></div>
+        <button class="btn btn-green btn-lg" id="login-btn" onclick="doLogin()">LOGIN</button>
+      </div>
+      <div id="auth-tab-register" class="card" style="display:none">
+        <div class="fg"><label>Email</label><input id="reg-email" type="email" /></div>
+        <div class="fg"><label>Password (min 12 chars)</label><input id="reg-pass" type="password" /></div>
+        <div class="fg"><label>Role</label>
+          <select id="reg-role"><option value="viewer">Viewer</option><option value="operator">Operator</option><option value="admin">Admin</option></select>
+        </div>
+        <button class="btn btn-blue btn-lg" id="reg-btn" onclick="doRegister()">REGISTER</button>
+      </div>
+      <div id="auth-tab-client" class="card" style="display:none">
+        <div class="fg"><label>Client Name</label><input id="client-name" placeholder="my-service" /></div>
+        <div class="fg"><label>Scopes (space separated)</label>
+          <input id="client-scopes" value="tasks:read tasks:write blockchain:read blockchain:write blockchain:deploy" />
+        </div>
+        <button class="btn btn-blue btn-lg" id="client-btn" onclick="createOAuthClient()">CREATE CLIENT</button>
+      </div>
+    </div>
+    <div class="card" id="auth-result-card" style="display:none">
+      <div class="code-label" id="auth-result-label">Result</div>
+      <div class="codeblock" id="auth-result-body"></div>
+      <div id="auth-token-section" style="display:none;margin-top:16px">
+        <div class="code-label">Session Token</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--green);word-break:break-all" id="auth-token-display"></div>
+        <button class="btn btn-sm btn-red mt12" onclick="doLogout()">LOGOUT</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="page" id="page-settings">
+  <div class="page-title">Settings</div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-title">API Configuration</div>
+      <div class="fg"><label>Gateway URL</label><input id="cfg-gateway" value="http://localhost:3004" /></div>
+      <div class="fg"><label>Blockchain URL</label><input id="cfg-blockchain" value="http://localhost:3011" /></div>
+      <div class="fg"><label>Gate URL</label><input id="cfg-gate" value="http://localhost:3001" /></div>
+      <div class="fg"><label>Events URL</label><input id="cfg-events" value="http://localhost:3009" /></div>
+      <div class="fg"><label>Internal Service Token</label><input id="cfg-internal" type="password" placeholder="For direct module access" /></div>
+      <button class="btn btn-green" onclick="saveSettings()">SAVE SETTINGS</button>
+    </div>
+    <div class="card">
+      <div class="card-title">System Health</div>
+      <button class="btn btn-ghost btn-sm" style="margin-bottom:12px" onclick="loadSystemHealth()">REFRESH</button>
+      <div id="settings-health"><div style="color:var(--text3);font-family:var(--mono);font-size:11px">Click refresh</div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div><!-- /app -->
+
+<!-- MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal">
+    <div id="modal-title"></div>
+    <button id="modal-close" onclick="closeModalBtn()">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div id="toasts"></div>
+
+<script>
+'use strict';
+
+// ── Config (loaded from localStorage + defaults) ────────────────
+const CFG = {
+  gateway:    localStorage.getItem('cfg-gateway')    || 'http://localhost:3004',
+  blockchain: localStorage.getItem('cfg-blockchain') || 'http://localhost:3011',
+  gate:       localStorage.getItem('cfg-gate')       || 'http://localhost:3001',
+  events:     localStorage.getItem('cfg-events')     || 'http://localhost:3009',
+  auditor:    localStorage.getItem('cfg-auditor')    || 'http://localhost:3002',
+  mcp:        localStorage.getItem('cfg-mcp')        || 'http://localhost:3005',
+  admin:      localStorage.getItem('cfg-admin')      || 'http://localhost:3010',
+  internal:   localStorage.getItem('cfg-internal')   || '',
+};
+
+// ── State ────────────────────────────────────────────────────────
+let authToken  = localStorage.getItem('auth-token') || '';
+let walletAddr = localStorage.getItem('wallet-addr') || '';
+let chainId    = parseInt(localStorage.getItem('chainId') || '31337');
+let ws         = null;
+let allEvents  = [];
+let eventCount = 0;
+
+// ── Utilities ────────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const val = id => $(id)?.value?.trim() ?? '';
+const chk = id => $(id)?.checked ?? false;
+const fmt = v  => typeof v === 'object' ? JSON.stringify(v, null, 2) : String(v ?? '');
+
+function toast(msg, type = 'info') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  $('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+function loading(btnId, state) {
+  const btn = $(btnId);
+  if (!btn) return;
+  if (state) {
+    btn._orig = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span> WORKING';
+    btn.disabled = true;
+  } else {
+    btn.innerHTML = btn._orig || btn.innerHTML;
+    btn.disabled = false;
+  }
+}
+
+function openModal(title, html) {
+  $('modal-title').textContent = title;
+  $('modal-body').innerHTML = html;
+  $('modal-overlay').classList.add('open');
+}
+function closeModal(e) { if (e.target === $('modal-overlay')) closeModalBtn(); }
+function closeModalBtn() { $('modal-overlay').classList.remove('open'); }
+
+// ── API calls ────────────────────────────────────────────────────
+async function api(url, opts = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+  if (CFG.internal) headers['x-aiops-service-token'] = CFG.internal;
+  try {
+    const res = await fetch(url, { headers, ...opts });
+    return res;
+  } catch (err) {
+    throw new Error(`Network error: ${err.message}`);
+  }
+}
+async function gw(path, opts) { return api(CFG.gateway + path, opts); }
+async function bc(path, opts) { return api(CFG.blockchain + path, opts); }
+async function gate(path, opts) { return api(CFG.gate + path, opts); }
+async function mcpApi(path, opts) { return api(CFG.mcp + path, opts); }
+async function adminApi(path, opts) { return api(CFG.admin + path, opts); }
+
+async function post(fn, path, body) {
+  return fn(path, { method: 'POST', body: JSON.stringify(body) });
+}
+async function jsonGet(fn, path) {
+  const res = await fn(path);
+  if (!res.ok) { const t = await res.text(); throw new Error(t.slice(0, 200)); }
+  return res.json();
+}
+async function jsonPost(fn, path, body) {
+  const res = await post(fn, path, body);
+  return res.json();
+}
+
+// ── Navigation ───────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  $('page-' + name)?.classList.add('active');
+  document.querySelector(`[data-page="${name}"]`)?.classList.add('active');
+
+  // Load data for page
+  if (name === 'dashboard')  loadDashboard();
+  if (name === 'gas')        fetchGas();
+  if (name === 'contracts')  loadContracts();
+  if (name === 'tx')         loadTxHistory();
+  if (name === 'gate')       loadGateMetrics();
+  if (name === 'mcp')        loadMcpTools();
+  if (name === 'admin')      loadAdminSystem();
+  if (name === 'ai')         loadTasks();
+  if (name === 'settings')   loadSettingsPage();
+}
+
+function setChain(id, el) {
+  chainId = id;
+  localStorage.setItem('chainId', id);
+  document.querySelectorAll('.chain-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  $('dash-chain').textContent = el.textContent;
+  $('dash-chainid').textContent = 'chainId: ' + id;
+  fetchGas();
+  toast('Switched to chain ' + el.textContent, 'info');
+}
+
+// ── WebSocket ────────────────────────────────────────────────────
+function connectWS() {
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(proto + '//' + location.host + '/ws');
+
+  ws.onopen = () => {
+    [$('ws-dot'), $('ws-dot2')].forEach(d => d?.classList.add('live'));
+    [$('ws-label'), $('ws-label2')].forEach(l => { if (l) l.textContent = 'LIVE'; });
+  };
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if (msg.type === 'event') onEvent(msg.data);
+    } catch {}
+  };
+  ws.onclose = () => {
+    [$('ws-dot'), $('ws-dot2')].forEach(d => d?.classList.remove('live'));
+    [$('ws-label'), $('ws-label2')].forEach(l => { if (l) l.textContent = 'RECONNECTING'; });
+    setTimeout(connectWS, 3000);
+  };
+  ws.onerror = () => ws.close();
+}
+
+function onEvent(ev) {
+  eventCount++;
+  allEvents.unshift(ev);
+  if (allEvents.length > 500) allEvents.pop();
+  $('events-badge').textContent = eventCount > 99 ? '99+' : eventCount;
+  $('events-total').textContent = allEvents.length + ' events';
+
+  const type = ev.type || '';
+  const isBlockchain = type.startsWith('blockchain');
+  const isErr = type.includes('failed') || type.includes('rejected');
+  const time = new Date(ev.emittedAt).toLocaleTimeString();
+  const payload = JSON.stringify(ev.payload || {}).slice(0, 80);
+
+  const item = `<div class="event-item">
+    <span class="event-time">${time}</span>
+    <span class="event-type ${isBlockchain ? 'blockchain' : isErr ? 'error' : ''}">${type}</span>
+    <span class="event-payload">${payload}</span>
+  </div>`;
+
+  [$('events-main-feed'), $('dash-events-feed')].forEach(feed => {
+    if (!feed) return;
+    const filter = $('events-filter')?.value || '';
+    if (!filter || type.startsWith(filter)) {
+      feed.insertAdjacentHTML('afterbegin', item);
+      while (feed.children.length > 200) feed.lastElementChild?.remove();
+    }
+  });
+
+  // Toast for important events
+  if (type === 'blockchain.tx_confirmed') toast('TX confirmed: ' + (ev.payload?.txHash || '').slice(0, 14), 'success');
+  if (type === 'blockchain.tx_failed') toast('TX failed: ' + (ev.payload?.error || ''), 'error');
+  if (type === 'blockchain.contract_deployed') toast('Contract deployed: ' + (ev.payload?.contractAddress || '').slice(0, 14), 'success');
+  if (type === 'gate.circuit_opened') toast('Gate circuit OPENED — DeepSeek failing', 'warn');
+}
+
+function clearEvents() {
+  allEvents = []; eventCount = 0;
+  $('events-badge').textContent = '0';
+  $('events-total').textContent = '0 events';
+  $('events-main-feed').innerHTML = '';
+  $('dash-events-feed').innerHTML = '';
+}
+
+function filterEvents() {
+  $('events-main-feed').innerHTML = '';
+  const f = val('events-filter');
+  allEvents.filter(e => !f || (e.type||'').startsWith(f)).forEach(ev => {
+    const type = ev.type || '';
+    const isBlockchain = type.startsWith('blockchain');
+    const isErr = type.includes('failed') || type.includes('rejected');
+    const time = new Date(ev.emittedAt).toLocaleTimeString();
+    const payload = JSON.stringify(ev.payload || {}).slice(0, 80);
+    $('events-main-feed').insertAdjacentHTML('beforeend',
+      `<div class="event-item"><span class="event-time">${time}</span><span class="event-type ${isBlockchain?'blockchain':isErr?'error':''}">${type}</span><span class="event-payload">${payload}</span></div>`
+    );
+  });
+}
+
+// ── Dashboard ────────────────────────────────────────────────────
+async function loadDashboard() {
+  // Gas
+  bc('/gas?chainId=' + chainId).then(r => r.json()).then(g => {
+    if (g.baseFeeGwei) {
+      $('dash-gas').textContent = parseFloat(g.baseFeeGwei).toFixed(2);
+    }
+  }).catch(() => {});
+
+  // Wallet balance
+  if (walletAddr) {
+    bc(`/wallet?address=${walletAddr}&chainId=${chainId}`).then(r => r.json()).then(w => {
+      $('dash-balance').textContent = parseFloat(w.balanceEth || 0).toFixed(4);
+    }).catch(() => {});
+  }
+
+  // Chain info
+  const chainNames = { 1:'ETHEREUM',8453:'BASE',42161:'ARBITRUM',10:'OPTIMISM',137:'POLYGON',56:'BSC',11155111:'SEPOLIA',84532:'BASE-SEPOLIA',31337:'LOCAL' };
+  $('dash-chain').textContent = chainNames[chainId] || 'UNKNOWN';
+  $('dash-chainid').textContent = 'chainId: ' + chainId;
+
+  // Contracts count
+  bc('/contracts?limit=1').then(r => r.json()).then(d => {
+    $('dash-contracts').textContent = Array.isArray(d) ? d.length : (d.contracts?.length ?? '0');
+  }).catch(() => {});
+
+  // Task stats (requires auth)
+  if (authToken) {
+    gw('/stats').then(r => r.json()).then(s => {
+      $('dash-tasks').textContent = s.total || s.tasks?.total || '—';
+      $('dash-success').textContent = s.successRate || s.tasks?.successRate || '—';
+    }).catch(() => {});
+  }
+
+  // Gate metrics
+  gate('/metrics').then(r => r.json()).then(m => {
+    $('dash-gate-rate').textContent = m.checks?.approvalRate || '—';
+  }).catch(() => {});
+
+  // System modules (requires auth)
+  if (authToken) {
+    gw('/status').then(r => r.json()).then(s => {
+      const mods = s.modules || {};
+      const online = Object.values(mods).filter(v => v === 'online').length;
+      $('dash-modules').textContent = online + '/12';
+    }).catch(() => {});
+  }
+
+  // Recent transactions
+  bc('/transactions?limit=5').then(r => r.json()).then(d => {
+    const txs = Array.isArray(d) ? d : (d.transactions || []);
+    if (!txs.length) { $('dash-txs').innerHTML = `<div style="color:var(--text3);font-family:var(--mono);font-size:11px">No transactions yet</div>`; return; }
+    $('dash-txs').innerHTML = txs.map(t => `
+      <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px">
+        <span class="${t.status==='confirmed'?'text-green':t.status==='failed'?'text-red':'text-yellow'}">${t.status==='confirmed'?'●':'○'}</span>
+        <span class="truncate" style="max-width:140px;color:var(--text2)">${(t.tx_hash||t.txHash||'—').slice(0,14)}...</span>
+        <span style="color:var(--text3)">${t.description||''}</span>
+        <span class="ml-auto" style="color:var(--text3)">${t.chain_id||t.chainId}</span>
+      </div>`).join('');
+  }).catch(() => {});
+}
+
+// ── Gas ──────────────────────────────────────────────────────────
+async function fetchGas() {
+  const sel = $('gas-chain-sel');
+  const cid = sel ? parseInt(sel.value) : chainId;
+  try {
+    const g = await jsonGet(bc, `/gas?chainId=${cid}`);
+    $('gas-base').textContent = parseFloat(g.baseFeeGwei).toFixed(3);
+    $('gas-priority').textContent = parseFloat(g.maxPriorityFeeGwei).toFixed(3);
+    $('gas-max').textContent = parseFloat(g.maxFeeGwei).toFixed(3);
+    $('gas-cost-eth').textContent = g.estimatedCostEth + ' ETH';
+    $('gas-cost-usd').textContent = g.estimatedCostUsd ? '≈ $' + g.estimatedCostUsd : '';
+    // Deploy estimate (3M gas)
+    const deployEth = (parseFloat(g.maxFeeGwei) * 3_000_000 / 1e9).toFixed(6);
+    $('gas-deploy-eth').textContent = deployEth + ' ETH';
+    $('gas-deploy-usd').textContent = g.estimatedCostUsd
+      ? '≈ $' + (parseFloat(g.estimatedCostUsd) * 3_000_000 / 21000).toFixed(2) : '';
+    $('gas-confidence').textContent = (g.confidence || 'high').toUpperCase();
+    $('gas-confidence').className = 'stat-val ' + (g.confidence === 'high' ? 'green' : g.confidence === 'medium' ? 'yellow' : 'red');
+    $('gas-chain-name').textContent = 'chain ' + cid;
+    $('gas-updated').textContent = 'Updated ' + new Date(g.fetchedAt).toLocaleTimeString();
+    $('dash-gas').textContent = parseFloat(g.baseFeeGwei).toFixed(2);
+  } catch (err) {
+    toast('Gas fetch failed: ' + err.message, 'error');
+  }
+}
+
+// ── Wallet ───────────────────────────────────────────────────────
+async function connectWallet() {
+  if (!window.ethereum) { toast('MetaMask not found', 'error'); return; }
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const chainHex = await window.ethereum.request({ method: 'eth_chainId' });
+    walletAddr = accounts[0];
+    chainId = parseInt(chainHex, 16);
+    localStorage.setItem('wallet-addr', walletAddr);
+    localStorage.setItem('chainId', chainId);
+    $('wallet-addr').textContent = walletAddr.slice(0, 6) + '...' + walletAddr.slice(-4);
+    $('wallet-btn').textContent = 'CONNECTED';
+    $('wallet-input').value = walletAddr;
+    $('deploy-from').value = walletAddr;
+    $('meme-from').value = walletAddr;
+    $('tx-from').value = walletAddr;
+    toast('Wallet connected: ' + walletAddr.slice(0, 10) + '...', 'success');
+    fetchWallet();
+  } catch (err) { toast('Wallet error: ' + err.message, 'error'); }
+}
+
+async function fetchWallet() {
+  const addr = val('wallet-addr-input') || val('wallet-input') || walletAddr;
+  const cid  = val('wallet-chain-sel') || chainId;
+  if (!addr) { toast('Enter a wallet address', 'error'); return; }
+  try {
+    const w = await jsonGet(bc, `/wallet?address=${addr}&chainId=${cid}`);
+    $('wallet-result-card').style.display = 'block';
+    $('wr-balance').textContent = parseFloat(w.balanceEth).toFixed(6) + ' ETH';
+    $('wr-addr').textContent = w.address;
+    $('wr-chain').textContent = 'CHAIN ' + w.chainId;
+    $('wr-nonce').textContent = w.nonce;
+    $('wr-source').textContent = (w.source || 'unknown').replace(/_/g, ' ').toUpperCase();
+    $('dash-balance').textContent = parseFloat(w.balanceEth).toFixed(4);
+  } catch (err) { toast('Wallet fetch failed: ' + err.message, 'error'); }
+}
+
+async function callRpc() {
+  const method = val('rpc-method');
+  const cid    = parseInt(val('rpc-chain')) || chainId;
+  let params = [];
+  try { params = JSON.parse(val('rpc-params') || '[]'); } catch { toast('Invalid params JSON', 'error'); return; }
+  try {
+    const r = await jsonPost(bc, '/rpc', { chainId: cid, method, params });
+    $('rpc-result').style.display = 'block';
+    $('rpc-body').textContent = fmt(r.result ?? r);
+  } catch (err) { toast('RPC error: ' + err.message, 'error'); }
+}
+
+// ── Transactions ─────────────────────────────────────────────────
+async function simulateTx() {
+  const payload = {
+    taskId: crypto.randomUUID(),
+    chainId: parseInt(val('tx-chain')) || chainId,
+    from: val('tx-from'),
+    to: val('tx-to') || undefined,
+    value: val('tx-value') || undefined,
+    data: val('tx-data') || undefined,
+    description: val('tx-desc') || 'Simulation',
+  };
+  loading('tx-send-btn', true);
+  try {
+    const r = await jsonPost(bc, '/simulate', payload);
+    $('tx-result-card').style.display = 'block';
+    $('tx-result-label').textContent = r.success ? '✓ SIMULATION PASSED' : '✗ SIMULATION FAILED';
+    $('tx-result-body').className = 'codeblock ' + (r.success ? 'success' : 'error');
+    $('tx-result-body').textContent = fmt(r);
+    if (!r.success) toast('Simulation failed — TX not sent', 'warn');
+  } catch (err) { toast('Simulate error: ' + err.message, 'error'); }
+  loading('tx-send-btn', false);
+}
+
+async function sendTx() {
+  if (!confirm('Send this transaction? Real funds will be used on mainnet.')) return;
+  const payload = {
+    taskId: crypto.randomUUID(),
+    chainId: parseInt(val('tx-chain')) || chainId,
+    from: val('tx-from'),
+    to: val('tx-to'),
+    value: val('tx-value') || undefined,
+    data: val('tx-data') || undefined,
+    description: val('tx-desc') || 'Transaction',
+    simulate: true,
+  };
+  loading('tx-send-btn', true);
+  try {
+    const r = await jsonPost(bc, '/transaction', payload);
+    $('tx-result-card').style.display = 'block';
+    $('tx-result-label').textContent = r.status === 'confirmed' ? '✓ CONFIRMED' : r.status === 'submitted' ? '⇌ SUBMITTED' : '✗ FAILED';
+    $('tx-result-body').className = 'codeblock ' + (r.status === 'confirmed' ? 'success' : r.status === 'failed' ? 'error' : '');
+    $('tx-result-body').textContent = fmt(r);
+    if (r.explorerUrl) toast('View on explorer: ' + r.explorerUrl, 'info');
+    loadTxHistory();
+  } catch (err) { toast('TX error: ' + err.message, 'error'); }
+  loading('tx-send-btn', false);
+}
+
+async function loadTxHistory() {
+  try {
+    const d = await jsonGet(bc, '/transactions?limit=20');
+    const txs = Array.isArray(d) ? d : (d.transactions || []);
+    if (!txs.length) { $('tx-history').innerHTML = `<div style="color:var(--text3);font-family:var(--mono);font-size:11px">No transactions</div>`; return; }
+    $('tx-history').innerHTML = `<table class="tbl">
+      <thead><tr><th>Hash</th><th>Status</th><th>Chain</th><th>Description</th><th>Gas</th><th>Time</th></tr></thead>
+      <tbody>${txs.map(t => `
+        <tr>
+          <td class="mono truncate" style="max-width:130px">${(t.tx_hash||t.txHash||'—').slice(0,14)}...</td>
+          <td><span class="badge ${t.status==='confirmed'?'badge-green':t.status==='failed'||t.status==='reverted'?'badge-red':'badge-yellow'}">${t.status||'unknown'}</span></td>
+          <td class="mono">${t.chain_id||t.chainId}</td>
+          <td class="truncate" style="max-width:160px;color:var(--text2)">${t.description||'—'}</td>
+          <td class="mono">${t.gas_used||t.gasUsed||'—'}</td>
+          <td class="mono">${t.submitted_at?new Date(t.submitted_at).toLocaleTimeString():''}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch (err) { $('tx-history').innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">${err.message}</div>`; }
+}
+
+// ── Contracts ────────────────────────────────────────────────────
+async function loadContracts() {
+  const cid = val('contracts-chain');
+  const url = '/contracts?limit=50' + (cid ? '&chainId=' + cid : '');
+  try {
+    const d = await jsonGet(bc, url);
+    const cs = Array.isArray(d) ? d : (d.contracts || []);
+    if (!cs.length) { $('contracts-table').innerHTML = `<div style="padding:16px;color:var(--text3);font-family:var(--mono);font-size:11px">No contracts deployed yet</div>`; return; }
+    $('contracts-table').innerHTML = `<table class="tbl">
+      <thead><tr><th>Name</th><th>Address</th><th>Chain</th><th>Verified</th><th>Deployed</th><th></th></tr></thead>
+      <tbody>${cs.map(c => `
+        <tr>
+          <td style="color:var(--green);font-family:var(--mono)">${c.name}</td>
+          <td class="mono truncate" style="max-width:150px">${c.address}</td>
+          <td class="mono">${c.chain_id||c.chainId}</td>
+          <td>${c.verified?'<span class="badge badge-green">✓</span>':'<span class="badge badge-dim">—</span>'}</td>
+          <td class="mono">${c.deployed_at?new Date(c.deployed_at).toLocaleDateString():''}</td>
+          <td><button class="btn btn-ghost btn-sm" onclick="viewContract('${c.address}')">VIEW</button></td>
+        </tr>`).join('')}
+      </tbody></table>`;
+    $('dash-contracts').textContent = cs.length;
+  } catch (err) { $('contracts-table').innerHTML = `<div style="padding:16px;color:var(--red);font-family:var(--mono);font-size:11px">${err.message}</div>`; }
+}
+
+function viewContract(addr) {
+  bc('/contracts/' + addr).then(r => r.json()).then(c => {
+    openModal('Contract: ' + c.name, `
+      <div style="font-family:var(--mono);font-size:11px;margin-bottom:8px"><b>Address:</b> ${c.address}</div>
+      <div style="font-family:var(--mono);font-size:11px;margin-bottom:8px"><b>Chain:</b> ${c.chain_id}</div>
+      <div style="font-family:var(--mono);font-size:11px;margin-bottom:8px"><b>TX:</b> ${c.tx_hash||'—'}</div>
+      <div class="code-label" style="margin-top:12px">ABI</div>
+      <div class="codeblock" style="max-height:300px">${JSON.stringify(c.abi,null,2)}</div>
+    `);
+  }).catch(err => toast('Error: ' + err.message, 'error'));
+}
+
+// ── Compile ──────────────────────────────────────────────────────
+function loadExampleSolidity() {
+  $('compile-src').value = `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract ExampleToken is ERC20, Ownable {
+    constructor() ERC20("Example Token", "EXT") Ownable(msg.sender) {
+        _mint(msg.sender, 1_000_000 * 10**18);
+    }
+}`;
+  $('compile-name').value = 'ExampleToken';
+}
+
+async function compileSolidity() {
+  loading('compile-btn', true);
+  $('compile-result').style.display = 'block';
+  $('compile-body').textContent = 'Compiling...';
+  try {
+    const r = await jsonPost(bc, '/compile', {
+      taskId: crypto.randomUUID(),
+      contractName: val('compile-name'),
+      source: val('compile-src'),
+      solidityVersion: val('compile-ver') || '0.8.24',
+    });
+    $('compile-label').textContent = r.success ? '✓ COMPILED' : '✗ FAILED';
+    $('compile-body').className = 'codeblock ' + (r.success ? 'success' : 'error');
+    $('compile-body').textContent = r.success
+      ? JSON.stringify({ abi: r.abi?.slice(0,3), bytecodePreview: (r.bytecode||'').slice(0,80)+'...', warnings: r.warnings }, null, 2)
+      : (r.errors || []).join('\n');
+    if (r.success) {
+      $('deploy-abi').value = JSON.stringify(r.abi);
+      $('deploy-bytecode').value = r.bytecode;
+      $('deploy-name').value = val('compile-name');
+      toast('Compiled! ABI/bytecode pre-filled in Deploy tab.', 'success');
+    }
+  } catch (err) { $('compile-body').textContent = err.message; $('compile-body').className = 'codeblock error'; }
+  loading('compile-btn', false);
+}
+
+// ── Deploy ───────────────────────────────────────────────────────
+document.getElementById('deploy-verify').addEventListener('change', function() {
+  $('deploy-apikey-row').style.display = this.checked ? 'block' : 'none';
+});
+
+async function deployContract() {
+  let abi; try { abi = JSON.parse(val('deploy-abi')); } catch { toast('Invalid ABI JSON', 'error'); return; }
+  const bytecode = val('deploy-bytecode');
+  if (!bytecode.startsWith('0x')) { toast('Bytecode must start with 0x', 'error'); return; }
+  let args; const as = val('deploy-args');
+  if (as) { try { args = JSON.parse(as); } catch { toast('Invalid constructor args', 'error'); return; } }
+
+  loading('deploy-btn', true);
+  $('deploy-result').style.display = 'block';
+  $('deploy-body').textContent = 'Deploying...';
+  try {
+    const r = await jsonPost(bc, '/deploy', {
+      taskId: crypto.randomUUID(),
+      chainId: parseInt(val('deploy-chain')),
+      from: val('deploy-from'),
+      contractName: val('deploy-name'),
+      abi, bytecode,
+      constructorArgs: args,
+      value: val('deploy-value') || undefined,
+      verify: chk('deploy-verify'),
+      explorerApiKey: val('deploy-apikey') || undefined,
+    });
+    $('deploy-label').textContent = r.success ? '✓ DEPLOYED' : '✗ FAILED';
+    $('deploy-body').className = 'codeblock ' + (r.success ? 'success' : 'error');
+    $('deploy-body').textContent = fmt(r);
+    if (r.success) { toast('Contract deployed: ' + (r.contractAddress||'').slice(0,14), 'success'); loadContracts(); }
+  } catch (err) { $('deploy-body').textContent = err.message; $('deploy-body').className = 'codeblock error'; toast('Deploy error: ' + err.message, 'error'); }
+  loading('deploy-btn', false);
+}
+
+async function compileAndDeploy() {
+  loading('deploy-btn', true);
+  try {
+    const r = await jsonPost(bc, '/compile-and-deploy', {
+      taskId: crypto.randomUUID(),
+      source: $('compile-src')?.value || val('deploy-abi'),
+      contractName: val('deploy-name'),
+      chainId: parseInt(val('deploy-chain')),
+      from: val('deploy-from'),
+    });
+    $('deploy-result').style.display = 'block';
+    $('deploy-body').className = 'codeblock ' + (r.deployed?.success ? 'success' : 'error');
+    $('deploy-body').textContent = fmt(r);
+    if (r.deployed?.success) toast('Compiled + deployed: ' + (r.deployed.contractAddress||''), 'success');
+  } catch (err) { toast('Error: ' + err.message, 'error'); }
+  loading('deploy-btn', false);
+}
+
+// ── Meme Token ───────────────────────────────────────────────────
+function getMemeConfig() {
+  return {
+    name: val('meme-name'),
+    symbol: val('meme-symbol'),
+    totalSupply: val('meme-supply'),
+    decimals: parseInt(val('meme-decimals')) || 18,
+    mintable: chk('meme-mintable'),
+    burnable: chk('meme-burnable'),
+    taxBuyPercent: parseFloat(val('meme-buy-tax')) || 0,
+    taxSellPercent: parseFloat(val('meme-sell-tax')) || 0,
+    taxWallet: val('meme-tax-wallet') || undefined,
+    maxWalletPercent: parseFloat(val('meme-max-wallet')) || undefined,
+    maxTxPercent: parseFloat(val('meme-max-tx')) || undefined,
+  };
+}
+
+async function previewMeme() {
+  try {
+    const r = await jsonPost(bc, '/meme-token/generate-source', { config: getMemeConfig() });
+    $('meme-source').style.display = 'block';
+    $('meme-src-body').textContent = r.source;
+  } catch (err) { toast('Error: ' + err.message, 'error'); }
+}
+
+async function launchMeme() {
+  if (!val('meme-name') || !val('meme-symbol')) { toast('Name and symbol required', 'error'); return; }
+  if (!val('meme-from')) { toast('Deployer address required', 'error'); return; }
+  if (!confirm(`Launch ${val('meme-symbol')} on chain ${val('meme-chain')}?`)) return;
+
+  loading('meme-btn', true);
+  $('meme-result').style.display = 'block';
+  $('meme-body').textContent = 'Launching token...';
+  try {
+    const r = await jsonPost(bc, '/meme-token', {
+      taskId: crypto.randomUUID(),
+      chainId: parseInt(val('meme-chain')),
+      from: val('meme-from'),
+      config: getMemeConfig(),
+      verify: chk('meme-verify'),
+      deployOnly: chk('meme-deploy-only'),
+    });
+    const ok = r.token?.address;
+    $('meme-label').textContent = ok ? '🐸 TOKEN LAUNCHED' : '✗ LAUNCH FAILED';
+    $('meme-body').className = 'codeblock ' + (ok ? 'success' : 'error');
+    $('meme-body').textContent = fmt(r);
+    if (ok) {
+      toast(`🐸 ${r.token.symbol} launched at ${r.token.address.slice(0,14)}`, 'success');
+      loadContracts();
+    }
+  } catch (err) { $('meme-body').textContent = err.message; $('meme-body').className = 'codeblock error'; toast('Error: ' + err.message, 'error'); }
+  loading('meme-btn', false);
+}
+
+// ── AI Assistant ─────────────────────────────────────────────────
+async function runAI() {
+  if (!authToken) { toast('Login required for AI assistant', 'error'); showPage('auth'); return; }
+  const instruction = val('ai-input');
+  if (!instruction) { toast('Enter an instruction', 'error'); return; }
+
+  loading('ai-btn', true);
+  $('ai-output').textContent = 'Processing...';
+  $('ai-status').innerHTML = '<span class="badge badge-yellow">RUNNING</span>';
+
+  try {
+    const r = await jsonPost(gw, '/run', {
+      instruction,
+      requiresAudit: chk('ai-audit'),
+      useMcp: chk('ai-mcp'),
+      priority: val('ai-priority'),
+    });
+    const ok = r.status === 'completed';
+    $('ai-status').innerHTML = `<span class="badge ${ok?'badge-green':r.status?.includes('reject')?'badge-red':'badge-yellow'}">${(r.status||'unknown').toUpperCase()}</span>`;
+    $('ai-output').textContent = r.output || fmt(r);
+    if (ok) toast('AI task completed', 'success');
+    else toast('Task status: ' + r.status, 'warn');
+    loadTasks();
+  } catch (err) {
+    $('ai-output').textContent = 'Error: ' + err.message;
+    $('ai-status').innerHTML = '<span class="badge badge-red">ERROR</span>';
+    toast('AI error: ' + err.message, 'error');
+  }
+  loading('ai-btn', false);
+}
+
+async function loadTasks() {
+  if (!authToken) { $('ai-task-history').innerHTML = `<div style="color:var(--text3);font-family:var(--mono);font-size:11px">Login required</div>`; return; }
+  try {
+    const d = await jsonGet(gw, '/tasks?limit=10');
+    const tasks = d.tasks || d || [];
+    if (!tasks.length) { $('ai-task-history').innerHTML = `<div style="color:var(--text3);font-family:var(--mono);font-size:11px">No tasks yet</div>`; return; }
+    $('ai-task-history').innerHTML = `<table class="tbl">
+      <thead><tr><th>Status</th><th>Instruction</th><th>Score</th><th>Time</th></tr></thead>
+      <tbody>${tasks.map(t => `
+        <tr>
+          <td><span class="badge ${t.status==='completed'?'badge-green':t.status?.includes('reject')?'badge-red':'badge-yellow'}">${t.status||'—'}</span></td>
+          <td class="truncate" style="max-width:220px;color:var(--text2)">${(t.instruction||'').slice(0,60)}</td>
+          <td class="mono">${t.relevanceScore||t.relevance_score||'—'}</td>
+          <td class="mono">${t.createdAt||t.created_at?new Date(t.createdAt||t.created_at).toLocaleTimeString():''}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch (err) { $('ai-task-history').innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">${err.message}</div>`; }
+}
+
+// ── Gate Monitor ─────────────────────────────────────────────────
+async function loadGateMetrics() {
+  try {
+    const m = await jsonGet(gate, '/metrics');
+    $('gate-total').textContent = m.checks?.total ?? '—';
+    $('gate-approval').textContent = m.checks?.approvalRate ?? '—';
+    $('gate-avg').textContent = m.checks?.avgScore ?? '—';
+    const circ = await jsonGet(gate, '/circuit');
+    $('gate-circuit').textContent = circ.isOpen ? 'OPEN' : 'CLOSED';
+    $('gate-circuit').className = 'stat-val ' + (circ.isOpen ? 'red' : 'green');
+    $('gate-callers').textContent = fmt(m.callers || {});
+  } catch (err) { $('gate-callers').textContent = 'Error: ' + err.message; }
+  loadGateDecisions();
+}
+
+async function runGateCheck() {
+  const content = val('gate-check-content');
+  const contentType = val('gate-check-type');
+  if (!content) { toast('Enter content to check', 'error'); return; }
+  try {
+    const r = await jsonPost(gate, '/check', {
+      content, contentType, submittedBy: 'human', skipCache: true,
+    });
+    $('gate-check-result').style.display = 'block';
+    $('gate-check-body').className = 'codeblock ' + (r.approved ? 'success' : 'error');
+    $('gate-check-body').textContent = fmt(r);
+    toast(r.approved ? 'APPROVED (score: ' + r.score + ')' : 'REJECTED (score: ' + r.score + ')', r.approved ? 'success' : 'error');
+  } catch (err) { toast('Error: ' + err.message, 'error'); }
+}
+
+async function resetCircuit() {
+  try {
+    await post(gate, '/circuit/reset', {});
+    toast('Circuit breaker reset', 'success');
+    loadGateMetrics();
+  } catch (err) { toast('Error: ' + err.message, 'error'); }
+}
+
+async function clearGateCache() {
+  try {
+    await api(CFG.gate + '/cache', { method: 'DELETE' });
+    toast('Gate cache cleared', 'success');
+  } catch (err) { toast('Error: ' + err.message, 'error'); }
+}
+
+async function loadGateDecisions() {
+  const f = val('gate-decisions-filter');
+  try {
+    const url = '/decisions?limit=20' + (f ? '&approved=' + f : '');
+    const d = await jsonGet(gate, url);
+    const decisions = d.decisions || d || [];
+    if (!decisions.length) { $('gate-decisions-table').innerHTML = `<div style="color:var(--text3);font-family:var(--mono);font-size:11px">No decisions yet</div>`; return; }
+    $('gate-decisions-table').innerHTML = `<table class="tbl">
+      <thead><tr><th>Result</th><th>Score</th><th>Type</th><th>By</th><th>Reason</th><th>Time</th></tr></thead>
+      <tbody>${decisions.map(d => `
+        <tr>
+          <td><span class="badge ${d.approved?'badge-green':'badge-red'}">${d.approved?'PASS':'FAIL'}</span></td>
+          <td class="mono">${d.score}</td>
+          <td class="mono">${d.contentType||d.content_type||'—'}</td>
+          <td class="mono">${d.submittedBy||d.submitted_by||'—'}</td>
+          <td class="truncate" style="max-width:200px;color:var(--text2)">${d.reason||'—'}</td>
+          <td class="mono">${d.checkedAt||d.checked_at?new Date(d.checkedAt||d.checked_at).toLocaleTimeString():''}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch (err) { $('gate-decisions-table').innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">${err.message}</div>`; }
+}
+
+// ── MCP Tools ────────────────────────────────────────────────────
+const MCP_SCHEMAS = {
+  web_fetch:     { url: 'https://api.coingecko.com/api/v3/ping' },
+  package_lookup:{ packageName: 'fastify' },
+  run_typescript:{ code: 'console.log("Hello from TypeScript:", 2 + 2)' },
+  cast_call:     { contractAddress: '0x...', functionSig: 'totalSupply()(uint256)', args: [], rpcUrl: 'http://127.0.0.1:8545' },
+  eth_rpc:       { rpcUrl: 'http://127.0.0.1:8545', method: 'eth_blockNumber', params: [] },
+  forge_build:   { source: '// SPDX-License-Identifier: MIT\npragma solidity ^0.8.24;\ncontract T {}', contractName: 'T' },
+  abi_decode:    { data: '0x0000000000000000000000000000000000000000000000000000000000000001', types: ['uint256'] },
+  gas_estimate:  { chainId: 1 },
+};
+
+function updateMcpSchema() {
+  const tool = val('mcp-tool-sel');
+  $('mcp-input').value = JSON.stringify(MCP_SCHEMAS[tool] || {}, null, 2);
+}
+
+async function loadMcpTools() {
+  try {
+    const d = await jsonGet(mcpApi, '/metrics');
+    $('mcp-metrics-list').innerHTML = `<table class="tbl">
+      <thead><tr><th>Tool</th><th>Calls</th><th>Success</th><th>Avg ms</th></tr></thead>
+      <tbody>${(d.tools || []).map(t => `
+        <tr>
+          <td style="color:var(--green);font-family:var(--mono)">${t.name}</td>
+          <td class="mono">${t.calls}</td>
+          <td class="mono">${t.successRate}</td>
+          <td class="mono">${t.avgDurationMs}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch { $('mcp-metrics-list').innerHTML = `<div style="color:var(--text3);font-family:var(--mono);font-size:11px">Load metrics after first tool call</div>`; }
+  updateMcpSchema();
+}
+
+async function callMcpTool() {
+  const toolName = val('mcp-tool-sel');
+  let input;
+  try { input = JSON.parse(val('mcp-input') || '{}'); } catch { toast('Invalid input JSON', 'error'); return; }
+
+  loading('mcp-call-btn', true);
+  $('mcp-output').textContent = 'Executing ' + toolName + '...';
+  try {
+    const r = await jsonPost(mcpApi, '/call', {
+      taskId: crypto.randomUUID(), toolName, input,
+    });
+    $('mcp-output').className = 'codeblock ' + (r.success ? 'success' : 'error');
+    $('mcp-output').textContent = r.success ? r.output : 'Error: ' + r.output;
+    toast(r.success ? toolName + ' executed (' + r.durationMs + 'ms)' : 'Tool failed', r.success ? 'success' : 'error');
+    loadMcpTools();
+  } catch (err) { $('mcp-output').textContent = err.message; toast('Error: ' + err.message, 'error'); }
+  loading('mcp-call-btn', false);
+}
+
+async function loadMcpHistory() {
+  try {
+    const d = await jsonGet(mcpApi, '/history?limit=10');
+    const calls = d.calls || [];
+    $('mcp-output').textContent = calls.map(c =>
+      `[${c.success?'OK':'FAIL'}] ${c.toolName} (${c.durationMs}ms)\n  ${c.inputSummary}`
+    ).join('\n\n') || 'No history yet';
+    $('mcp-output').className = 'codeblock';
+  } catch (err) { $('mcp-output').textContent = err.message; }
+}
+
+// ── Admin ────────────────────────────────────────────────────────
+function switchAdminTab(tab) {
+  ['modules', 'events', 'secrets', 'audit'].forEach(t => {
+    $('admin-tab-' + t).style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('#page-admin .tab').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('#page-admin .tab').forEach(el => {
+    if (el.textContent.toLowerCase().includes(tab.slice(0, 4))) el.classList.add('active');
+  });
+  if (tab === 'events') loadAdminEvents();
+  if (tab === 'secrets') loadAdminSecrets();
+  if (tab === 'audit') loadAuditLogs();
+}
+
+async function loadAdminSystem() {
+  if (!authToken) { toast('Login required for admin', 'error'); return; }
+  try {
+    const [stats, status] = await Promise.allSettled([
+      jsonGet(adminApi, '/tasks/stats'),
+      jsonGet(gw, '/status'),
+    ]);
+    if (stats.status === 'fulfilled') {
+      const s = stats.value;
+      $('admin-tasks').textContent = s.tasks?.total ?? s.total ?? '—';
+      $('admin-users').textContent = s.activeUsers ?? '—';
+      $('admin-tokens').textContent = s.activeTokens ?? '—';
+      $('admin-secrets').textContent = s.secretsExpiringSoon ?? '—';
+    }
+    if (status.status === 'fulfilled') {
+      const modules = status.value.modules || {};
+      $('admin-modules-grid').innerHTML = Object.entries(modules).map(([name, s]) => `
+        <div class="card">
+          <div class="stat-label" style="font-size:9px">${name.replace('module','M')}</div>
+          <div class="flex items-center gap8 mt8">
+            <span class="badge ${s==='online'?'badge-green':'badge-red'}">${s}</span>
+          </div>
+        </div>`).join('');
+    }
+  } catch (err) { toast('Admin error: ' + err.message, 'error'); }
+}
+
+async function loadAdminEvents() {
+  if (!authToken) return;
+  try {
+    const d = await jsonGet(adminApi, '/events?limit=20');
+    const evs = Array.isArray(d) ? d : [];
+    $('admin-events-list').innerHTML = `<table class="tbl">
+      <thead><tr><th>Type</th><th>Source</th><th>Time</th></tr></thead>
+      <tbody>${evs.map(e => `
+        <tr>
+          <td style="color:var(--green);font-family:var(--mono);font-size:11px">${e.type}</td>
+          <td class="mono">${e.source||'—'}</td>
+          <td class="mono">${e.emitted_at||e.emittedAt?new Date(e.emitted_at||e.emittedAt).toLocaleTimeString():''}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch (err) { $('admin-events-list').innerHTML = err.message; }
+}
+
+async function loadAdminSecrets() {
+  if (!authToken) return;
+  try {
+    const d = await jsonGet(adminApi, '/secrets');
+    const secrets = Array.isArray(d) ? d : [];
+    $('admin-secrets-list').innerHTML = `<table class="tbl">
+      <thead><tr><th>Name</th><th>Service</th><th>Version</th><th>Expires</th><th></th></tr></thead>
+      <tbody>${secrets.map(s => `
+        <tr>
+          <td style="color:var(--yellow);font-family:var(--mono)">${s.name||s.secret_name}</td>
+          <td class="mono">${s.service||'—'}</td>
+          <td class="mono">${s.version||'—'}</td>
+          <td class="mono">${s.expires_at?new Date(s.expires_at).toLocaleDateString():'never'}</td>
+          <td><button class="btn btn-ghost btn-sm" onclick="rotateSecret('${s.name||s.secret_name}')">ROTATE</button></td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch (err) { $('admin-secrets-list').innerHTML = err.message; }
+}
+
+async function rotateSecret(name) {
+  const newVal = prompt('New value for ' + name + ':');
+  if (!newVal) return;
+  try {
+    const r = await jsonPost(adminApi, `/secrets/${name}/rotate`, { newValue: newVal, rotatedBy: 'frontend' });
+    toast('Secret rotated: v' + r.oldVersion + ' → v' + r.newVersion, 'success');
+    loadAdminSecrets();
+  } catch (err) { toast('Rotate error: ' + err.message, 'error'); }
+}
+
+async function loadAuditLogs() {
+  if (!authToken) return;
+  try {
+    const d = await jsonGet(adminApi, '/auditor/recent?limit=20');
+    const logs = d.audits || d || [];
+    $('admin-audit-list').innerHTML = `<table class="tbl">
+      <thead><tr><th>Task</th><th>Result</th><th>Findings</th><th>Type</th><th>Duration</th></tr></thead>
+      <tbody>${logs.map(l => `
+        <tr>
+          <td class="mono truncate" style="max-width:120px">${(l.taskId||'—').slice(0,12)}...</td>
+          <td><span class="badge ${l.passed?'badge-green':l.recommendation==='revise'?'badge-yellow':'badge-red'}">${l.recommendation||'—'}</span></td>
+          <td class="mono">${l.findingCount ?? '—'} (${l.criticalCount ?? 0} crit)</td>
+          <td class="mono">${l.contentType||'—'}</td>
+          <td class="mono">${l.durationMs ? l.durationMs+'ms' : '—'}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch (err) { $('admin-audit-list').innerHTML = err.message; }
+}
+
+// ── Auth ─────────────────────────────────────────────────────────
+function switchAuthTab(tab) {
+  ['login', 'register', 'client'].forEach(t => {
+    $('auth-tab-' + t).style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('#page-auth .tab').forEach(el => el.classList.remove('active'));
+  const idx = { login: 0, register: 1, client: 2 }[tab];
+  document.querySelectorAll('#page-auth .tab')[idx]?.classList.add('active');
+}
+
+async function doLogin() {
+  loading('login-btn', true);
+  try {
+    const r = await jsonPost(gw, '/auth/login', { email: val('login-email'), password: val('login-pass') });
+    if (r.access_token) {
+      authToken = r.access_token;
+      localStorage.setItem('auth-token', authToken);
+      $('auth-state').textContent = val('login-email').split('@')[0].toUpperCase();
+      $('auth-toggle').textContent = 'LOGOUT';
+      $('auth-toggle').onclick = doLogout;
+      $('auth-result-card').style.display = 'block';
+      $('auth-result-label').textContent = '✓ AUTHENTICATED';
+      $('auth-result-body').className = 'codeblock success';
+      $('auth-result-body').textContent = JSON.stringify({ scope: r.scope, expires_in: r.expires_in }, null, 2);
+      $('auth-token-section').style.display = 'block';
+      $('auth-token-display').textContent = authToken.slice(0, 40) + '...';
+      toast('Authenticated', 'success');
+      loadDashboard();
+    } else {
+      throw new Error(r.error || 'No token returned');
+    }
+  } catch (err) {
+    $('auth-result-card').style.display = 'block';
+    $('auth-result-label').textContent = '✗ FAILED';
+    $('auth-result-body').className = 'codeblock error';
+    $('auth-result-body').textContent = err.message;
+    toast('Login failed: ' + err.message, 'error');
+  }
+  loading('login-btn', false);
+}
+
+async function doRegister() {
+  loading('reg-btn', true);
+  try {
+    const r = await jsonPost(gw, '/auth/register', { email: val('reg-email'), password: val('reg-pass'), role: val('reg-role') });
+    $('auth-result-card').style.display = 'block';
+    $('auth-result-label').textContent = r.userId ? '✓ REGISTERED' : '✗ FAILED';
+    $('auth-result-body').className = 'codeblock ' + (r.userId ? 'success' : 'error');
+    $('auth-result-body').textContent = fmt(r);
+    if (r.userId) toast('Registered! Now login.', 'success');
+  } catch (err) { toast('Error: ' + err.message, 'error'); }
+  loading('reg-btn', false);
+}
+
+async function createOAuthClient() {
+  loading('client-btn', true);
+  try {
+    const r = await jsonPost(gw, '/auth/token', {
+      grant_type: 'client_credentials',
+      client_name: val('client-name'),
+      scopes: val('client-scopes').split(' ').filter(Boolean),
+    });
+    $('auth-result-card').style.display = 'block';
+    $('auth-result-label').textContent = r.access_token ? '✓ CLIENT CREATED' : '✗ FAILED';
+    $('auth-result-body').className = 'codeblock ' + (r.access_token ? 'success' : 'error');
+    $('auth-result-body').textContent = fmt(r);
+    if (r.access_token) toast('OAuth client created', 'success');
+  } catch (err) { toast('Error: ' + err.message, 'error'); }
+  loading('client-btn', false);
+}
+
+function doLogout() {
+  if (authToken) {
+    post(gw, '/auth/revoke', { token: authToken }).catch(() => {});
+    authToken = '';
+    localStorage.removeItem('auth-token');
+  }
+  $('auth-state').textContent = 'NOT AUTH';
+  $('auth-toggle').textContent = 'LOGIN';
+  $('auth-toggle').onclick = () => showPage('auth');
+  $('auth-token-section').style.display = 'none';
+  toast('Logged out', 'info');
+}
+
+// ── Settings ──────────────────────────────────────────────────────
+function loadSettingsPage() {
+  $('cfg-gateway').value    = CFG.gateway;
+  $('cfg-blockchain').value = CFG.blockchain;
+  $('cfg-gate').value       = CFG.gate;
+  $('cfg-events').value     = CFG.events;
+  $('cfg-internal').value   = CFG.internal;
+  loadSystemHealth();
+}
+
+function saveSettings() {
+  CFG.gateway    = val('cfg-gateway');
+  CFG.blockchain = val('cfg-blockchain');
+  CFG.gate       = val('cfg-gate');
+  CFG.events     = val('cfg-events');
+  CFG.internal   = val('cfg-internal');
+  localStorage.setItem('cfg-gateway',    CFG.gateway);
+  localStorage.setItem('cfg-blockchain', CFG.blockchain);
+  localStorage.setItem('cfg-gate',       CFG.gate);
+  localStorage.setItem('cfg-events',     CFG.events);
+  localStorage.setItem('cfg-internal',   CFG.internal);
+  toast('Settings saved', 'success');
+}
+
+async function loadSystemHealth() {
+  const modules = [
+    { name: 'gate', url: 'http://localhost:3001/health', port: 3001 },
+    { name: 'auditor', url: 'http://localhost:3002/health', port: 3002 },
+    { name: 'orchestrator', url: 'http://localhost:3003/health', port: 3003 },
+    { name: 'gateway', url: 'http://localhost:3004/health', port: 3004 },
+    { name: 'mcp', url: 'http://localhost:3005/health', port: 3005 },
+    { name: 'database', url: 'http://localhost:3006/health', port: 3006 },
+    { name: 'auth', url: 'http://localhost:3007/health', port: 3007 },
+    { name: 'secrets', url: 'http://localhost:3008/health', port: 3008 },
+    { name: 'events', url: 'http://localhost:3009/health', port: 3009 },
+    { name: 'admin', url: 'http://localhost:3010/health', port: 3010 },
+    { name: 'blockchain', url: 'http://localhost:3011/health', port: 3011 },
+    { name: 'frontend', url: 'http://localhost:3012/', port: 3012 },
+  ];
+
+  const results = await Promise.allSettled(
+    modules.map(m => fetch(m.url, { signal: AbortSignal.timeout(3000) }).then(r => ({ ...m, ok: r.ok })))
+  );
+
+  $('settings-health').innerHTML = `<table class="tbl">
+    <thead><tr><th>Module</th><th>Port</th><th>Status</th></tr></thead>
+    <tbody>${results.map((r, i) => {
+      const m = modules[i];
+      const ok = r.status === 'fulfilled' && r.value.ok;
+      return `<tr>
+        <td style="font-family:var(--mono)">${m.name}</td>
+        <td class="mono">${m.port}</td>
+        <td><span class="badge ${ok?'badge-green':'badge-red'}">${ok?'ONLINE':'OFFLINE'}</span></td>
+      </tr>`;
+    }).join('')}
+    </tbody></table>`;
+}
+
+// ── Init ───────────────────────────────────────────────────────────
+connectWS();
+
+// Restore auth state
+if (authToken) {
+  const stored = localStorage.getItem('auth-email') || 'USER';
+  $('auth-state').textContent = stored;
+  $('auth-toggle').textContent = 'LOGOUT';
+  $('auth-toggle').onclick = doLogout;
+}
+
+// Restore wallet
+if (walletAddr) {
+  $('wallet-addr').textContent = walletAddr.slice(0,6) + '...' + walletAddr.slice(-4);
+  $('wallet-btn').textContent = 'CONNECTED';
+}
+
+// Init MCP schema
+updateMcpSchema();
+
+// Load dashboard
+loadDashboard();
+
+// Auto-refresh gas every 30s
+setInterval(fetchGas, 30_000);
+
+// Auto-refresh dashboard every 60s
+setInterval(() => {
+  const activePage = document.querySelector('.page.active')?.id?.replace('page-','');
+  if (activePage === 'dashboard') loadDashboard();
+}, 60_000);
+
+// Save login email on login
+document.getElementById('login-btn').addEventListener('click', () => {
+  const email = val('login-email');
+  if (email) localStorage.setItem('auth-email', email.split('@')[0].toUpperCase());
+});
+</script>
+</body>
+</html>
