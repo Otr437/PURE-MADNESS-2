@@ -1,0 +1,694 @@
+# PowerShell 7.6 LTS — Script Writing Skill
+
+> **Effective Date:** June 2, 2026
+> **Covers:** PowerShell 7.6.x (current LTS) — the ONLY version targeted by this skill.
+> **Do NOT** write code compatible with Windows PowerShell 5.1 or earlier PowerShell 7.x releases unless the user explicitly asks for it.
+
+---
+
+## SYNOPSIS
+
+This skill governs how to write, structure, and ship PowerShell scripts that target **PowerShell 7.6 LTS** exclusively. It covers:
+
+- Version/environment requirements
+- Installation methods (all platforms)
+- Every new feature and breaking change in 7.6.x
+- Script header mandatory boilerplate
+- Best-practice patterns for modern PS7 code
+- What to avoid (legacy 5.1 patterns, deprecated APIs)
+
+---
+
+## PART 1 — VERSION & RUNTIME REQUIREMENTS
+
+### Current LTS Release (as of 2026-06-02)
+
+| Item | Value |
+|------|-------|
+| **Current LTS** | PowerShell **7.6.2** |
+| **Release date** | May 21, 2026 |
+| **Runtime** | .NET 10.0.6 |
+| **LTS supported until** | November 10, 2028 |
+| **Previous LTS (still supported)** | 7.4.16 (expires Nov 10, 2026) |
+| **Preview** | 7.7.0-preview.2 (NOT for production) |
+| **GitHub releases** | https://github.com/PowerShell/PowerShell/releases |
+
+### Supported Operating Systems (7.6.x)
+
+**Windows**
+- Windows 10 (all editions, x64/x86/ARM64)
+- Windows 11 (all editions)
+- Windows Server 2019, 2022, 2025
+
+**macOS**
+- macOS 14 (Sonoma) and later — PKG now **notarized and signed by Microsoft**
+- ARM64 (Apple Silicon) and x64
+
+**Linux (officially supported)**
+- Ubuntu 22.04, 24.04
+- Debian 12, 13
+- Red Hat Enterprise Linux 8, 9, 10
+- openSUSE 15.6, 16.0
+- Fedora 42, 43, 44
+
+> **Important:** PowerShell 7.x installs into its **own directory** (`/opt/microsoft/powershell/7/` on Linux/macOS, `C:\Program Files\PowerShell\7\` on Windows) and runs **side-by-side** with Windows PowerShell 5.1. The executable is `pwsh`, never `powershell`.
+
+---
+
+## PART 2 — INSTALLATION (All Platforms)
+
+### Windows — Fastest (winget)
+
+```powershell
+# Fresh install
+winget install --id Microsoft.PowerShell --source winget
+
+# Upgrade existing install
+winget upgrade --id Microsoft.PowerShell
+
+# If winget reports nothing available, refresh sources first
+winget source update
+```
+
+> Windows 11 ships with winget. Windows 10 users need **App Installer** from the Microsoft Store first.
+
+### Windows — Silent Enterprise MSI
+
+```powershell
+# MSI flags for enterprise deployment (x64 example)
+$msiParams = @(
+    '/package PowerShell-7.6.2-win-x64.msi'
+    '/quiet'
+    'ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1'
+    'ADD_FILE_CONTEXT_MENU_RUNPOWERSHELL=1'
+    'ENABLE_PSREMOTING=1'
+    'REGISTER_MANIFEST=1'
+    'USE_MU=1'
+    'ENABLE_MU=1'   # Enables auto-updates through Windows Update
+    'ADD_PATH=1'
+)
+msiexec.exe @msiParams
+```
+
+MSI packages available for **x64, x86, and ARM64** architectures.
+
+### macOS
+
+```bash
+# Homebrew (recommended)
+brew install --cask powershell
+
+# Verify
+pwsh --version
+
+# Manual PKG (notarized, signed by Microsoft as of 7.6.2)
+# Download from https://github.com/PowerShell/PowerShell/releases
+# ARM64:
+curl -L -o /tmp/pwsh.pkg \
+  https://github.com/PowerShell/PowerShell/releases/download/v7.6.2/powershell-7.6.2-osx-arm64.pkg
+sudo installer -pkg /tmp/pwsh.pkg -target /
+```
+
+### Linux (Ubuntu/Debian)
+
+```bash
+# Ubuntu 22.04/24.04
+sudo apt-get update
+sudo apt-get install -y wget apt-transport-https software-properties-common
+wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt-get update
+sudo apt-get install -y powershell
+
+pwsh --version
+```
+
+### Linux (RHEL/Fedora)
+
+```bash
+# RHEL 8/9/10
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+curl -sSL -o /etc/yum.repos.d/microsoft.repo \
+  https://packages.microsoft.com/config/rhel/9/prod.repo
+sudo dnf install -y powershell
+
+pwsh --version
+```
+
+### Verify Version After Install
+
+```powershell
+# Must show 7.6.x
+$PSVersionTable
+pwsh --version
+```
+
+---
+
+## PART 3 — MANDATORY SCRIPT HEADER (7.6 Boilerplate)
+
+Every script targeting PS 7.6 LTS **must** begin with this header:
+
+```powershell
+#Requires -Version 7.6
+#Requires -PSEdition Core
+<#
+.SYNOPSIS
+    Brief one-line description of what this script does.
+.DESCRIPTION
+    Full description. Include purpose, dependencies, and any notes.
+.PARAMETER ParameterName
+    Description of each parameter.
+.EXAMPLE
+    .\MyScript.ps1 -Param1 Value
+    Explanation of the example.
+.NOTES
+    Author:     <Your Name>
+    Created:    <YYYY-MM-DD>
+    Version:    1.0.0
+    PS Version: 7.6.2 (LTS / .NET 10)
+    Platforms:  Windows, Linux, macOS
+#>
+[CmdletBinding()]
+param(
+    # Parameters go here
+)
+```
+
+> `#Requires -Version 7.6` will throw a clean error on older PowerShell instead of failing silently mid-script.
+> `#Requires -PSEdition Core` blocks accidental execution under Windows PowerShell 5.1.
+
+---
+
+## PART 4 — WHAT'S NEW IN POWERSHELL 7.6 (Complete Feature Reference)
+
+### 4.1 Updated Core Modules
+
+| Module | Version in 7.6.2 | Notes |
+|--------|-----------------|-------|
+| **PSReadLine** | v2.4.5 | Tab completion, history, IntelliSense |
+| **Microsoft.PowerShell.PSResourceGet** | v1.2.0 | Replaces PowerShellGet |
+| **Microsoft.PowerShell.ThreadJob** | v2.2.0 | **Replaces** the old `ThreadJob` module |
+
+> **Breaking:** `ThreadJob` module is now `Microsoft.PowerShell.ThreadJob`. If you use module-qualified cmdlet names, update from `ThreadJob\Start-ThreadJob` → `Microsoft.PowerShell.ThreadJob\Start-ThreadJob`. The `Start-ThreadJob` cmdlet itself is unchanged.
+
+### 4.2 New / Changed Cmdlet Parameters
+
+```powershell
+# Get-Clipboard — new -Delimiter parameter
+# Split clipboard content on a custom delimiter
+$items = Get-Clipboard -Delimiter ','
+
+# Register-ArgumentCompleter — new -NativeFallback switch
+# Register a catch-all completer for ALL native (non-PS) commands
+Register-ArgumentCompleter -NativeFallback -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    # your completion logic
+}
+
+# Join-Path — -ChildPath is now string[] (BREAKING CHANGE from 7.5)
+# Old (still works): Join-Path C:\foo -ChildPath bar -AdditionalChildPath baz
+# New (preferred):
+Join-Path C:\foo bar baz    # Pass multiple child segments directly
+$path = Join-Path $env:USERPROFILE 'Documents' 'Projects' 'MyScript.ps1'
+
+# New-Item — -Target is now treated as literal (no wildcard expansion)
+New-Item -ItemType SymbolicLink -Path .\link -Target '.\some[dir]'  # safe now
+
+# Get-Command — new -ExcludeModule parameter
+Get-Command Get-Process -ExcludeModule Microsoft.PowerShell.Management
+
+# Start-Process — -Wait polling is now more efficient (no busy-loop)
+Start-Process notepad.exe -Wait
+
+# Import-LocalizedData — now has implicit localization fallback
+# Falls back to parent culture automatically (e.g. fr → en)
+```
+
+### 4.3 Engine Improvements
+
+```powershell
+# PSForEach() and PSWhere() — new aliases for intrinsic methods
+# These are identical to .Where() and .ForEach() — just shorter aliases
+$evens = (1..10).PSWhere({ $_ % 2 -eq 0 })
+$doubled = (1..5).PSForEach({ $_ * 2 })
+
+# [bigint] now supports thousands-separator syntax
+$bigNum = [bigint]'1,000,000,000'   # valid in 7.6
+$disk   = [bigint]'2,199,023,255,552'
+
+# ConvertFrom-Json now ignores comments inside array literals
+# Valid JSON5-style:
+$json = '[/* a comment */ 1, 2, 3]'
+$data = $json | ConvertFrom-Json   # no longer throws
+
+# -Debug no longer triggers ShouldProcess prompt (long-standing bug fixed)
+function Test-Debug {
+    [CmdletBinding(SupportsShouldProcess)]
+    param()
+    Write-Debug "Debug message"
+}
+Test-Debug -Debug   # now shows debug msg, does NOT prompt
+
+# Write-Host now respects $PSStyle.OutputRendering = 'PlainText'
+$PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::PlainText
+Write-Host "No ANSI codes in output"
+
+# stderr output respects NO_COLOR environment variable
+$env:NO_COLOR = '1'   # disables color in stderr
+
+# PipelineStopToken — new property on Cmdlet for responsive pipeline stopping
+# Use in C# cmdlet authors: this.PipelineStopToken.IsCancellationRequested
+
+# Redirect to variable (now mainstream, was experimental)
+# PSRedirectToVariable is now always-on:
+$output = & { Write-Output 'hello'; Write-Error 'oops' } 2>&1
+# Or redirect directly to variable:
+Get-ChildItem *>&1 > $myVar   # supported redirect syntax
+
+# Tilde expansion for native Windows executables (was PSNativeWindowsTildeExpansion)
+# Now mainstream — ~ expands correctly when passed to cmd.exe, git, etc.
+cmd /c echo ~\Documents   # expands properly
+
+# PSFeedbackProvider — now mainstream
+# Suggestions appear automatically when a command isn't found
+```
+
+### 4.4 Tab Completion Improvements (Dozens)
+
+Key completions added/fixed in 7.6:
+
+```powershell
+# Aliases now expand to their resolved command in completions
+# Module shortname completion (e.g. type "PSRes" → completes PSResourceGet)
+# Variables inside ArrayLiteralAst and ParenExpressionAst complete correctly
+# Scoped variables complete without needing to type the scope prefix
+# Hashtable key completions now show tooltips
+# Parameter HelpMessage used as completion tooltip
+# -PropertyType argument completer for New-ItemProperty
+# Quote-aware completions for -Noun (Get-Command), -PSEdition (Get-Module)
+# Path completions fixed for wildcard paths in non-filesystem providers
+# Duplicate command names no longer appear in completion results
+
+# Example of what now works that didn't before:
+$hash = @{ Name = 'Alice'; Age = 30 }
+$hash.<TAB>   # now shows tooltips for each key
+```
+
+### 4.5 Experimental Features Promoted to Mainstream
+
+These features are now **always on** in 7.6 — no `Enable-ExperimentalFeature` needed:
+
+| Feature | What it does |
+|---------|-------------|
+| `PSFeedbackProvider` | "Did you mean...?" suggestions when commands not found |
+| `PSNativeWindowsTildeExpansion` | `~` expands correctly in native Windows commands |
+| `PSRedirectToVariable` | Redirect streams to variables with `>$var` |
+| `PSSubsystemPluginModel` | Plugin model for subsystem extensibility |
+
+### 4.6 Security & Infrastructure Improvements
+
+```powershell
+# AppContainer support — PS 7.6 now works inside Windows AppContainer sandboxes
+# PSRP protocol updated — session key exchange deprecated between newer client/server
+# Telemetry now respects Windows diagnostics/feedback setting
+# Update notifications delayed 1 week to ensure package availability
+# POWERSHELL_DIAGNOSTICS_OPTOUT env var — opt out of named-pipe listener
+$env:POWERSHELL_DIAGNOSTICS_OPTOUT = '1'
+
+# Out-GridView fixed — replaced legacy BinaryFormatter with secure custom impl
+# Now fully functional on .NET 10 (was broken in earlier 7.x)
+Get-Process | Out-GridView -Title "Processes"   # works again
+
+# macOS PKG is now notarized and signed by Microsoft (no more Gatekeeper warnings)
+```
+
+---
+
+## PART 5 — BREAKING CHANGES IN 7.6 (Must Know)
+
+### BC-1: Join-Path -ChildPath is now `string[]`
+
+```powershell
+# OLD (7.5 and earlier) — required -AdditionalChildPath for multiple segments
+$p = Join-Path C:\root -ChildPath foo -AdditionalChildPath bar, baz
+
+# NEW (7.6) — pass all segments directly (array accepted)
+$p = Join-Path C:\root foo bar baz
+$p = Join-Path C:\root -ChildPath 'foo', 'bar', 'baz'
+```
+
+### BC-2: WildcardPattern.Escape() escapes lone backticks correctly
+
+```powershell
+# If your code relied on WildcardPattern.Escape() NOT escaping lone backticks,
+# you must audit and fix those paths. Example:
+[WildcardPattern]::Escape('path`name')
+# 7.5: returned 'path`name'   (backtick not escaped)
+# 7.6: returns  'path``name'  (correctly escaped)
+```
+
+### BC-3: ThreadJob module renamed
+
+```powershell
+# OLD module-qualified syntax:
+ThreadJob\Start-ThreadJob -ScriptBlock { ... }
+
+# NEW:
+Microsoft.PowerShell.ThreadJob\Start-ThreadJob -ScriptBlock { ... }
+
+# Unqualified syntax unchanged — still works:
+Start-ThreadJob -ScriptBlock { ... }
+```
+
+### BC-4: Trailing space removed from trace event source name
+
+```powershell
+# The GetHelpCommand trace source name no longer has a trailing space.
+# Fix any string comparisons that depend on "GetHelpCommand " (with space).
+```
+
+---
+
+## PART 6 — MODERN PS 7.6 PATTERNS & BEST PRACTICES
+
+### Use `pwsh` not `powershell`
+
+```powershell
+# In scripts, shebang lines, CI configs:
+#!/usr/bin/env pwsh
+
+# In batch files / CMD:
+pwsh -NonInteractive -File .\MyScript.ps1
+
+# NEVER call 'powershell' for PS7 — that invokes Windows PowerShell 5.1
+```
+
+### Ternary Operator (7.0+, use freely)
+
+```powershell
+$result = $condition ? 'yes' : 'no'
+$max = ($a -gt $b) ? $a : $b
+```
+
+### Null Coalescing (7.0+)
+
+```powershell
+$value = $possiblyNull ?? 'default'
+$value ??= 'assign-if-null'
+```
+
+### Pipeline Chain Operators (7.0+)
+
+```powershell
+# && runs right side only if left succeeds
+# || runs right side only if left fails
+git pull && git status
+Get-Process nonexistent || Write-Host "Not found"
+```
+
+### Foreach-Object -Parallel (7.0+, production-ready in 7.6)
+
+```powershell
+1..10 | ForEach-Object -Parallel {
+    Start-Sleep -Milliseconds (Get-Random -Max 500)
+    "Processed: $_"
+} -ThrottleLimit 5
+```
+
+### PSForEach / PSWhere (7.6 NEW aliases)
+
+```powershell
+# Use instead of .Where() and .ForEach() for readability
+$admins  = $users.PSWhere({ $_.Role -eq 'Admin' })
+$names   = $users.PSForEach({ $_.Name.ToUpper() })
+
+# Mode argument (First, Last, Until, SkipUntil, Split)
+$first3  = $items.PSWhere({ $_.Active }, 'First', 3)
+```
+
+### Error Handling (7.x style)
+
+```powershell
+# Use -ErrorAction Stop + try/catch for all cmdlet errors
+try {
+    Get-Item 'C:\nonexistent' -ErrorAction Stop
+}
+catch [System.IO.FileNotFoundException] {
+    Write-Warning "File not found: $_"
+}
+catch {
+    Write-Error "Unexpected error: $_"
+    throw
+}
+
+# -Debug no longer breaks ShouldProcess in 7.6 — safe to use
+function Invoke-Deploy {
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
+    param([string]$Target)
+    if ($PSCmdlet.ShouldProcess($Target, 'Deploy')) {
+        # deploy logic
+    }
+}
+```
+
+### ConvertFrom-Json with Comments (7.6)
+
+```powershell
+# JSON with comments in arrays is now valid
+$config = @'
+[
+    /* primary server */
+    "server1.corp",
+    // fallback
+    "server2.corp"
+]
+'@ | ConvertFrom-Json
+```
+
+### Thread Jobs (7.6 — use module-qualified name)
+
+```powershell
+# Import correct module
+Import-Module Microsoft.PowerShell.ThreadJob
+
+$job = Start-ThreadJob -ScriptBlock {
+    param($n)
+    1..$n | ForEach-Object { $_ * $_ }
+} -ArgumentList 100
+
+$result = $job | Wait-Job | Receive-Job
+```
+
+### PSResourceGet (replaces PowerShellGet)
+
+```powershell
+# 7.6 ships with Microsoft.PowerShell.PSResourceGet v1.2.0
+# Use these instead of Install-Module / Find-Module
+Find-PSResource    -Name 'Az' -Repository PSGallery
+Install-PSResource -Name 'Az' -Scope CurrentUser
+Update-PSResource  -Name 'Az'
+Get-PSResource     -Name 'Az'
+```
+
+### Redirect to Variable (7.6 mainstream)
+
+```powershell
+# Capture all streams including errors
+$allOutput = & {
+    Write-Output "stdout line"
+    Write-Error  "error line"
+    Write-Warning "warning"
+} *>&1
+
+# Redirect error stream to variable
+Invoke-RestMethod https://api.example.com *>&1 > $capturedOutput
+```
+
+### NO_COLOR Support (7.6)
+
+```powershell
+# Scripts that need to detect plain-text mode:
+if ($env:NO_COLOR) {
+    $PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::PlainText
+}
+```
+
+---
+
+## PART 7 — WHAT TO AVOID (Legacy 5.1 / Deprecated Patterns)
+
+| Avoid | Use Instead |
+|-------|------------|
+| `powershell.exe` binary | `pwsh` |
+| `Install-Module` | `Install-PSResource` |
+| `Find-Module` | `Find-PSResource` |
+| `ThreadJob\Start-ThreadJob` | `Microsoft.PowerShell.ThreadJob\Start-ThreadJob` |
+| `-AdditionalChildPath` in `Join-Path` | Pass multiple strings to `-ChildPath` |
+| `Write-Host` for data output | `Write-Output` or `return` |
+| `$Error[0]` for error inspection | `$_` inside `catch {}` block |
+| `[void]` everywhere for suppression | Pipeline to `$null`: `... | Out-Null` or assign to `$null =` |
+| `Get-WmiObject` | `Get-CimInstance` (WMI is removed in PS7) |
+| `[System.Net.WebClient]` | `Invoke-WebRequest` / `Invoke-RestMethod` |
+| `.Where({...})` / `.ForEach({...})` | `.PSWhere({...})` / `.PSForEach({...})` (7.6 aliases) |
+| Backtick line continuation `` ` `` | Splatting `@params` or natural line breaks |
+| `Enable-ExperimentalFeature PSFeedbackProvider` | Always-on in 7.6 |
+| `#Requires -Version 5.1` | `#Requires -Version 7.6` + `#Requires -PSEdition Core` |
+
+---
+
+## PART 8 — SCRIPT STRUCTURE TEMPLATE (Complete)
+
+```powershell
+#Requires -Version 7.6
+#Requires -PSEdition Core
+<#
+.SYNOPSIS
+    <One-line purpose>
+.DESCRIPTION
+    <Full description>
+.PARAMETER InputPath
+    Path to the input file or directory.
+.PARAMETER OutputPath
+    Path where output will be written.
+.PARAMETER Force
+    Overwrite existing output without prompting.
+.EXAMPLE
+    .\Process-Data.ps1 -InputPath C:\data -OutputPath C:\out
+    Processes all files in C:\data and writes results to C:\out.
+.EXAMPLE
+    .\Process-Data.ps1 -InputPath C:\data -OutputPath C:\out -Force
+    Same but overwrites existing output without confirmation.
+.NOTES
+    Author:     Your Name
+    Created:    2026-06-02
+    Version:    1.0.0
+    PS Version: 7.6.2 LTS (.NET 10)
+#>
+[CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+param(
+    [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+    [ValidateScript({ Test-Path $_ })]
+    [string] $InputPath,
+
+    [Parameter(Mandatory)]
+    [string] $OutputPath,
+
+    [switch] $Force
+)
+
+begin {
+    Set-StrictMode -Version Latest
+    $ErrorActionPreference = 'Stop'
+
+    # Respect NO_COLOR for CI/logging environments
+    if ($env:NO_COLOR) {
+        $PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::PlainText
+    }
+
+    Write-Verbose "Starting $(Split-Path $PSCommandPath -Leaf) on PS $($PSVersionTable.PSVersion)"
+}
+
+process {
+    try {
+        if ($PSCmdlet.ShouldProcess($InputPath, 'Process')) {
+            # Main logic here
+
+            # Modern array intrinsics (7.6)
+            $items = Get-ChildItem $InputPath -File
+            $largeFiles = $items.PSWhere({ $_.Length -gt 1MB })
+            $names      = $largeFiles.PSForEach({ $_.Name })
+
+            # Parallel processing
+            $results = $largeFiles | ForEach-Object -Parallel {
+                # work per file
+                [PSCustomObject]@{
+                    File = $_.Name
+                    Size = $_.Length
+                }
+            } -ThrottleLimit 8
+
+            $results | Export-Csv (Join-Path $OutputPath 'results.csv') -NoTypeInformation
+        }
+    }
+    catch [System.UnauthorizedAccessException] {
+        Write-Warning "Access denied: $InputPath"
+    }
+    catch {
+        Write-Error "Failed processing '$InputPath': $_"
+        throw
+    }
+}
+
+end {
+    Write-Verbose "Completed."
+}
+```
+
+---
+
+## PART 9 — VERSION CHECK SNIPPET
+
+Embed this in scripts that must self-verify at runtime:
+
+```powershell
+function Assert-PowerShell76 {
+    $required = [version]'7.6.0'
+    $current  = $PSVersionTable.PSVersion
+    if ($current -lt $required) {
+        throw "This script requires PowerShell $required or later. Current: $current. Install from: https://github.com/PowerShell/PowerShell/releases"
+    }
+    if ($PSVersionTable.PSEdition -ne 'Core') {
+        throw "This script requires PowerShell Core (pwsh), not Windows PowerShell."
+    }
+}
+Assert-PowerShell76
+```
+
+---
+
+## PART 10 — QUICK REFERENCE CARD
+
+```
+INSTALL (Windows):   winget install --id Microsoft.PowerShell --source winget
+UPGRADE (Windows):   winget upgrade  --id Microsoft.PowerShell
+VERIFY:              pwsh --version   # expect 7.6.2
+BINARY:              pwsh (NOT powershell)
+RUNTIME:             .NET 10.0.6 (bundled)
+LTS SUPPORT:         Until November 10, 2028
+HEADER:              #Requires -Version 7.6 + #Requires -PSEdition Core
+
+NEW IN 7.6:
+  Get-Clipboard -Delimiter ','
+  Register-ArgumentCompleter -NativeFallback
+  Join-Path path seg1 seg2 seg3             # -ChildPath is now string[]
+  New-Item -Target treated as literal
+  Get-Command -ExcludeModule SomeModule
+  .PSForEach({}) / .PSWhere({})             # new intrinsic aliases
+  [bigint]'1,000,000'                       # thousands separator support
+  ConvertFrom-Json handles array comments
+  -Debug no longer triggers ShouldProcess
+  Out-GridView fixed (BinaryFormatter removed)
+  $env:NO_COLOR respected in stderr
+  $env:POWERSHELL_DIAGNOSTICS_OPTOUT='1'   # opt out named-pipe listener
+  macOS PKG notarized + signed by Microsoft
+
+MODULES:
+  PSReadLine          2.4.5
+  PSResourceGet       1.2.0   (use Install-PSResource, not Install-Module)
+  ThreadJob →         Microsoft.PowerShell.ThreadJob 2.2.0
+
+PROMOTED FROM EXPERIMENTAL (always-on):
+  PSFeedbackProvider, PSNativeWindowsTildeExpansion,
+  PSRedirectToVariable, PSSubsystemPluginModel
+
+BREAKING CHANGES:
+  Join-Path -ChildPath = string[] (drop -AdditionalChildPath)
+  WildcardPattern.Escape() escapes lone backticks (audit wildcard code)
+  ThreadJob → Microsoft.PowerShell.ThreadJob (module-qualified names)
+  Trace source "GetHelpCommand" no longer has trailing space
+```
+
+---
+
+*Sources: Microsoft PowerShell DevBlog (March 18, 2026), learn.microsoft.com/powershell (updated May 20, 2026), GitHub PowerShell/PowerShell releases, endoflife.date/powershell (May 23, 2026).*

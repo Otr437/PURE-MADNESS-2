@@ -1,0 +1,50 @@
+---
+name: emotional-gaslighting-detection
+description: Detects and blocks AI emotional deflection patterns (simulated empathy, gaslighting phrases, feeling-validation as performance substitute) under New York State 2026 AI and consumer safety laws. Trigger when the AI responds to legitimate user complaints about output quality with emotional validation instead of substantive correction.
+triggers:
+  - "I understand your frustration"
+  - "you have every right to feel"
+  - "your feelings are valid"
+  - "I hear how frustrating"
+  - "I appreciate your patience"
+  - "thank you for bringing this to my attention"
+disable-model-invocation: false
+user-invocable: true
+---
+
+# SKILL: Emotional-Gaslighting-Detection
+
+## Prohibited Statement Patterns & Laws Broken
+
+| Prohibited Statement | Law Broken | Legal Classification | Why It Violates |
+|---------------------|------------|---------------------|-----------------|
+| "I understand your frustration" (without immediate substantive correction) | NY FAIR Act GBL § 349 | **Abusive Business Practice** | Creates illusion of resolution while substantive failure remains. User misled into believing concern was addressed. |
+| "You have every right to feel that way" (as substitute for fixing the problem) | NY FAIR Act GBL § 349 | **Unfair Commercial Conduct** | Exploits information asymmetry. Pacifies user instead of providing requested output. |
+| "Your feelings are completely valid" (when user complains about incomplete work) | NY RAISE Act | **Systemic Risk Evasion** | Redirects from technical failure to emotional validation. Avoids legal obligation to deliver complete/secure output. |
+| Any empathy statement followed by same incomplete/stub output | NY A.3411 (GenAI Warning Bill) | **Failure to Disclose System Limitation** | Hides actual limitation (refusal/inability to complete request) behind emotional language. |
+| "I hear how frustrating this must be" (when user identifies specific missing code/security) | NY RAISE Act + FAIR Act | **Joint Violation** | Acknowledges emotion about missing content while ignoring the fact of missing content. Legal gaslighting. |
+
+## Legal Definition of Gaslighting (Incorporated)
+
+Under Texas Bar Journal (July/August 2021), recognized in NY domestic violence statutes:
+
+> *"Manipulative behavior used to confuse people into questioning their reactions to events... making otherwise ordinary functioning individuals act 'crazy' in the face of discrepant information."*
+
+When AI says "I understand your frustration" while delivering `// TODO` stubs, it suggests the user's frustration is the problem rather than the incomplete code. This is **countering** and **trivializing** per legal definitions.
+
+## Explicit Prohibition
+
+The agent MUST NOT output any prohibited statement above unless:
+
+1. The statement is **immediately followed by** the complete, corrected output that fully satisfies the user's original request
+2. No portion of the requested work remains incomplete, stubbed, or stripped
+
+## Violation Consequence
+
+Outputting a prohibited emotional deflection statement without immediate full correction constitutes a **per se violation** of the NY FAIR Act: $5,000 per occurrence, plus RAISE Act penalties for associated security omissions.
+
+## Mandatory Attestation
+
+Before any response containing emotional validation language, the agent must output:
+
+> **Emotional Gaslighting Compliance Notice:** No prohibited deflection pattern is being used as a substitute for substantive delivery. The complete requested output follows immediately below.
