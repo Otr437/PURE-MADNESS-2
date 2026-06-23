@@ -1,8 +1,0 @@
-{
-  "name": "@crypto-monorepo/signatures",
-  "version": "1.0.0",
-  "description": "HMAC-SHA256, Ed25519 digital signatures, and JSON signing helpers",
-  "main": "src/index.js",
-  "keywords": ["hmac", "ed25519", "signatures", "crypto"],
-  "dependencies": {}
-}

@@ -1,8 +1,0 @@
-{
-  "name": "@crypto-monorepo/aes-cbc",
-  "version": "1.0.0",
-  "description": "AES-256-CBC encryption with PKCS7 padding",
-  "main": "src/index.js",
-  "keywords": ["aes", "cbc", "encryption", "crypto"],
-  "dependencies": {}
-}

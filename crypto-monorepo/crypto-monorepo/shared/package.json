@@ -1,6 +1,0 @@
-{
-  "name": "@crypto-monorepo/shared",
-  "version": "1.0.0",
-  "main": "logger.js",
-  "description": "Shared utilities for the crypto monorepo"
-}
