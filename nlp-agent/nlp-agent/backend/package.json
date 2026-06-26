@@ -1,0 +1,54 @@
+{
+  "name": "nlp-agent-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit --strict --noUnusedLocals --noUnusedParameters --noImplicitReturns",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@modelcontextprotocol/sdk": "^1.10.1",
+    "openai": "^4.90.0",
+    "fastify": "^4.28.0",
+    "@fastify/cors": "^9.0.0",
+    "@fastify/helmet": "^11.0.0",
+    "@fastify/rate-limit": "^9.0.0",
+    "@fastify/cookie": "^9.0.0",
+    "@fastify/csrf-protection": "^6.4.0",
+    "@fastify/websocket": "^8.0.0",
+    "@prisma/client": "^5.14.0",
+    "ethers": "^6.13.0",
+    "bitcoinjs-lib": "^7.0.0",
+    "ecpair": "^2.1.0",
+    "@bitcoinerlab/secp256k1": "^1.1.1",
+    "@mayaprotocol/zcash-ts": "^1.0.0",
+    "monero-ts": "^0.9.5",
+    "jose": "^5.9.0",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.4.0",
+    "zod": "^3.25.0",
+    "uuid": "^9.0.0",
+    "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0",
+    "prisma": "^5.14.0",
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^9.0.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/bitcoinjs-lib": "^5.0.0"
+  }
+}

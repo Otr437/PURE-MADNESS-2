@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ADMIN AUTH ──────────────────────────────────────────────────────────────
+
+model Admin {
+  id            String         @id @default(uuid())
+  username      String         @unique
+  passwordHash  String
+  role          AdminRole      @default(OPERATOR)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  lastLoginAt   DateTime?
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
+
+  @@map("admins")
+}
+
+enum AdminRole {
+  SUPERADMIN
+  OPERATOR
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  adminId   String
+  admin     Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  @@map("refresh_tokens")
+}
+
+// ─── AGENT WALLETS ───────────────────────────────────────────────────────────
+
+model AgentWallet {
+  id            String             @id @default(uuid())
+  agentId       AgentId
+  chain         Chain
+  address       String
+  encryptedKey  String
+  encryptedSeed String?
+  label         String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  transactions  WalletTransaction[]
+  settings      WalletSettings?
+
+  @@unique([agentId, chain])
+  @@map("agent_wallets")
+}
+
+enum AgentId {
+  CLAUDE
+  OPENAI
+  DEEPSEEK
+}
+
+enum Chain {
+  ETH
+  BTC
+  ZEC
+  XMR
+}
+
+model WalletSettings {
+  id                   String      @id @default(uuid())
+  walletId             String      @unique
+  wallet               AgentWallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  autonomousMode       Boolean     @default(false)
+  spendLimitAuto       String      @default("0")
+  spendLimitMax        String      @default("0")
+  allowShopping        Boolean     @default(false)
+  allowSwapping        Boolean     @default(false)
+  allowInvesting       Boolean     @default(false)
+  allowTransfers       Boolean     @default(false)
+  updatedAt            DateTime    @updatedAt
+  updatedBy            String?
+
+  @@map("wallet_settings")
+}
+
+model WalletTransaction {
+  id           String       @id @default(uuid())
+  walletId     String
+  wallet       AgentWallet  @relation(fields: [walletId], references: [id])
+  txHash       String?      @unique
+  direction    TxDirection
+  amount       String
+  token        String?
+  toAddress    String?
+  fromAddress  String?
+  status       TxStatus     @default(PENDING)
+  approvalId   String?
+  initiatedBy  AgentId
+  activityType ActivityType
+  note         String?
+  rawTx        String?
+  createdAt    DateTime     @default(now())
+  confirmedAt  DateTime?
+  failedAt     DateTime?
+  failReason   String?
+
+  @@map("wallet_transactions")
+}
+
+enum TxDirection {
+  IN
+  OUT
+}
+
+enum TxStatus {
+  PENDING
+  PENDING_APPROVAL
+  APPROVED
+  DENIED
+  BROADCASTING
+  CONFIRMED
+  FAILED
+}
+
+enum ActivityType {
+  SHOPPING
+  SWAPPING
+  INVESTING
+  TRANSFER
+  GAS_FEE
+  OTHER
+}
+
+// ─── AGENT MEMORY / DATABASE ─────────────────────────────────────────────────
+
+model AgentMemory {
+  id        String    @id @default(uuid())
+  agentId   AgentId
+  sessionId String?
+  key       String
+  value     String
+  encrypted Boolean   @default(false)
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([agentId, key])
+  @@map("agent_memory")
+}
+
+// ─── AUDIT LOG ───────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id        String    @id @default(uuid())
+  event     String
+  agentId   AgentId?
+  adminId   String?
+  admin     Admin?    @relation(fields: [adminId], references: [id])
+  sessionId String?
+  metadata  Json?
+  ipAddress String?
+  createdAt DateTime  @default(now())
+
+  @@map("audit_logs")
+}
