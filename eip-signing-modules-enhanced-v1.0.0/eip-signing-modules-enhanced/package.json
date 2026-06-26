@@ -1,0 +1,57 @@
+{
+  "name": "eip-signing-modules",
+  "version": "1.0.0",
+  "description": "Production-grade off-chain signing and account abstraction utilities — EIP-191, 712, 1271, 2612, 4337, 6492, 6900, 7579, 7702, 7739, 8141",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/errors.esm.js",
+      "require": "./dist/errors.js",
+      "types": "./dist/errors.d.ts"
+    },
+    "./validate": {
+      "import": "./dist/validate.esm.js",
+      "require": "./dist/validate.js",
+      "types": "./dist/validate.d.ts"
+    },
+    "./eip191":  { "import": "./dist/eip191.esm.js",  "require": "./dist/eip191.js",  "types": "./dist/eip191.d.ts"  },
+    "./eip712":  { "import": "./dist/eip712.esm.js",  "require": "./dist/eip712.js",  "types": "./dist/eip712.d.ts"  },
+    "./eip1271": { "import": "./dist/eip1271.esm.js", "require": "./dist/eip1271.js", "types": "./dist/eip1271.d.ts" },
+    "./eip2612": { "import": "./dist/eip2612.esm.js", "require": "./dist/eip2612.js", "types": "./dist/eip2612.d.ts" },
+    "./eip4337": { "import": "./dist/eip4337.esm.js", "require": "./dist/eip4337.js", "types": "./dist/eip4337.d.ts" },
+    "./eip6492": { "import": "./dist/eip6492.esm.js", "require": "./dist/eip6492.js", "types": "./dist/eip6492.d.ts" },
+    "./eip6900": { "import": "./dist/eip6900.esm.js", "require": "./dist/eip6900.js", "types": "./dist/eip6900.d.ts" },
+    "./eip7579": { "import": "./dist/eip7579.esm.js", "require": "./dist/eip7579.js", "types": "./dist/eip7579.d.ts" },
+    "./eip7702": { "import": "./dist/eip7702.esm.js", "require": "./dist/eip7702.js", "types": "./dist/eip7702.d.ts" },
+    "./eip7739": { "import": "./dist/eip7739.esm.js", "require": "./dist/eip7739.js", "types": "./dist/eip7739.d.ts" },
+    "./eip8141": { "import": "./dist/eip8141.esm.js", "require": "./dist/eip8141.js", "types": "./dist/eip8141.d.ts" }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint src --ext .ts",
+    "test": "jest --passWithNoTests"
+  },
+  "peerDependencies": {
+    "ethers": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  },
+  "files": ["dist", "src", "README.md"],
+  "keywords": [
+    "ethereum", "eip-191", "eip-712", "eip-1271", "eip-2612",
+    "eip-4337", "eip-6492", "eip-6900", "eip-7579", "eip-7702",
+    "eip-7739", "eip-8141", "account-abstraction", "smart-wallet",
+    "signing", "gasless", "permit", "modular-account", "post-quantum"
+  ],
+  "license": "MIT",
+  "engines": { "node": ">=18.0.0" }
+}

@@ -1,0 +1,20 @@
+# ── Core ──────────────────────────────────────
+anthropic>=0.40.0
+aiohttp>=3.10.0
+python-dotenv>=1.0.0
+
+# ── LLM Providers (install what you use) ──────
+# openai>=1.50.0
+# google-generativeai>=0.8.0
+
+# ── Browser ───────────────────────────────────
+# playwright>=1.48.0
+# After install: playwright install chromium
+
+# ── Cloud Browsers ────────────────────────────
+# browserbase>=1.0.0
+# steel-sdk>=1.0.0
+
+# ── Memory (optional vector search) ───────────
+# sentence-transformers>=3.0.0
+# numpy>=1.26.0
