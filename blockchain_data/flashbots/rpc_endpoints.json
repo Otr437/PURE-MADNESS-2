@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "description": "Flashbots - endpoints, install commands, full working code examples, block builders, relays",
+    "last_updated": "2026-03-25"
+  },
+  "endpoints": {
+    "protect_rpc": "https://rpc.flashbots.net",
+    "protect_rpc_fast": "https://rpc.flashbots.net/fast",
+    "relay_mainnet": "https://relay.flashbots.net",
+    "relay_sepolia": "https://relay-sepolia.flashbots.net",
+    "mev_share_node": "https://mev-share.flashbots.net",
+    "mev_boost_relay_mainnet": "https://boost-relay.flashbots.net",
+    "mev_boost_relay_sepolia": "https://boost-relay-sepolia.flashbots.net"
+  },
+  "install_commands": {
+    "nodejs": {
+      "step_1_install_node": "npm install --save ethers",
+      "step_2_install_flashbots_bundle": "npm install --save @flashbots/ethers-provider-bundle",
+      "step_3_install_mev_share": "npm install @flashbots/mev-share-client",
+      "init_new_project": "mkdir my-flashbots-bot && cd my-flashbots-bot && npm init -y && npm install --save ethers @flashbots/ethers-provider-bundle"
+    },
+    "python": {
+      "step_1_install_web3": "pip install web3",
+      "step_2_install_flashbots": "pip install flashbots",
+      "step_3_install_eth_account": "pip install eth-account",
+      "venv_setup": "python3 -m venv venv && source venv/bin/activate && pip install web3 flashbots eth-account python-dotenv",
+      "poetry_setup": "poetry new my-flashbots-bot && cd my-flashbots-bot && poetry add web3 flashbots eth-account python-dotenv",
+      "run_example": "ETH_SENDER_KEY=<sender_private_key> PROVIDER_URL=https://rpc.flashbots.net ETH_SIGNER_KEY=<signer_private_key> python examples/simple.py"
+    },
+    "mev_boost_validator": {
+      "download_linux": "wget https://github.com/flashbots/mev-boost/releases/latest/download/mev-boost_linux_amd64.tar.gz",
+      "extract": "tar xvf mev-boost_linux_amd64.tar.gz",
+      "run_mainnet": "./mev-boost -mainnet -relay-check -relays https://boost-relay.flashbots.net",
+      "run_with_multiple_relays": "./mev-boost -mainnet -relay-check -relays https://boost-relay.flashbots.net,https://relay.ultrasound.money,https://titanrelay.xyz",
+      "docker_pull": "docker pull flashbots/mev-boost:latest",
+      "docker_run": "docker run flashbots/mev-boost -mainnet -relay-check -relays https://boost-relay.flashbots.net"
+    },
+    "rbuilder": {
+      "clone": "git clone https://github.com/flashbots/rbuilder.git",
+      "build": "cd rbuilder && cargo build --release",
+      "run": "./target/release/rbuilder run your-config.toml"
+    }
+  },
+  "code_examples": {
+    "nodejs_setup_provider": "const { providers, Wallet } = require('ethers');\nconst { FlashbotsBundleProvider } = require('@flashbots/ethers-provider-bundle');\n\nconst ETHEREUM_RPC_URL = 'https://rpc.flashbots.net';\nconst provider = new providers.JsonRpcProvider(ETHEREUM_RPC_URL);\nconst authSigner = Wallet.createRandom();\n\nconst flashbotsProvider = await FlashbotsBundleProvider.create(\n  provider,\n  authSigner\n);",
+
+    "nodejs_send_bundle": "const blockNumber = await provider.getBlockNumber();\nconst bundleResponse = await flashbotsProvider.sendBundle(\n  [\n    {\n      signedTransaction: SIGNED_TX_HEX\n    },\n    {\n      signer: wallet,\n      transaction: {\n        to: RECIPIENT_ADDRESS,\n        value: ethers.utils.parseEther('0.01'),\n        gasPrice: ethers.utils.parseUnits('100', 'gwei'),\n        gasLimit: 21000,\n        nonce: await provider.getTransactionCount(wallet.address)\n      }\n    }\n  ],\n  blockNumber + 1\n);\nif ('error' in bundleResponse) {\n  console.warn('sendBundle error', bundleResponse.error);\n}",
+
+    "nodejs_simulate_bundle": "const signedTransactions = await flashbotsProvider.signBundle(bundle);\nconst blockNumber = await provider.getBlockNumber();\nconst simulation = await flashbotsProvider.simulate(signedTransactions, blockNumber + 1);\nif ('error' in simulation) {\n  console.warn('Simulation error:', simulation.error);\n} else {\n  console.log('Simulation success:', simulation);\n}",
+
+    "nodejs_send_to_multiple_blocks": "const blockNumber = await provider.getBlockNumber();\nconst minTimestamp = (await provider.getBlock(blockNumber)).timestamp;\nconst maxTimestamp = minTimestamp + 120;\n\nconst bundlePromises = [blockNumber + 1, blockNumber + 2].map((targetBlock) =>\n  flashbotsProvider.sendBundle(\n    bundle,\n    targetBlock,\n    { minTimestamp, maxTimestamp }\n  )\n);\nawait Promise.all(bundlePromises);",
+
+    "nodejs_eip1559_bundle": "const block = await provider.getBlock(blockNumber);\nconst maxBaseFee = FlashbotsBundleProvider.getMaxBaseFeeInFutureBlock(block.baseFeePerGas, 1);\nconst PRIORITY_FEE = ethers.BigNumber.from(1e9);\n\nconst eip1559tx = {\n  to: wallet.address,\n  type: 2,\n  maxFeePerGas: PRIORITY_FEE.add(maxBaseFee),\n  maxPriorityFeePerGas: PRIORITY_FEE,\n  gasLimit: 21000,\n  data: '0x',\n  chainId: 1\n};",
+
+    "nodejs_mev_share_send_bundle": "import MevShareClient from '@flashbots/mev-share-client';\n\nconst mevShareClient = MevShareClient.useEthereumMainnet(authSigner);\n\nconst params = {\n  inclusion: { block: TARGET_BLOCK, maxBlock: TARGET_BLOCK + 2 },\n  body: [\n    { tx: SIGNED_TX_HEX, canRevert: false }\n  ],\n  privacy: {\n    hints: { calldata: true, logs: true, txHash: true }\n  }\n};\n\nconst result = await mevShareClient.sendBundle(params);\nconsole.log('Bundle hash:', result.bundleHash);",
+
+    "python_setup_and_send_bundle": "import os\nfrom eth_account.account import Account\nfrom eth_account.signers.local import LocalAccount\nfrom flashbots import flashbot\nfrom web3 import Web3, HTTPProvider\n\nw3 = Web3(HTTPProvider('https://rpc.flashbots.net'))\n\nETH_ACCOUNT_SIGNATURE: LocalAccount = Account.from_key(os.environ.get('ETH_SIGNER_KEY'))\nflashbot(w3, ETH_ACCOUNT_SIGNATURE)\n\nprint('Connected:', w3.is_connected())\nprint('Block number:', w3.eth.block_number)",
+
+    "python_full_bundle_example": "import os\nfrom eth_account.account import Account\nfrom eth_account.signers.local import LocalAccount\nfrom flashbots import flashbot\nfrom web3 import Web3, HTTPProvider\n\nPROVIDER_URL = os.environ.get('PROVIDER_URL', 'https://rpc.flashbots.net')\nw3 = Web3(HTTPProvider(PROVIDER_URL))\n\nsender: LocalAccount = Account.from_key(os.environ.get('ETH_SENDER_KEY'))\nsigner: LocalAccount = Account.from_key(os.environ.get('ETH_SIGNER_KEY'))\n\nflashbot(w3, signer)\n\nTARGET_BLOCK = w3.eth.block_number + 1\ncurrent_block = w3.eth.get_block(TARGET_BLOCK - 1)\nmin_timestamp = current_block.timestamp\nmax_timestamp = min_timestamp + 120\n\nbundle = [\n  {\n    'signer': sender,\n    'transaction': {\n      'to': '0xRECIPIENT_ADDRESS',\n      'value': w3.to_wei(0.001, 'ether'),\n      'gas': 21000,\n      'maxFeePerGas': w3.to_wei(100, 'gwei'),\n      'maxPriorityFeePerGas': w3.to_wei(2, 'gwei'),\n      'nonce': w3.eth.get_transaction_count(sender.address),\n      'chainId': 1,\n      'type': 2\n    }\n  }\n]\n\nresult = w3.flashbots.send_bundle(\n  bundle,\n  target_block_number=TARGET_BLOCK,\n  opts={'minTimestamp': min_timestamp, 'maxTimestamp': max_timestamp}\n)\nprint('Bundle hash:', result.bundle_hash())"
+  },
+  "curl_commands": {
+    "send_bundle": "curl -X POST https://relay.flashbots.net -H 'Content-Type: application/json' -H 'X-Flashbots-Signature: 0xYOUR_ADDRESS:0xSIGNATURE' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_sendBundle\",\"params\":[{\"txs\":[\"0xSIGNED_TX_HEX\"],\"blockNumber\":\"0xTARGET_BLOCK\"}]}'",
+    "simulate_bundle": "curl -X POST https://relay.flashbots.net -H 'Content-Type: application/json' -H 'X-Flashbots-Signature: 0xYOUR_ADDRESS:0xSIGNATURE' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_callBundle\",\"params\":[{\"txs\":[\"0xSIGNED_TX_HEX\"],\"blockNumber\":\"0xTARGET_BLOCK\",\"stateBlockNumber\":\"latest\"}]}'",
+    "send_private_tx": "curl -X POST https://relay.flashbots.net -H 'Content-Type: application/json' -H 'X-Flashbots-Signature: 0xYOUR_ADDRESS:0xSIGNATURE' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_sendPrivateTransaction\",\"params\":[{\"tx\":\"0xSIGNED_TX_HEX\",\"maxBlockNumber\":\"0xTARGET_BLOCK\"}]}'",
+    "cancel_private_tx": "curl -X POST https://relay.flashbots.net -H 'Content-Type: application/json' -H 'X-Flashbots-Signature: 0xYOUR_ADDRESS:0xSIGNATURE' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_cancelPrivateTransaction\",\"params\":[{\"txHash\":\"0xTX_HASH\"}]}'",
+    "mev_send_bundle": "curl -X POST https://relay.flashbots.net -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"mev_sendBundle\",\"params\":[{\"version\":\"v0.1\",\"inclusion\":{\"block\":\"0xTARGET_BLOCK\"},\"body\":[{\"tx\":\"0xSIGNED_TX_HEX\",\"canRevert\":false}]}]}'",
+    "protect_send_tx": "curl -X POST https://rpc.flashbots.net -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawTransaction\",\"params\":[\"0xSIGNED_TX_HEX\"],\"id\":1}'",
+    "protect_fast_send_tx": "curl -X POST https://rpc.flashbots.net/fast -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawTransaction\",\"params\":[\"0xSIGNED_TX_HEX\"],\"id\":1}'",
+    "check_tx_status": "curl https://protect.flashbots.net/tx/0xTX_HASH",
+    "get_delayed_refunds": "curl -X POST https://relay.flashbots.net -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"buildernet_getDelayedRefunds\",\"params\":[\"0xYOUR_ADDRESS\"]}'",
+    "get_block_number": "curl -X POST https://rpc.flashbots.net -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'",
+    "get_balance_via_protect": "curl -X POST https://rpc.flashbots.net -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"0xYOUR_ADDRESS\",\"latest\"],\"id\":1}'"
+  },
+  "active_mev_boost_relays": [
+    { "name": "Ultra Sound Money", "endpoint": "https://relay.ultrasound.money" },
+    { "name": "Titan Relay", "endpoint": "https://titanrelay.xyz" },
+    { "name": "bloXroute Max Profit", "endpoint": "https://bloxroute.max-profit.blxrbdn.com" },
+    { "name": "bloXroute Regulated", "endpoint": "https://bloxroute.regulated.blxrbdn.com" },
+    { "name": "Aestus", "endpoint": "https://aestus.live" },
+    { "name": "Agnostic Relay", "endpoint": "https://agnostic-relay.net" },
+    { "name": "Flashbots Relay", "endpoint": "https://boost-relay.flashbots.net" },
+    { "name": "EthGas Relay", "endpoint": "https://relay.ethgas.com" }
+  ],
+  "block_builders": [
+    { "name": "Titan Builder", "rpc": "https://rpc.titanbuilder.xyz" },
+    { "name": "BuilderNet (Flashbots)", "rpc": "https://relay.flashbots.net" },
+    { "name": "beaverbuild", "rpc": "https://rpc.beaverbuild.org" },
+    { "name": "bloXroute", "rpc": "https://mev.api.blxrbdn.com", "notes": "Account required" },
+    { "name": "builder0x69", "rpc": "https://builder0x69.io" },
+    { "name": "Eden Network", "rpc": "https://api.edennetwork.io/v1/bundle" },
+    { "name": "eth-builder", "rpc": "https://eth-builder.com" },
+    { "name": "lightspeedbuilder", "rpc": "https://rpc.lightspeedbuilder.info" },
+    { "name": "Manifold / SecureRPC", "rpc": "https://api.securerpc.com/v1" },
+    { "name": "buildAI", "rpc": "https://BuildAI.net" },
+    { "name": "payload.de", "rpc": "https://rpc.payload.de" },
+    { "name": "rsync-builder", "rpc": "https://rsync-builder.xyz" },
+    { "name": "nfactorial", "rpc": "https://rpc.nfactorial.xyz" },
+    { "name": "lokibuilder", "rpc": "https://rpc.lokibuilder.xyz" },
+    { "name": "Quasar", "rpc": "https://rpc.quasar.win" }
+  ],
+  "dashboards": {
+    "relayscan": "https://www.relayscan.io",
+    "builder_profit": "https://www.relayscan.io/builder-profit?t=24h",
+    "mevboost_pics": "https://mevboost.pics",
+    "etherscan_builders": "https://etherscan.io/accounts/label/mev-builder"
+  }
+}

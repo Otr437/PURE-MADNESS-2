@@ -1,0 +1,159 @@
+{
+  "chain": "Bitcoin",
+  "symbol": "BTC",
+  "type": "L1 UTXO chain",
+  "consensus": "Proof of Work (SHA-256)",
+  "block_time_minutes": 10,
+  "block_explorer": "https://mempool.space",
+  "block_explorer_alt": "https://blockstream.info",
+  "note": "NOT EVM-compatible. Uses Bitcoin Core JSON-RPC over HTTP via bitcoin-cli.",
+  "node_rpc": {
+    "protocol": "JSON-RPC over HTTP",
+    "default_port_mainnet": 8332,
+    "default_port_testnet": 18332,
+    "default_port_signet": 38332,
+    "default_port_regtest": 18443,
+    "local_node_url": "http://127.0.0.1:8332"
+  },
+  "install_commands": {
+    "snap_install": "sudo snap install bitcoin-core",
+    "apt_update": "sudo apt update && sudo apt upgrade -y",
+    "apt_install_bitcoind": "sudo apt install bitcoind",
+    "build_from_source_deps": "sudo apt install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 libssl-dev libevent-dev libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev libdb++-dev libzmq3-dev",
+    "build_from_source_clone": "git clone https://github.com/bitcoin/bitcoin.git && cd bitcoin",
+    "build_from_source_checkout": "git checkout v28.1",
+    "build_from_source_autogen": "./autogen.sh",
+    "build_from_source_configure": "./configure --with-gui=no",
+    "build_from_source_make": "make -j$(nproc)",
+    "build_from_source_install": "sudo make install",
+    "create_conf_dir": "mkdir -p ~/.bitcoin && touch ~/.bitcoin/bitcoin.conf",
+    "start_bitcoind": "bitcoind",
+    "start_bitcoind_daemon": "bitcoind -daemon",
+    "start_bitcoind_testnet": "bitcoind -testnet -daemon",
+    "start_bitcoind_signet": "bitcoind -signet -daemon",
+    "start_bitcoind_regtest": "bitcoind -regtest -daemon",
+    "stop_bitcoind": "bitcoin-cli stop",
+    "check_version": "bitcoin-cli --version",
+    "check_sync": "bitcoin-cli getblockchaininfo",
+    "reindex": "bitcoind -reindex",
+    "python_bitcoinlib": "pip install python-bitcoinlib",
+    "python_bitcoinrpc": "pip install python-bitcoinrpc",
+    "nodejs_bitcoinjs": "npm install bitcoinjs-lib",
+    "nodejs_bitcore": "npm install bitcore-lib"
+  },
+  "bitcoin_conf_example": {
+    "file": "~/.bitcoin/bitcoin.conf",
+    "mainnet": [
+      "server=1",
+      "rpcuser=yourusername",
+      "rpcpassword=yourpassword",
+      "rpcport=8332",
+      "rpcallowip=127.0.0.1",
+      "txindex=1",
+      "zmqpubrawblock=tcp://127.0.0.1:28332",
+      "zmqpubrawtx=tcp://127.0.0.1:28333"
+    ],
+    "testnet": [
+      "testnet=1",
+      "server=1",
+      "rpcuser=yourusername",
+      "rpcpassword=yourpassword",
+      "rpcport=18332"
+    ]
+  },
+  "bitcoin_cli_commands": {
+    "help": "bitcoin-cli help",
+    "help_command": "bitcoin-cli help getblockchaininfo",
+    "getblockchaininfo": "bitcoin-cli getblockchaininfo",
+    "getblockcount": "bitcoin-cli getblockcount",
+    "getblockhash": "bitcoin-cli getblockhash BLOCK_HEIGHT",
+    "getblock": "bitcoin-cli getblock BLOCK_HASH",
+    "getblock_verbose": "bitcoin-cli getblock BLOCK_HASH 2",
+    "getrawtransaction": "bitcoin-cli getrawtransaction TX_HASH true",
+    "decoderawtransaction": "bitcoin-cli decoderawtransaction RAW_TX_HEX",
+    "sendrawtransaction": "bitcoin-cli sendrawtransaction SIGNED_TX_HEX",
+    "getrawmempool": "bitcoin-cli getrawmempool",
+    "getmempoolinfo": "bitcoin-cli getmempoolinfo",
+    "getmempoolentry": "bitcoin-cli getmempoolentry TX_HASH",
+    "getnewaddress": "bitcoin-cli getnewaddress",
+    "getnewaddress_bech32": "bitcoin-cli getnewaddress '' bech32",
+    "getbalance": "bitcoin-cli getbalance",
+    "getwalletinfo": "bitcoin-cli getwalletinfo",
+    "listunspent": "bitcoin-cli listunspent",
+    "listtransactions": "bitcoin-cli listtransactions",
+    "sendtoaddress": "bitcoin-cli sendtoaddress BTC_ADDRESS AMOUNT",
+    "estimatesmartfee": "bitcoin-cli estimatesmartfee 6",
+    "createrawtransaction": "bitcoin-cli createrawtransaction '[{\"txid\":\"TXID\",\"vout\":0}]' '[{\"ADDRESS\":0.001}]'",
+    "signrawtransactionwithkey": "bitcoin-cli signrawtransactionwithkey RAW_TX_HEX '[\"PRIVATE_KEY\"]'",
+    "validateaddress": "bitcoin-cli validateaddress BTC_ADDRESS",
+    "getnetworkinfo": "bitcoin-cli getnetworkinfo",
+    "getpeerinfo": "bitcoin-cli getpeerinfo",
+    "getmininginfo": "bitcoin-cli getmininginfo",
+    "importaddress": "bitcoin-cli importaddress BTC_ADDRESS '' false",
+    "importprivkey": "bitcoin-cli importprivkey PRIVATE_KEY",
+    "dumpprivkey": "bitcoin-cli dumpprivkey BTC_ADDRESS",
+    "backupwallet": "bitcoin-cli backupwallet /path/to/backup.dat",
+    "createwallet": "bitcoin-cli createwallet mywallet",
+    "loadwallet": "bitcoin-cli loadwallet mywallet",
+    "generate_regtest": "bitcoin-cli -regtest generatetoaddress 101 $(bitcoin-cli -regtest getnewaddress)"
+  },
+  "curl_commands": {
+    "get_blockchain_info": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getblockchaininfo\",\"params\":[]}'",
+    "get_block_count": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getblockcount\",\"params\":[]}'",
+    "get_block_hash": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getblockhash\",\"params\":[BLOCK_HEIGHT]}'",
+    "get_block": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getblock\",\"params\":[\"BLOCK_HASH\"]}'",
+    "get_raw_transaction": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getrawtransaction\",\"params\":[\"TX_HASH\",true]}'",
+    "send_raw_transaction": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"sendrawtransaction\",\"params\":[\"SIGNED_TX_HEX\"]}'",
+    "get_raw_mempool": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getrawmempool\",\"params\":[]}'",
+    "get_mempool_info": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getmempoolinfo\",\"params\":[]}'",
+    "get_balance": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getbalance\",\"params\":[]}'",
+    "get_new_address": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getnewaddress\",\"params\":[]}'",
+    "estimate_smart_fee": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"estimatesmartfee\",\"params\":[6]}'",
+    "get_network_info": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getnetworkinfo\",\"params\":[]}'",
+    "validate_address": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"validateaddress\",\"params\":[\"BTC_ADDRESS\"]}'",
+    "decode_raw_transaction": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"decoderawtransaction\",\"params\":[\"RAW_TX_HEX\"]}'"
+  },
+  "public_api_commands": {
+    "mempool_space_get_fees": "curl https://mempool.space/api/v1/fees/recommended",
+    "mempool_space_get_tx": "curl https://mempool.space/api/tx/TX_HASH",
+    "mempool_space_get_block": "curl https://mempool.space/api/block/BLOCK_HASH",
+    "mempool_space_get_address": "curl https://mempool.space/api/address/BTC_ADDRESS",
+    "mempool_space_get_address_txs": "curl https://mempool.space/api/address/BTC_ADDRESS/txs",
+    "mempool_space_get_address_utxo": "curl https://mempool.space/api/address/BTC_ADDRESS/utxo",
+    "mempool_space_broadcast_tx": "curl -X POST https://mempool.space/api/tx --data 'SIGNED_TX_HEX'",
+    "mempool_space_get_block_height": "curl https://mempool.space/api/block-height/BLOCK_NUMBER",
+    "blockstream_get_tx": "curl https://blockstream.info/api/tx/TX_HASH",
+    "blockstream_get_address": "curl https://blockstream.info/api/address/BTC_ADDRESS",
+    "blockstream_broadcast_tx": "curl -X POST https://blockstream.info/api/tx --data 'SIGNED_TX_HEX'"
+  },
+  "public_api_endpoints": {
+    "mempool_space": {
+      "rest_api": "https://mempool.space/api",
+      "websocket": "wss://mempool.space/api/v1/ws",
+      "docs": "https://mempool.space/docs/api/rest"
+    },
+    "blockstream": {
+      "rest_api": "https://blockstream.info/api",
+      "testnet": "https://blockstream.info/testnet/api"
+    },
+    "blockcypher": {
+      "rest_api": "https://api.blockcypher.com/v1/btc/main"
+    }
+  },
+  "third_party_node_providers": [
+    { "name": "QuickNode", "url": "https://www.quicknode.com/chains/btc", "notes": "Bitcoin Core RPC; free tier" },
+    { "name": "GetBlock", "url": "https://getblock.io", "notes": "Shared and dedicated Bitcoin nodes" },
+    { "name": "NOWNodes", "url": "https://nownodes.io", "notes": "BTC full node access" },
+    { "name": "Chainstack", "url": "https://chainstack.com", "notes": "Bitcoin node hosting" }
+  ],
+  "testnets": {
+    "testnet4": { "port": 48332, "explorer": "https://mempool.space/testnet4", "notes": "Launched 2024 - preferred testnet", "curl_get_fees": "curl https://mempool.space/testnet4/api/v1/fees/recommended" },
+    "signet": { "port": 38332, "explorer": "https://mempool.space/signet", "curl_get_fees": "curl https://mempool.space/signet/api/v1/fees/recommended" },
+    "regtest": { "port": 18443, "notes": "Local development only" }
+  },
+  "resources": {
+    "rpc_docs": "https://developer.bitcoin.org/reference/rpc/",
+    "mempool_docs": "https://mempool.space/docs/api/rest",
+    "github": "https://github.com/bitcoin/bitcoin"
+  }
+}

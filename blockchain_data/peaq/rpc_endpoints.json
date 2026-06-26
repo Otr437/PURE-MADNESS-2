@@ -1,0 +1,57 @@
+{
+  "chain": "Peaq",
+  "symbol": "PEAQ",
+  "evm_chain_id": 3338,
+  "block_explorer": "https://peaq.subscan.io",
+  "evm_rpc": "https://peaq.api.onfinality.io/public",
+  "substrate_wss": "wss://wss.peaq.network",
+  "install_commands": {
+    "rust_install": "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
+    "rust_substrate_target": "rustup target add wasm32-unknown-unknown",
+    "rust_nightly": "rustup update nightly && rustup target add wasm32-unknown-unknown --toolchain nightly",
+    "linux_deps": "sudo apt-get install -y git clang curl libssl-dev llvm libudev-dev make protobuf-compiler pkg-config",
+    "npm_polkadot_api": "npm install @polkadot/api",
+    "npm_polkadot_api_cli": "npm install -g @polkadot/api-cli",
+    "npm_polkadot_keyring": "npm install @polkadot/keyring",
+    "npm_polkadot_util": "npm install @polkadot/util @polkadot/util-crypto",
+    "npm_ethers_evm": "npm install ethers",
+    "npm_viem_evm": "npm install viem",
+    "npm_hardhat": "npm install --save-dev hardhat",
+    "pip_substrate_interface": "pip install substrate-interface",
+    "clone_peaq_node": "git clone https://github.com/peaqnetwork/peaq-network-node.git && cd peaq-network-node",
+    "build_peaq_node": "cargo build --release",
+    "docker_install": "curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh",
+    "docker_run_peaq_dev": "./scripts/docker_run.sh ./target/release/peaq-node --parachain-id 3338 --chain ./node/src/chain-specs/peaq-raw.json --base-path chain-data --port 30333 --rpc-port 9944 --execution wasm",
+    "docker_run_peaq_testnet": "./scripts/docker_run.sh ./target/release/peaq-node --parachain-id 9990 --chain ./node/src/chain-specs/agung-raw.json --base-path chain-data --port 30333 --rpc-port 9944"
+  },
+  "polkadot_js_api_cli_commands": {
+    "query_account_nonce": "npx @polkadot/api-cli --ws wss://wss.peaq.network query system account YOUR_SS58_ADDRESS",
+    "query_chain_name": "npx @polkadot/api-cli --ws wss://wss.peaq.network rpc system chain",
+    "query_block_number": "npx @polkadot/api-cli --ws wss://wss.peaq.network rpc chain getHeader",
+    "query_balance": "npx @polkadot/api-cli --ws wss://wss.peaq.network query system account YOUR_ADDRESS",
+    "send_transfer": "npx @polkadot/api-cli --ws wss://wss.peaq.network --seed 'YOUR_SEED_PHRASE' tx balances transferAllowDeath RECIPIENT_ADDRESS AMOUNT_IN_PLANCK",
+    "monitor_rpc": "npx @polkadot/monitor-rpc --ws wss://wss.peaq.network",
+    "agung_testnet_query": "npx @polkadot/api-cli --ws wss://wss-async.agung.peaq.network query system account YOUR_ADDRESS"
+  },
+  "evm_curl_commands": {
+    "get_block_number": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'",
+    "get_chain_id": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_chainId\",\"params\":[],\"id\":1}'",
+    "get_balance": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"0xYOUR_ADDRESS\",\"latest\"],\"id\":1}'",
+    "get_gas_price": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_gasPrice\",\"params\":[],\"id\":1}'",
+    "get_latest_block": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[\"latest\",false],\"id\":1}'",
+    "send_raw_transaction": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawTransaction\",\"params\":[\"0xSIGNED_TX_HEX\"],\"id\":1}'",
+    "get_transaction_receipt": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[\"0xTX_HASH\"],\"id\":1}'",
+    "estimate_gas": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_estimateGas\",\"params\":[{\"to\":\"0xTO_ADDRESS\",\"data\":\"0x\"}],\"id\":1}'",
+    "call_contract": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0xCONTRACT\",\"data\":\"0xFUNC_SELECTOR\"},\"latest\"],\"id\":1}'",
+    "get_nonce": "curl -X POST https://peaq.api.onfinality.io/public -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionCount\",\"params\":[\"0xYOUR_ADDRESS\",\"latest\"],\"id\":1}'",
+    "drpc_block_number": "curl -X POST https://peaq.drpc.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'"
+  },
+  "testnet": {
+    "name": "Agung",
+    "evm_chain_id": 9990,
+    "rpc": "https://rpcpc1-qa.agung.peaq.network",
+    "wss": "wss://wss-async.agung.peaq.network",
+    "explorer": "https://agung.subscan.io",
+    "faucet": "https://faucet.peaq.network"
+  }
+}

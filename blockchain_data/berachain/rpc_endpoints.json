@@ -1,0 +1,56 @@
+{
+  "chain": "Berachain",
+  "install": {
+    "foundry": "curl -L https://foundry.paradigm.xyz | bash && foundryup",
+    "hardhat": "npm init -y && npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox dotenv",
+    "ethers": "npm install ethers",
+    "viem": "npm install viem",
+    "web3": "npm install web3",
+    "python": "pip install web3 eth-account python-dotenv"
+  },
+  "forge": {
+    "init": "forge init my-bera-project",
+    "build": "forge build",
+    "test": "forge test -vvv",
+    "deploy_mainnet": "forge script script/Deploy.s.sol --rpc-url https://rpc.berachain.com --broadcast --account MyAccount",
+    "deploy_testnet": "forge script script/Deploy.s.sol --rpc-url https://bepolia.rpc.berachain.com --broadcast --account MyAccount",
+    "verify": "forge verify-contract CONTRACT_ADDRESS src/Contract.sol:Contract --chain 80094 --etherscan-api-key YOUR_KEY",
+    "install_oz": "forge install OpenZeppelin/openzeppelin-contracts --no-commit"
+  },
+  "cast": {
+    "import_wallet": "cast wallet import MyAccount --interactive",
+    "balance": "cast balance YOUR_ADDRESS --rpc-url https://rpc.berachain.com",
+    "block": "cast block latest --rpc-url https://rpc.berachain.com",
+    "send": "cast send TO_ADDRESS --value 0.01ether --rpc-url https://rpc.berachain.com --account MyAccount",
+    "call": "cast call CONTRACT 'functionName()(returnType)' --rpc-url https://rpc.berachain.com",
+    "chain_id": "cast chain-id --rpc-url https://rpc.berachain.com",
+    "gas_price": "cast gas-price --rpc-url https://rpc.berachain.com",
+    "nonce": "cast nonce YOUR_ADDRESS --rpc-url https://rpc.berachain.com"
+  },
+  "anvil": {
+    "fork": "anvil --fork-url https://rpc.berachain.com",
+    "fork_testnet": "anvil --fork-url https://bepolia.rpc.berachain.com"
+  },
+  "hardhat": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy_mainnet": "npx hardhat run scripts/deploy.js --network berachain",
+    "deploy_testnet": "npx hardhat run scripts/deploy.js --network bepolia",
+    "verify": "npx hardhat verify --network berachain CONTRACT_ADDRESS"
+  },
+  "curl": {
+    "block_number": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'",
+    "chain_id": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_chainId\",\"params\":[],\"id\":1}'",
+    "get_balance": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"0xYOUR_ADDRESS\",\"latest\"],\"id\":1}'",
+    "gas_price": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_gasPrice\",\"params\":[],\"id\":1}'",
+    "latest_block": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[\"latest\",false],\"id\":1}'",
+    "send_tx": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawTransaction\",\"params\":[\"0xSIGNED_TX\"],\"id\":1}'",
+    "get_receipt": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[\"0xTX_HASH\"],\"id\":1}'",
+    "estimate_gas": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_estimateGas\",\"params\":[{\"to\":\"0xTO\",\"data\":\"0x\"}],\"id\":1}'",
+    "call_contract": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0xCONTRACT\",\"data\":\"0xSELECTOR\"},\"latest\"],\"id\":1}'",
+    "get_nonce": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionCount\",\"params\":[\"0xYOUR_ADDRESS\",\"latest\"],\"id\":1}'",
+    "get_logs": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"latest\",\"toBlock\":\"latest\",\"address\":\"0xCONTRACT\"}],\"id\":1}'",
+    "fee_history": "curl -X POST https://rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_feeHistory\",\"params\":[4,\"latest\",[25,75]],\"id\":1}'",
+    "testnet_block": "curl -X POST https://bepolia.rpc.berachain.com -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "chain": "Arc",
+  "symbol": "USDC",
+  "note": "Arc uses USDC as native gas token - no ETH or volatile crypto needed for fees",
+  "developer": "Circle",
+  "type": "EVM-compatible L1 - stablecoin-native blockchain",
+  "consensus": "Malachite - instant finality, sub-second settlement",
+  "status": "Public testnet as of March 2026 - mainnet launch pending",
+  "block_explorer_testnet": "https://arc-testnet.explorer.caldera.xyz",
+  "mainnet": {
+    "chain_id": 1243,
+    "rpc": "https://rpc-main-1.archiechain.io",
+    "note": "Confirm latest mainnet RPC via https://www.arc.network"
+  },
+  "testnet": {
+    "chain_id": 5042002,
+    "rpc": "Via QuickNode endpoint - sign up at https://www.quicknode.com/chains/arc",
+    "drpc": "https://drpc.org/chainlist/arc-testnet-rpc",
+    "explorer": "https://arc-testnet.explorer.caldera.xyz",
+    "faucet": "https://faucet.quicknode.com/drip"
+  },
+  "premium_providers": [
+    { "name": "QuickNode", "url": "https://www.quicknode.com/chains/arc", "notes": "Archive; HTTP + WSS; global distribution" },
+    { "name": "dRPC", "url": "https://drpc.org/chainlist/arc-testnet-rpc", "notes": "Free tier available" }
+  ],
+  "key_features": [
+    "USDC as native gas token - dollar-denominated fees",
+    "Sub-second finality via Malachite consensus",
+    "Built-in FX engine for stablecoin conversion on-chain",
+    "Opt-in compliant privacy for institutional use",
+    "Full EVM compatibility - all Ethereum tools work",
+    "CCTP integration for cross-chain USDC transfers",
+    "Circle Paymaster support",
+    "Designed for AI agents, settlement, treasury, issuance"
+  ],
+  "wallet_config_testnet": {
+    "network_name": "Arc Testnet",
+    "chain_id": 5042002,
+    "currency_symbol": "USDC",
+    "explorer": "https://arc-testnet.explorer.caldera.xyz"
+  },
+  "resources": {
+    "website": "https://www.arc.network",
+    "quicknode_docs": "https://www.quicknode.com/docs/arc",
+    "quicknode_api_reference": "https://www.quicknode.com/docs/arc/eth_accounts"
+  }
+}

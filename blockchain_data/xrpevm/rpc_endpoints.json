@@ -1,0 +1,62 @@
+{
+  "chain": "XRPL EVM Sidechain",
+  "symbol": "XRP",
+  "chain_id": 1440000,
+  "chain_id_hex": "0x15F900",
+  "mainnet_rpc": "https://rpc.xrplevm.org",
+  "block_explorer": "https://explorer.xrplevm.org",
+  "install_commands": {
+    "foundry_install": "curl -L https://foundry.paradigm.xyz | bash",
+    "foundry_update": "foundryup",
+    "forge_init": "forge init my-xrpl-project && cd my-xrpl-project",
+    "forge_install_openzeppelin": "forge install OpenZeppelin/openzeppelin-contracts",
+    "forge_build": "forge build",
+    "forge_test": "forge test",
+    "forge_deploy_mainnet": "forge create src/Counter.sol:Counter --rpc-url https://rpc.xrplevm.org --private-key $PRIVATE_KEY --broadcast",
+    "forge_deploy_testnet": "forge create src/Counter.sol:Counter --rpc-url https://rpc.testnet.xrplevm.org --private-key $PRIVATE_KEY --broadcast --legacy",
+    "forge_script_mainnet": "forge script script/Deploy.s.sol:Deploy --rpc-url https://rpc.xrplevm.org --broadcast",
+    "forge_script_testnet": "forge script script/Deploy.s.sol --rpc-url $RPC_URL --broadcast --legacy",
+    "forge_script_verbose": "forge script script/Deploy.s.sol:Deploy --rpc-url https://rpc.xrplevm.org --broadcast --skip-simulation -vvvv",
+    "hardhat_init": "mkdir my-xrpl-hardhat && cd my-xrpl-hardhat && npm init -y && npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox dotenv",
+    "hardhat_create": "npx hardhat init",
+    "hardhat_compile": "npx hardhat compile",
+    "hardhat_deploy_mainnet": "npx hardhat run scripts/deploy.ts --network xrplEVM",
+    "hardhat_deploy_testnet": "npx hardhat run scripts/deploy.ts --network XRPL_EVM_Sidechain_Devnet",
+    "hardhat_ignition_deploy": "npx hardhat ignition deploy ignition/modules/Lock.ts --network XRPL_EVM_Sidechain_Devnet",
+    "npm_ethers": "npm install ethers",
+    "npm_web3": "npm install web3",
+    "npm_viem": "npm install viem",
+    "pip_web3": "pip install web3 eth-account python-dotenv"
+  },
+  "foundry_toml_config": "[profile.default]\nsrc = 'src'\nout = 'out'\nlibs = ['lib']\noptimizer = true\noptimizer_runs = 200\n\n[rpc_endpoints]\nxrplevm = 'https://rpc.xrplevm.org'\nxrplevm_testnet = 'https://rpc.testnet.xrplevm.org'\n\n[etherscan]\nxrplevm = { key = 'your_api_key', url = 'https://explorer.xrplevm.org/api' }",
+  "hardhat_config": "require('@nomicfoundation/hardhat-toolbox');\nrequire('dotenv').config();\n\nmodule.exports = {\n  solidity: '0.8.24',\n  networks: {\n    xrplEVM: {\n      url: process.env.XRPL_EVM_URL || 'https://rpc.xrplevm.org',\n      accounts: [process.env.PRIVATE_KEY],\n      chainId: 1440000\n    },\n    xrplEVMTestnet: {\n      url: 'https://rpc.testnet.xrplevm.org',\n      accounts: [process.env.PRIVATE_KEY],\n      chainId: 1449000\n    }\n  }\n};",
+  "cast_commands": {
+    "get_balance": "cast balance YOUR_ADDRESS --rpc-url https://rpc.xrplevm.org",
+    "get_block": "cast block latest --rpc-url https://rpc.xrplevm.org",
+    "send_tx": "cast send TO_ADDRESS --value 0.01ether --rpc-url https://rpc.xrplevm.org --private-key $PRIVATE_KEY",
+    "call_contract": "cast call CONTRACT_ADDRESS 'balanceOf(address)(uint256)' YOUR_ADDRESS --rpc-url https://rpc.xrplevm.org",
+    "check_contract_exists": "cast code CONTRACT_ADDRESS --rpc-url https://rpc.xrplevm.org",
+    "check_broadcast_logs": "cat broadcast/Deploy.s.sol/1440000/run-latest.json",
+    "testnet_balance": "cast balance YOUR_WALLET_ADDRESS --rpc-url https://rpc.testnet.xrplevm.org"
+  },
+  "curl_commands": {
+    "get_block_number": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'",
+    "get_chain_id": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_chainId\",\"params\":[],\"id\":1}'",
+    "get_balance": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"0xYOUR_ADDRESS\",\"latest\"],\"id\":1}'",
+    "get_gas_price": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_gasPrice\",\"params\":[],\"id\":1}'",
+    "get_latest_block": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[\"latest\",false],\"id\":1}'",
+    "send_raw_transaction": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawTransaction\",\"params\":[\"0xSIGNED_TX_HEX\"],\"id\":1}'",
+    "get_transaction_receipt": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[\"0xTX_HASH\"],\"id\":1}'",
+    "estimate_gas": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_estimateGas\",\"params\":[{\"to\":\"0xTO_ADDRESS\",\"data\":\"0x\"}],\"id\":1}'",
+    "call_contract": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0xCONTRACT\",\"data\":\"0xFUNC_SELECTOR\"},\"latest\"],\"id\":1}'",
+    "get_nonce": "curl -X POST https://rpc.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionCount\",\"params\":[\"0xYOUR_ADDRESS\",\"latest\"],\"id\":1}'",
+    "testnet_block_number": "curl -X POST https://rpc.testnet.xrplevm.org -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'"
+  },
+  "testnet": {
+    "chain_id": 1449000,
+    "rpc": "https://rpc.testnet.xrplevm.org",
+    "wss": "wss://wss.testnet.xrplevm.org",
+    "explorer": "https://explorer.testnet.xrplevm.org",
+    "faucet": "https://bridge.xrplevm.org"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "chain": "Zcash",
+  "symbol": "ZEC",
+  "type": "L1 UTXO chain with shielded transactions (zk-SNARKs)",
+  "consensus": "Proof of Work (Equihash)",
+  "block_time_seconds": 75,
+  "block_explorer": "https://zcashblockexplorer.com",
+  "note": "NOT EVM-compatible. Uses Bitcoin-style JSON-RPC over HTTP with extended z_* methods for shielded transactions.",
+  "node_rpc": {
+    "protocol": "JSON-RPC over HTTP",
+    "default_port_mainnet": 8232,
+    "default_port_testnet": 18232,
+    "local_node_url": "http://127.0.0.1:8232",
+    "authentication": "rpcuser and rpcpassword in zcash.conf"
+  },
+  "install_commands": {
+    "ubuntu_debian_dependencies": "sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev unzip git python3 python3-zmq zlib1g-dev curl bsdmainutils automake libtinfo5",
+    "clone_zcash": "git clone https://github.com/zcash/zcash.git",
+    "checkout_latest": "cd zcash && git checkout v6.11.0",
+    "fetch_params": "./zcutil/fetch-params.sh",
+    "build_zcashd": "./zcutil/build.sh -j$(nproc)",
+    "install_binaries": "cd src && sudo install -sv zcashd zcash-cli /usr/local/bin/",
+    "create_conf_dir": "mkdir -p ~/.zcash && touch ~/.zcash/zcash.conf",
+    "start_zcashd": "./src/zcashd",
+    "start_zcashd_daemon": "./src/zcashd --daemon",
+    "upgrade_zcashd": "git fetch origin && git checkout v6.11.0 && ./zcutil/fetch-params.sh && ./zcutil/build.sh -j$(nproc)",
+    "zebra_install_rust": "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
+    "zebra_clone": "git clone https://github.com/ZcashFoundation/zebra.git && cd zebra",
+    "zebra_build": "cargo build --release",
+    "zebra_run": "./target/release/zebrad start",
+    "lightwalletd_clone": "git clone https://github.com/zcash/lightwalletd.git && cd lightwalletd",
+    "lightwalletd_build": "go build -o lightwalletd main.go",
+    "lightwalletd_run": "./lightwalletd --grpc-bind-addr 0.0.0.0:9067 --zcash-conf-path ~/.zcash/zcash.conf --log-file /tmp/lwd.log",
+    "python_zcash": "pip install python-zcash",
+    "check_sync_status": "zcash-cli getblockchaininfo",
+    "check_version": "zcash-cli --version"
+  },
+  "zcash_conf_example": {
+    "file": "~/.zcash/zcash.conf",
+    "mainnet": [
+      "rpcuser=yourusername",
+      "rpcpassword=yourpassword",
+      "rpcport=8232",
+      "rpcallowip=127.0.0.1",
+      "addnode=mainnet.z.cash",
+      "server=1",
+      "txindex=1"
+    ],
+    "testnet": [
+      "testnet=1",
+      "rpcuser=yourusername",
+      "rpcpassword=yourpassword",
+      "rpcport=18232",
+      "addnode=testnet.z.cash",
+      "server=1"
+    ]
+  },
+  "zcash_cli_commands": {
+    "get_info": "zcash-cli getinfo",
+    "get_blockchain_info": "zcash-cli getblockchaininfo",
+    "get_block_count": "zcash-cli getblockcount",
+    "get_block_hash": "zcash-cli getblockhash BLOCK_HEIGHT",
+    "get_block": "zcash-cli getblock BLOCK_HASH",
+    "get_new_transparent_address": "zcash-cli getnewaddress",
+    "get_new_shielded_address": "zcash-cli z_getnewaddress",
+    "get_new_unified_address": "zcash-cli z_getnewaddress unified",
+    "list_addresses": "zcash-cli z_listaddresses",
+    "get_balance": "zcash-cli getbalance",
+    "get_shielded_balance": "zcash-cli z_getbalance YOUR_Z_ADDRESS",
+    "get_total_balance": "zcash-cli z_gettotalbalance",
+    "send_transparent": "zcash-cli sendtoaddress t1RECIPIENT_ADDRESS 0.01",
+    "send_shielded": "zcash-cli z_sendmany FROM_ADDRESS '[{\"address\":\"TO_ADDRESS\",\"amount\":0.01}]'",
+    "shield_coinbase": "zcash-cli z_shieldcoinbase FROM_T_ADDRESS TO_Z_ADDRESS",
+    "get_operation_status": "zcash-cli z_getoperationstatus '[\"OPERATION_ID\"]'",
+    "get_operation_result": "zcash-cli z_getoperationresult '[\"OPERATION_ID\"]'",
+    "list_received_by_address": "zcash-cli z_listreceivedbyaddress YOUR_Z_ADDRESS",
+    "get_raw_mempool": "zcash-cli getrawmempool",
+    "get_raw_transaction": "zcash-cli getrawtransaction TX_HASH 1",
+    "send_raw_transaction": "zcash-cli sendrawtransaction SIGNED_TX_HEX",
+    "validate_address": "zcash-cli validateaddress ZEC_ADDRESS",
+    "get_peer_info": "zcash-cli getpeerinfo",
+    "stop_node": "zcash-cli stop"
+  },
+  "curl_commands": {
+    "get_blockchain_info": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getblockchaininfo\",\"params\":[]}'",
+    "get_block_count": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getblockcount\",\"params\":[]}'",
+    "get_balance": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getbalance\",\"params\":[]}'",
+    "z_get_balance": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"z_getbalance\",\"params\":[\"YOUR_Z_ADDRESS\"]}'",
+    "z_get_new_address": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"z_getnewaddress\",\"params\":[]}'",
+    "z_send_many": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"z_sendmany\",\"params\":[\"FROM_ADDRESS\",[{\"address\":\"TO_ADDRESS\",\"amount\":0.01}]]}'",
+    "z_list_addresses": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"z_listaddresses\",\"params\":[]}'",
+    "get_operation_status": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"z_getoperationstatus\",\"params\":[[\"OPERATION_ID\"]]}'",
+    "send_raw_transaction": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"sendrawtransaction\",\"params\":[\"SIGNED_TX_HEX\"]}'",
+    "validate_address": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"validateaddress\",\"params\":[\"ZEC_ADDRESS\"]}'",
+    "get_raw_mempool": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"getrawmempool\",\"params\":[]}'",
+    "z_shield_coinbase": "curl --user rpcuser:rpcpassword -H 'content-type: text/plain;' http://127.0.0.1:8232/ --data '{\"jsonrpc\":\"1.0\",\"id\":\"test\",\"method\":\"z_shieldcoinbase\",\"params\":[\"FROM_TADDR\",\"TO_ZADDR\"]}'"
+  },
+  "lightwalletd_endpoints": {
+    "description": "gRPC proxy for light clients - no full node required",
+    "protocol": "gRPC",
+    "mainnet": [
+      { "name": "Electric Coin Co (ECC)", "url": "lightwalletd.electriccoin.co:9067" },
+      { "name": "Zec Rocks", "url": "zec.rocks:443" },
+      { "name": "Zcash Switzerland", "url": "zcashd.zcash.ch:9067" }
+    ],
+    "testnet": [
+      { "name": "ECC Testnet", "url": "lightwalletd.testnet.electriccoin.co:9067" }
+    ]
+  },
+  "testnet": {
+    "port": 18232,
+    "conf_setting": "testnet=1 in zcash.conf",
+    "explorer": "https://testnet.zcashexplorer.app"
+  },
+  "resources": {
+    "rpc_reference": "https://zcash.github.io/rpc/",
+    "docs": "https://zcash.readthedocs.io",
+    "github": "https://github.com/zcash/zcash",
+    "zebra_github": "https://github.com/ZcashFoundation/zebra",
+    "lightwalletd_github": "https://github.com/zcash/lightwalletd"
+  }
+}

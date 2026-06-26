@@ -1,0 +1,54 @@
+{
+  "chain": "Plasma",
+  "symbol": "XPL",
+  "type": "EVM-compatible L1 - stablecoin-native, Bitcoin-bridged",
+  "consensus": "Proof of Stake",
+  "block_explorer": "https://plasmascan.to",
+  "mainnet": {
+    "network_name": "Plasma Mainnet Beta",
+    "chain_id": 9745,
+    "chain_id_hex": "0x2611",
+    "rpc": "https://rpc.plasma.to",
+    "wss": "wss://rpc.plasma.to",
+    "explorer": "https://plasmascan.to",
+    "note": "Rate limited - use partner RPC for production"
+  },
+  "testnet": {
+    "network_name": "Plasma Testnet",
+    "chain_id": 9746,
+    "chain_id_hex": "0x2612",
+    "rpc": "https://testnet-rpc.plasma.to",
+    "explorer": "https://testnet.plasmascan.to",
+    "faucet": "https://gas.zip/faucet/plasma"
+  },
+  "wallet_config_mainnet": {
+    "network_name": "Plasma Mainnet Beta",
+    "rpc_url": "https://rpc.plasma.to",
+    "chain_id": 9745,
+    "currency_symbol": "XPL",
+    "block_explorer_url": "https://plasmascan.to"
+  },
+  "premium_providers": [
+    { "name": "QuickNode", "url": "https://www.quicknode.com/chains/plasma", "notes": "Production-grade endpoints" },
+    { "name": "Tenderly", "url": "https://docs.tenderly.co", "notes": "Plasma Testnet supported" },
+    { "name": "dRPC", "url": "https://drpc.org", "notes": "Free tier available" }
+  ],
+  "key_features": [
+    "Stablecoin-native: zero-fee USDT transfers via custom gas tokens",
+    "Bitcoin bridge built-in",
+    "Confidential payments support",
+    "EVM-compatible - all Ethereum tools work",
+    "Custom gas tokens - pay fees in USDT or other stablecoins",
+    "Account abstraction (ERC-4337) support",
+    "Stargate bridge for cross-chain transfers"
+  ],
+  "bridge": "https://stargate.finance/bridge?srcChain=ethereum&srcToken=0xdAC17F958D2ee523a2206206994597C13D831ec7&dstChain=plasma&dstToken=0xB8CE59FC3717ada4C02eaDF9682A9e934F625ebb",
+  "resources": {
+    "website": "https://plasma.to",
+    "docs": "https://www.plasma.to/docs",
+    "connect_guide": "https://www.plasma.to/docs/plasma-chain/network-information/connect-to-plasma",
+    "rpc_providers": "https://www.plasma.to/docs/plasma-chain/tools/rpc-providers",
+    "ecosystem": "https://app.plasma.to/ecosystem",
+    "status": "https://statuspage.incident.io/plasmanetwork"
+  }
+}
