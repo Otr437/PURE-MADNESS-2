@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-core
+  namespace: arc-agents-testnet
+spec:
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscription-manager
+  namespace: arc-agents-testnet
+spec:
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: merchant-settlement
+  namespace: arc-agents-testnet
+spec:
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference-pay
+  namespace: arc-agents-testnet
+spec:
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming-pay
+  namespace: arc-agents-testnet
+spec:
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loyalty-engine
+  namespace: arc-agents-testnet
+spec:
+  replicas: 1

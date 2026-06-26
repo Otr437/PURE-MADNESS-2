@@ -1,0 +1,23 @@
+FROM node:20-alpine AS base
+RUN npm install -g pnpm@9.4.0
+WORKDIR /app
+
+FROM base AS deps
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml* ./
+COPY packages/*/package.json ./packages/
+COPY apps/*/package.json ./apps/
+RUN pnpm install --frozen-lockfile
+
+FROM base AS builder
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN pnpm build
+
+ARG SERVICE
+FROM node:20-alpine AS runner
+RUN npm install -g pnpm@9.4.0
+WORKDIR /app
+COPY --from=builder /app .
+ARG SERVICE
+ENV SERVICE_NAME=$SERVICE
+CMD ["sh", "-c", "node apps/${SERVICE_NAME}/dist/index.js"]

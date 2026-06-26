@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+namespace: arc-agents-testnet
+
+patchesStrategicMerge:
+  - replica-patch.yaml
+
+configMapGenerator:
+  - name: arc-chain-config
+    literals:
+      - ARC_RPC_URL=https://rpc.testnet.arc.network/
+      - ARC_CHAIN_ID=5042002
+      - CIRCLE_ENV=sandbox

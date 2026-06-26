@@ -1,0 +1,117 @@
+version: '3.9'
+
+services:
+  # ─── Infrastructure ─────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    ports: ['6379:6379']
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: arc_agents
+    ports: ['5432:5432']
+    volumes: ['postgres_data:/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ─── Observability ───────────────────────────────────────────────────────
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    ports: ['4317:4317', '4318:4318']
+    volumes: ['./infra/docker/otel-config.yaml:/etc/otel/config.yaml']
+    command: ['--config=/etc/otel/config.yaml']
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports: ['16686:16686', '14268:14268']
+    environment:
+      COLLECTOR_OTLP_ENABLED: 'true'
+
+  # ─── Services ────────────────────────────────────────────────────────────
+  agent-core:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE: agent-core
+    ports: ['3001:3001']
+    env_file: .env
+    environment:
+      PORT: '3001'
+    depends_on:
+      redis: { condition: service_healthy }
+      postgres: { condition: service_healthy }
+
+  subscription-manager:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE: subscription-manager
+    ports: ['3002:3002']
+    env_file: .env
+    environment:
+      PORT: '3002'
+    depends_on: [redis, postgres, agent-core]
+
+  merchant-settlement:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE: merchant-settlement
+    ports: ['3003:3003']
+    env_file: .env
+    environment:
+      PORT: '3003'
+    depends_on: [redis, postgres]
+
+  inference-pay:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE: inference-pay
+    ports: ['3004:3004']
+    env_file: .env
+    environment:
+      PORT: '3004'
+    depends_on: [redis]
+
+  streaming-pay:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE: streaming-pay
+    ports: ['3005:3005']
+    env_file: .env
+    environment:
+      PORT: '3005'
+    depends_on: [redis]
+
+  loyalty-engine:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE: loyalty-engine
+    ports: ['3006:3006']
+    env_file: .env
+    environment:
+      PORT: '3006'
+    depends_on: [redis]
+
+volumes:
+  postgres_data:
