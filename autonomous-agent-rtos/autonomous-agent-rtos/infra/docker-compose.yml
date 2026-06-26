@@ -1,9 +1,0 @@
-services:
-  api-gateway:
-    build:
-      context: ..
-      dockerfile: infra/Dockerfile
-    environment:
-      - AGENT_MASTER_KEY=${AGENT_MASTER_KEY}
-      - NVD_API_KEY=${NVD_API_KEY}
-    restart: unless-stopped
