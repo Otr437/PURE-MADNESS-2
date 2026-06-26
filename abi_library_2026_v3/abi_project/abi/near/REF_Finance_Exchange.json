@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "name": "REF Finance Exchange — largest DEX on NEAR",
+    "chain": "NEAR",
+    "addresses": {
+      "exchange":  "v2.ref-finance.near",
+      "router":    "ref-finance.near"
+    }
+  },
+  "methods": {
+    "view": [
+      {"name":"get_pool","params":{"pool_id":"number"},"returns":"Pool"},
+      {"name":"get_pool_volumes","params":{"pool_id":"number"},"returns":"[U128, U128]"},
+      {"name":"get_number_of_pools","params":{},"returns":"number"},
+      {"name":"get_pools","params":{"from_index":"number","limit":"number"},"returns":"Pool[]"},
+      {"name":"get_pool_shares","params":{"pool_id":"number","account_id":"string"},"returns":"U128"},
+      {"name":"get_pool_total_shares","params":{"pool_id":"number"},"returns":"U128"},
+      {"name":"get_deposits","params":{"account_id":"string"},"returns":"Record<string, U128>"},
+      {"name":"get_return","params":{"pool_id":"number","token_in":"string","amount_in":"U128","token_out":"string"},"returns":"U128"},
+      {"name":"get_expected_output_swap_without_fee","params":{"actions":"Action[]"},"returns":"U128"}
+    ],
+    "change": [
+      {"name":"swap","params":{"actions":[{"pool_id":"number","token_in":"string","amount_in":"U128|null","token_out":"string","min_amount_out":"U128"}],"referral_id":"string|null"},"returns":"U128","deposit":"1 yoctoNEAR"},
+      {"name":"add_liquidity","params":{"pool_id":"number","amounts":"U128[]","min_amounts":"U128[]|null"},"deposit":"varies"},
+      {"name":"remove_liquidity","params":{"pool_id":"number","shares":"U128","min_amounts":"U128[]"},"deposit":"1 yoctoNEAR"},
+      {"name":"add_simple_pool","params":{"tokens":"string[]","fee":"number"},"deposit":"at least 0.03 NEAR"},
+      {"name":"deposit","params":{},"note":"Call ft_transfer_call with msg being the action"},
+      {"name":"withdraw","params":{"token_id":"string","amount":"U128","unregister":"bool|null"},"deposit":"1 yoctoNEAR"}
+    ]
+  }
+}

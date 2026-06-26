@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "name": "Chainlink CCIP (Cross-Chain Interoperability Protocol) — institutional-grade cross-chain messaging + token transfers",
+    "note": "Three-layer defense: Risk Management Network, Committing DON, Executing DON. Best for large/institutional transfers.",
+    "addresses": {
+      "Router_ethereum":  "0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D",
+      "Router_arbitrum":  "0x141fa059441E0ca23ce184B6A78bafD2A517DdE8",
+      "Router_optimism":  "0x3206695CaE29952f4b0c22a169725a865bc8Ce0f",
+      "Router_base":      "0x881e3A65B4d4a04dD529061dd0071cf975F58bCD",
+      "Router_polygon":   "0x849c5ED5a80F5B408Dd4969b78c2C8fea3249B4a",
+      "Router_bnb":       "0x34B03Cb9086d7D758AC55af71584F81A598759FE",
+      "Router_avalanche": "0xF4c7E640EdA248ef95972845a62bdC74237805dB"
+    },
+    "chain_selectors": {
+      "ethereum":  "5009297550715157269",
+      "arbitrum":  "4949039107694359620",
+      "optimism":  "3734403246176062136",
+      "base":      "15971525489660198786",
+      "polygon":   "4051577828743386545",
+      "bnb":       "11344663589394136015",
+      "avalanche": "6433500567565415381"
+    }
+  },
+  "IRouterClient_abi": [
+    {"name":"getFee","type":"function","stateMutability":"view","inputs":[{"name":"destinationChainSelector","type":"uint64"},{"name":"message","type":"tuple","components":[{"name":"receiver","type":"bytes"},{"name":"data","type":"bytes"},{"name":"tokenAmounts","type":"tuple[]","components":[{"name":"token","type":"address"},{"name":"amount","type":"uint256"}]},{"name":"feeToken","type":"address"},{"name":"extraArgs","type":"bytes"}]}],"outputs":[{"name":"fee","type":"uint256"}]},
+    {"name":"ccipSend","type":"function","stateMutability":"payable","inputs":[{"name":"destinationChainSelector","type":"uint64"},{"name":"message","type":"tuple","components":[{"name":"receiver","type":"bytes"},{"name":"data","type":"bytes"},{"name":"tokenAmounts","type":"tuple[]","components":[{"name":"token","type":"address"},{"name":"amount","type":"uint256"}]},{"name":"feeToken","type":"address"},{"name":"extraArgs","type":"bytes"}]}],"outputs":[{"name":"messageId","type":"bytes32"}]},
+    {"name":"isChainSupported","type":"function","stateMutability":"view","inputs":[{"name":"chainSelector","type":"uint64"}],"outputs":[{"name":"supported","type":"bool"}]},
+    {"name":"getSupportedTokens","type":"function","stateMutability":"view","inputs":[{"name":"chainSelector","type":"uint64"}],"outputs":[{"name":"tokens","type":"address[]"}]},
+    {"name":"CCIPSendRequested","type":"event","anonymous":false,"inputs":[{"name":"message","type":"tuple","indexed":false,"components":[{"name":"messageId","type":"bytes32"},{"name":"sourceChainSelector","type":"uint64"},{"name":"sender","type":"bytes"},{"name":"data","type":"bytes"},{"name":"destTokenAmounts","type":"tuple[]","components":[{"name":"token","type":"address"},{"name":"amount","type":"uint256"}]}]}]}
+  ],
+  "IAny2EVMMessageReceiver_abi": [
+    {"name":"ccipReceive","type":"function","stateMutability":"nonpayable","inputs":[{"name":"message","type":"tuple","components":[{"name":"messageId","type":"bytes32"},{"name":"sourceChainSelector","type":"uint64"},{"name":"sender","type":"bytes"},{"name":"data","type":"bytes"},{"name":"destTokenAmounts","type":"tuple[]","components":[{"name":"token","type":"address"},{"name":"amount","type":"uint256"}]}]}],"outputs":[]}
+  ]
+}

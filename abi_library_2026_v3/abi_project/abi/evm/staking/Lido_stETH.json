@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "name": "Lido stETH — liquid staked ETH, rebasing ERC-20",
+    "note": "stETH balance rebases daily at 12:00 UTC. For DeFi integrations use wstETH instead (non-rebasing). APR currently ~3.2-4.1%.",
+    "addresses": {
+      "stETH_ethereum": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+      "stETH_optimism_bridged": "use wstETH on L2s — stETH rebasing doesn't work on L2",
+      "LDO_token": "0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32",
+      "WithdrawalQueue_ethereum": "0x889edC2eDab5f40e902b864aD4d7AdE8E412F9B1",
+      "StakingRouter_ethereum": "0xFdDf38947aFB03C621203b9ac652eF52e4040130",
+      "LidoLocator_ethereum": "0xC1d0b3DE6792Bf6b4b37EccdcC24e45978Cfd2Eb"
+    }
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"pure","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"symbol","type":"function","stateMutability":"pure","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"decimals","type":"function","stateMutability":"pure","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"_account","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"transfer","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_recipient","type":"address"},{"name":"_amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_sender","type":"address"},{"name":"_recipient","type":"address"},{"name":"_amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"approve","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_spender","type":"address"},{"name":"_amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"submit","type":"function","stateMutability":"payable","inputs":[{"name":"_referral","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"sharesOf","type":"function","stateMutability":"view","inputs":[{"name":"_account","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getTotalPooledEther","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getTotalShares","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getPooledEthByShares","type":"function","stateMutability":"view","inputs":[{"name":"_sharesAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getSharesByPooledEth","type":"function","stateMutability":"view","inputs":[{"name":"_ethAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getCurrentStakeLimit","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"isStakingPaused","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"Transfer","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]},
+    {"name":"TransferShares","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"sharesValue","type":"uint256","indexed":false}]},
+    {"name":"Submitted","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"referral","type":"address","indexed":false}]},
+    {"name":"Approval","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"spender","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]}
+  ]
+}

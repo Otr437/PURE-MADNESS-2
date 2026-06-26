@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "name": "SushiSwap MasterChefV2 — staking and yield farming",
+    "addresses": {
+      "ethereum": "0xEF0881eC094552b2e128Cf945EF17a6752B4Ec5d"
+    }
+  },
+  "abi": [
+    {"name":"poolLength","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"pools","type":"uint256"}]},
+    {"name":"userInfo","type":"function","stateMutability":"view","inputs":[{"name":"_pid","type":"uint256"},{"name":"_user","type":"address"}],"outputs":[{"name":"amount","type":"uint256"},{"name":"rewardDebt","type":"int256"}]},
+    {"name":"poolInfo","type":"function","stateMutability":"view","inputs":[{"name":"pid","type":"uint256"}],"outputs":[{"name":"accSushiPerShare","type":"uint128"},{"name":"lastRewardBlock","type":"uint64"},{"name":"allocPoint","type":"uint64"}]},
+    {"name":"lpToken","type":"function","stateMutability":"view","inputs":[{"name":"","type":"uint256"}],"outputs":[{"name":"","type":"address"}]},
+    {"name":"pendingSushi","type":"function","stateMutability":"view","inputs":[{"name":"_pid","type":"uint256"},{"name":"_user","type":"address"}],"outputs":[{"name":"pending","type":"uint256"}]},
+    {"name":"deposit","type":"function","stateMutability":"nonpayable","inputs":[{"name":"pid","type":"uint256"},{"name":"amount","type":"uint256"},{"name":"to","type":"address"}],"outputs":[]},
+    {"name":"withdraw","type":"function","stateMutability":"nonpayable","inputs":[{"name":"pid","type":"uint256"},{"name":"amount","type":"uint256"},{"name":"to","type":"address"}],"outputs":[]},
+    {"name":"harvest","type":"function","stateMutability":"nonpayable","inputs":[{"name":"pid","type":"uint256"},{"name":"to","type":"address"}],"outputs":[]},
+    {"name":"withdrawAndHarvest","type":"function","stateMutability":"nonpayable","inputs":[{"name":"pid","type":"uint256"},{"name":"amount","type":"uint256"},{"name":"to","type":"address"}],"outputs":[]},
+    {"name":"emergencyWithdraw","type":"function","stateMutability":"nonpayable","inputs":[{"name":"pid","type":"uint256"},{"name":"to","type":"address"}],"outputs":[]},
+    {"name":"Deposit","type":"event","anonymous":false,"inputs":[{"name":"user","type":"address","indexed":true},{"name":"pid","type":"uint256","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"to","type":"address","indexed":true}]},
+    {"name":"Withdraw","type":"event","anonymous":false,"inputs":[{"name":"user","type":"address","indexed":true},{"name":"pid","type":"uint256","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"to","type":"address","indexed":true}]},
+    {"name":"Harvest","type":"event","anonymous":false,"inputs":[{"name":"user","type":"address","indexed":true},{"name":"pid","type":"uint256","indexed":true},{"name":"amount","type":"uint256","indexed":false}]}
+  ]
+}

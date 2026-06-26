@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "name": "JediSwap V1 Router (StarkNet)",
+    "chain": "StarkNet Mainnet",
+    "addresses": {
+      "router":  "0x041fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+      "factory": "0x00dad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd"
+    }
+  },
+  "abi": [
+    {"name":"factory","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"address","type":"felt"}]},
+    {"name":"sort_tokens","type":"function","stateMutability":"view","inputs":[{"name":"tokenA","type":"felt"},{"name":"tokenB","type":"felt"}],"outputs":[{"name":"token0","type":"felt"},{"name":"token1","type":"felt"}]},
+    {"name":"quote","type":"function","stateMutability":"view","inputs":[{"name":"amountA","type":"Uint256"},{"name":"reserveA","type":"Uint256"},{"name":"reserveB","type":"Uint256"}],"outputs":[{"name":"amountB","type":"Uint256"}]},
+    {"name":"get_amount_out","type":"function","stateMutability":"view","inputs":[{"name":"amountIn","type":"Uint256"},{"name":"reserveIn","type":"Uint256"},{"name":"reserveOut","type":"Uint256"}],"outputs":[{"name":"amountOut","type":"Uint256"}]},
+    {"name":"get_amount_in","type":"function","stateMutability":"view","inputs":[{"name":"amountOut","type":"Uint256"},{"name":"reserveIn","type":"Uint256"},{"name":"reserveOut","type":"Uint256"}],"outputs":[{"name":"amountIn","type":"Uint256"}]},
+    {"name":"get_amounts_out","type":"function","stateMutability":"view","inputs":[{"name":"amountIn","type":"Uint256"},{"name":"path_len","type":"felt"},{"name":"path","type":"felt*"}],"outputs":[{"name":"amounts_len","type":"felt"},{"name":"amounts","type":"Uint256*"}]},
+    {"name":"get_amounts_in","type":"function","stateMutability":"view","inputs":[{"name":"amountOut","type":"Uint256"},{"name":"path_len","type":"felt"},{"name":"path","type":"felt*"}],"outputs":[{"name":"amounts_len","type":"felt"},{"name":"amounts","type":"Uint256*"}]},
+    {"name":"add_liquidity","type":"function","inputs":[{"name":"tokenA","type":"felt"},{"name":"tokenB","type":"felt"},{"name":"amountADesired","type":"Uint256"},{"name":"amountBDesired","type":"Uint256"},{"name":"amountAMin","type":"Uint256"},{"name":"amountBMin","type":"Uint256"},{"name":"to","type":"felt"},{"name":"deadline","type":"felt"}],"outputs":[{"name":"amountA","type":"Uint256"},{"name":"amountB","type":"Uint256"},{"name":"liquidity","type":"Uint256"}]},
+    {"name":"remove_liquidity","type":"function","inputs":[{"name":"tokenA","type":"felt"},{"name":"tokenB","type":"felt"},{"name":"liquidity","type":"Uint256"},{"name":"amountAMin","type":"Uint256"},{"name":"amountBMin","type":"Uint256"},{"name":"to","type":"felt"},{"name":"deadline","type":"felt"}],"outputs":[{"name":"amountA","type":"Uint256"},{"name":"amountB","type":"Uint256"}]},
+    {"name":"swap_exact_tokens_for_tokens","type":"function","inputs":[{"name":"amountIn","type":"Uint256"},{"name":"amountOutMin","type":"Uint256"},{"name":"path_len","type":"felt"},{"name":"path","type":"felt*"},{"name":"to","type":"felt"},{"name":"deadline","type":"felt"}],"outputs":[{"name":"amounts_len","type":"felt"},{"name":"amounts","type":"Uint256*"}]},
+    {"name":"swap_tokens_for_exact_tokens","type":"function","inputs":[{"name":"amountOut","type":"Uint256"},{"name":"amountInMax","type":"Uint256"},{"name":"path_len","type":"felt"},{"name":"path","type":"felt*"},{"name":"to","type":"felt"},{"name":"deadline","type":"felt"}],"outputs":[{"name":"amounts_len","type":"felt"},{"name":"amounts","type":"Uint256*"}]}
+  ]
+}

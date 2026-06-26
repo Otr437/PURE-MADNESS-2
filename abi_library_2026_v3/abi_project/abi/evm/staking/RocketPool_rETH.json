@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "name": "Rocket Pool rETH — decentralized liquid staked ETH. Value accrues, balance stays fixed.",
+    "note": "rETH value vs ETH increases over time. Burn rETH to receive ETH + rewards. Min stake 0.01 ETH.",
+    "addresses": {
+      "rETH_ethereum":  "0xae78736Cd615f374D3085123A210448E74Fc6393",
+      "rETH_arbitrum":  "0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5FFa8",
+      "rETH_optimism":  "0x9Bcef72be871e61ED4fBbc7630889beE758eb81D",
+      "rETH_polygon":   "0x0266F4F08D82372CF0FcbCCc0Ff74309089c74d1",
+      "rETH_base":      "0xB6fe221Fe9EeF5aBa221c348bA20A1Bf5e73624c",
+      "RocketDepositPool_ethereum": "0xDD3f50F8A6CafbE9b31a427582963f465E745AF8",
+      "RocketStorage_ethereum": "0x1d8f8f00cfa6758d7bE78336684788Fb0ee0Fa46"
+    }
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"symbol","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"decimals","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"account","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"transfer","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"approve","type":"function","stateMutability":"nonpayable","inputs":[{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"burn","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_rethAmount","type":"uint256"}],"outputs":[]},
+    {"name":"getEthValue","type":"function","stateMutability":"view","inputs":[{"name":"_rethAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getRethValue","type":"function","stateMutability":"view","inputs":[{"name":"_ethAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getExchangeRate","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getTotalCollateral","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getCollateralRate","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"depositExcess","type":"function","stateMutability":"payable","inputs":[],"outputs":[]},
+    {"name":"EtherDeposited","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"time","type":"uint256","indexed":false}]},
+    {"name":"TokensMinted","type":"event","anonymous":false,"inputs":[{"name":"to","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"ethAmount","type":"uint256","indexed":false},{"name":"time","type":"uint256","indexed":false}]},
+    {"name":"TokensBurned","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"ethAmount","type":"uint256","indexed":false},{"name":"time","type":"uint256","indexed":false}]},
+    {"name":"Transfer","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]}
+  ]
+}

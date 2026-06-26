@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "name": "EigenLayer DelegationManager — delegate restaked assets to operators, queue/complete withdrawals",
+    "address_ethereum": "0x39053D51B77DC0d36036Fc1fCc8Cb819df8Ef37A",
+    "withdrawal_delay": "7 days (7 * 86400 seconds) escrow period before completing withdrawal"
+  },
+  "abi": [
+    {"name":"delegateTo","type":"function","stateMutability":"nonpayable","inputs":[{"name":"operator","type":"address"},{"name":"approverSignatureAndExpiry","type":"tuple","components":[{"name":"signature","type":"bytes"},{"name":"expiry","type":"uint256"}]},{"name":"approverSalt","type":"bytes32"}],"outputs":[]},
+    {"name":"undelegate","type":"function","stateMutability":"nonpayable","inputs":[{"name":"staker","type":"address"}],"outputs":[{"name":"withdrawalRoots","type":"bytes32[]"}]},
+    {"name":"queueWithdrawals","type":"function","stateMutability":"nonpayable","inputs":[{"name":"queuedWithdrawalParams","type":"tuple[]","components":[{"name":"strategies","type":"address[]"},{"name":"shares","type":"uint256[]"},{"name":"withdrawer","type":"address"}]}],"outputs":[{"name":"","type":"bytes32[]"}]},
+    {"name":"completeQueuedWithdrawal","type":"function","stateMutability":"nonpayable","inputs":[{"name":"withdrawal","type":"tuple","components":[{"name":"staker","type":"address"},{"name":"delegatedTo","type":"address"},{"name":"withdrawer","type":"address"},{"name":"nonce","type":"uint256"},{"name":"startBlock","type":"uint32"},{"name":"strategies","type":"address[]"},{"name":"shares","type":"uint256[]"}]},{"name":"tokens","type":"address[]"},{"name":"receiveAsTokens","type":"bool"}],"outputs":[]},
+    {"name":"completeQueuedWithdrawals","type":"function","stateMutability":"nonpayable","inputs":[{"name":"withdrawals","type":"tuple[]","components":[{"name":"staker","type":"address"},{"name":"delegatedTo","type":"address"},{"name":"withdrawer","type":"address"},{"name":"nonce","type":"uint256"},{"name":"startBlock","type":"uint32"},{"name":"strategies","type":"address[]"},{"name":"shares","type":"uint256[]"}]},{"name":"tokens","type":"address[][]"},{"name":"receiveAsTokens","type":"bool[]"}],"outputs":[]},
+    {"name":"registerAsOperator","type":"function","stateMutability":"nonpayable","inputs":[{"name":"registeringOperatorDetails","type":"tuple","components":[{"name":"__deprecated_earningsReceiver","type":"address"},{"name":"delegationApprover","type":"address"},{"name":"stakerOptOutWindowBlocks","type":"uint32"}]},{"name":"metadataURI","type":"string"}],"outputs":[]},
+    {"name":"modifyOperatorDetails","type":"function","stateMutability":"nonpayable","inputs":[{"name":"newOperatorDetails","type":"tuple","components":[{"name":"__deprecated_earningsReceiver","type":"address"},{"name":"delegationApprover","type":"address"},{"name":"stakerOptOutWindowBlocks","type":"uint32"}]}],"outputs":[]},
+    {"name":"isDelegated","type":"function","stateMutability":"view","inputs":[{"name":"staker","type":"address"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"isOperator","type":"function","stateMutability":"view","inputs":[{"name":"operator","type":"address"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"delegatedTo","type":"function","stateMutability":"view","inputs":[{"name":"staker","type":"address"}],"outputs":[{"name":"","type":"address"}]},
+    {"name":"operatorDetails","type":"function","stateMutability":"view","inputs":[{"name":"operator","type":"address"}],"outputs":[{"name":"","type":"tuple","components":[{"name":"__deprecated_earningsReceiver","type":"address"},{"name":"delegationApprover","type":"address"},{"name":"stakerOptOutWindowBlocks","type":"uint32"}]}]},
+    {"name":"getOperatorShares","type":"function","stateMutability":"view","inputs":[{"name":"operator","type":"address"},{"name":"strategies","type":"address[]"}],"outputs":[{"name":"","type":"uint256[]"}]},
+    {"name":"getWithdrawalDelay","type":"function","stateMutability":"view","inputs":[{"name":"strategies","type":"address[]"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"pendingWithdrawals","type":"function","stateMutability":"view","inputs":[{"name":"withdrawalRoot","type":"bytes32"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"OperatorRegistered","type":"event","anonymous":false,"inputs":[{"name":"operator","type":"address","indexed":true},{"name":"operatorDetails","type":"tuple","indexed":false,"components":[{"name":"__deprecated_earningsReceiver","type":"address"},{"name":"delegationApprover","type":"address"},{"name":"stakerOptOutWindowBlocks","type":"uint32"}]}]},
+    {"name":"StakerDelegated","type":"event","anonymous":false,"inputs":[{"name":"staker","type":"address","indexed":true},{"name":"operator","type":"address","indexed":true}]},
+    {"name":"StakerUndelegated","type":"event","anonymous":false,"inputs":[{"name":"staker","type":"address","indexed":true},{"name":"operator","type":"address","indexed":true}]},
+    {"name":"WithdrawalQueued","type":"event","anonymous":false,"inputs":[{"name":"withdrawalRoot","type":"bytes32","indexed":false},{"name":"withdrawal","type":"tuple","indexed":false,"components":[{"name":"staker","type":"address"},{"name":"delegatedTo","type":"address"},{"name":"withdrawer","type":"address"},{"name":"nonce","type":"uint256"},{"name":"startBlock","type":"uint32"},{"name":"strategies","type":"address[]"},{"name":"shares","type":"uint256[]"}]}]},
+    {"name":"WithdrawalCompleted","type":"event","anonymous":false,"inputs":[{"name":"withdrawalRoot","type":"bytes32","indexed":false}]}
+  ]
+}

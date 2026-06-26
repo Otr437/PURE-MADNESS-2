@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "name": "StarkNet ERC20 Standard (Cairo felt252)",
+    "chain": "StarkNet",
+    "note": "Uses felt/felt252 types — NOT Solidity address/uint256. Uses ContractAddress on newer Cairo.",
+    "addresses": {
+      "ETH":   "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+      "USDC":  "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+      "USDC_native": "0x033068F6539f8e6e6b131e6B2B814e6c34A5224bC66947c47DaB9dFeE93b35fb",
+      "USDT":  "0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
+      "WBTC":  "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
+      "STRK":  "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "DAI":   "0x001108cdbe5d82737b9057590adaf97d34e74b5452f0628161d237746b6fe69e",
+      "WSTETH":"0x042b8f0484674ca266ac5d08e4ac6a3fe65bd3129795def2dca5c34ecc5f96d2"
+    }
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"name","type":"felt"}]},
+    {"name":"symbol","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"symbol","type":"felt"}]},
+    {"name":"decimals","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"decimals","type":"felt"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"totalSupply","type":"Uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"account","type":"felt"}],"outputs":[{"name":"balance","type":"Uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"felt"},{"name":"spender","type":"felt"}],"outputs":[{"name":"remaining","type":"Uint256"}]},
+    {"name":"transfer","type":"function","inputs":[{"name":"recipient","type":"felt"},{"name":"amount","type":"Uint256"}],"outputs":[{"name":"success","type":"felt"}]},
+    {"name":"transferFrom","type":"function","inputs":[{"name":"sender","type":"felt"},{"name":"recipient","type":"felt"},{"name":"amount","type":"Uint256"}],"outputs":[{"name":"success","type":"felt"}]},
+    {"name":"approve","type":"function","inputs":[{"name":"spender","type":"felt"},{"name":"amount","type":"Uint256"}],"outputs":[{"name":"success","type":"felt"}]},
+    {"name":"increaseAllowance","type":"function","inputs":[{"name":"spender","type":"felt"},{"name":"added_value","type":"Uint256"}],"outputs":[{"name":"success","type":"felt"}]},
+    {"name":"decreaseAllowance","type":"function","inputs":[{"name":"spender","type":"felt"},{"name":"subtracted_value","type":"Uint256"}],"outputs":[{"name":"success","type":"felt"}]},
+    {"name":"Transfer","type":"event","keys":[],"data":[{"name":"from_","type":"felt"},{"name":"to","type":"felt"},{"name":"value","type":"Uint256"}]},
+    {"name":"Approval","type":"event","keys":[],"data":[{"name":"owner","type":"felt"},{"name":"spender","type":"felt"},{"name":"value","type":"Uint256"}]}
+  ]
+}

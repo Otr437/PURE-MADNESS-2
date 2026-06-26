@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "name": "Uniswap V2 Pair (Pool)",
+    "note": "Each trading pair is its own contract. Get address via Factory.getPair(token0, token1)"
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"pure","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"symbol","type":"function","stateMutability":"pure","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"decimals","type":"function","stateMutability":"pure","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"approve","type":"function","stateMutability":"nonpayable","inputs":[{"name":"spender","type":"address"},{"name":"value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transfer","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"token0","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"token1","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"factory","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"getReserves","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"reserve0","type":"uint112"},{"name":"reserve1","type":"uint112"},{"name":"blockTimestampLast","type":"uint32"}]},
+    {"name":"price0CumulativeLast","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"price1CumulativeLast","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"kLast","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"mint","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"}],"outputs":[{"name":"liquidity","type":"uint256"}]},
+    {"name":"burn","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"}],"outputs":[{"name":"amount0","type":"uint256"},{"name":"amount1","type":"uint256"}]},
+    {"name":"swap","type":"function","stateMutability":"nonpayable","inputs":[{"name":"amount0Out","type":"uint256"},{"name":"amount1Out","type":"uint256"},{"name":"to","type":"address"},{"name":"data","type":"bytes"}],"outputs":[]},
+    {"name":"skim","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"}],"outputs":[]},
+    {"name":"sync","type":"function","stateMutability":"nonpayable","inputs":[],"outputs":[]},
+    {"name":"initialize","type":"function","stateMutability":"nonpayable","inputs":[{"name":"token0","type":"address"},{"name":"token1","type":"address"}],"outputs":[]},
+    {"name":"Mint","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":true},{"name":"amount0","type":"uint256","indexed":false},{"name":"amount1","type":"uint256","indexed":false}]},
+    {"name":"Burn","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":true},{"name":"amount0","type":"uint256","indexed":false},{"name":"amount1","type":"uint256","indexed":false},{"name":"to","type":"address","indexed":true}]},
+    {"name":"Swap","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":true},{"name":"amount0In","type":"uint256","indexed":false},{"name":"amount1In","type":"uint256","indexed":false},{"name":"amount0Out","type":"uint256","indexed":false},{"name":"amount1Out","type":"uint256","indexed":false},{"name":"to","type":"address","indexed":true}]},
+    {"name":"Sync","type":"event","anonymous":false,"inputs":[{"name":"reserve0","type":"uint112","indexed":false},{"name":"reserve1","type":"uint112","indexed":false}]},
+    {"name":"Transfer","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]},
+    {"name":"Approval","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"spender","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]}
+  ]
+}

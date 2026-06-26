@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "name": "1inch AggregationRouterV6",
+    "addresses": {
+      "ethereum":  "0x111111125421cA6dc452d289314280a0f8842A65",
+      "arbitrum":  "0x111111125421cA6dc452d289314280a0f8842A65",
+      "optimism":  "0x111111125421cA6dc452d289314280a0f8842A65",
+      "polygon":   "0x111111125421cA6dc452d289314280a0f8842A65",
+      "base":      "0x111111125421cA6dc452d289314280a0f8842A65",
+      "bnb":       "0x111111125421cA6dc452d289314280a0f8842A65",
+      "avalanche": "0x111111125421cA6dc452d289314280a0f8842A65",
+      "gnosis":    "0x111111125421cA6dc452d289314280a0f8842A65",
+      "zksync":    "0x6fd4383cB451173D5f9304F041C7BCBf27d561fF",
+      "linea":     "0x111111125421cA6dc452d289314280a0f8842A65",
+      "fantom":    "0x111111125421cA6dc452d289314280a0f8842A65"
+    }
+  },
+  "abi": [
+    {"name":"swap","type":"function","stateMutability":"payable","inputs":[{"name":"executor","type":"address"},{"name":"desc","type":"tuple","components":[{"name":"srcToken","type":"address"},{"name":"dstToken","type":"address"},{"name":"srcReceiver","type":"address"},{"name":"dstReceiver","type":"address"},{"name":"amount","type":"uint256"},{"name":"minReturnAmount","type":"uint256"},{"name":"flags","type":"uint256"}]},{"name":"data","type":"bytes"}],"outputs":[{"name":"returnAmount","type":"uint256"},{"name":"spentAmount","type":"uint256"}]},
+    {"name":"unoswap","type":"function","stateMutability":"payable","inputs":[{"name":"token","type":"address"},{"name":"amount","type":"uint256"},{"name":"minReturn","type":"uint256"},{"name":"dex","type":"uint256"}],"outputs":[{"name":"returnAmount","type":"uint256"}]},
+    {"name":"unoswap2","type":"function","stateMutability":"payable","inputs":[{"name":"token","type":"address"},{"name":"amount","type":"uint256"},{"name":"minReturn","type":"uint256"},{"name":"dex","type":"uint256"},{"name":"dex2","type":"uint256"}],"outputs":[{"name":"returnAmount","type":"uint256"}]},
+    {"name":"unoswap3","type":"function","stateMutability":"payable","inputs":[{"name":"token","type":"address"},{"name":"amount","type":"uint256"},{"name":"minReturn","type":"uint256"},{"name":"dex","type":"uint256"},{"name":"dex2","type":"uint256"},{"name":"dex3","type":"uint256"}],"outputs":[{"name":"returnAmount","type":"uint256"}]},
+    {"name":"ethUnoswap","type":"function","stateMutability":"payable","inputs":[{"name":"minReturn","type":"uint256"},{"name":"dex","type":"uint256"}],"outputs":[{"name":"returnAmount","type":"uint256"}]},
+    {"name":"ethUnoswap2","type":"function","stateMutability":"payable","inputs":[{"name":"minReturn","type":"uint256"},{"name":"dex","type":"uint256"},{"name":"dex2","type":"uint256"}],"outputs":[{"name":"returnAmount","type":"uint256"}]},
+    {"name":"ethUnoswap3","type":"function","stateMutability":"payable","inputs":[{"name":"minReturn","type":"uint256"},{"name":"dex","type":"uint256"},{"name":"dex2","type":"uint256"},{"name":"dex3","type":"uint256"}],"outputs":[{"name":"returnAmount","type":"uint256"}]},
+    {"name":"cancelOrder","type":"function","stateMutability":"nonpayable","inputs":[{"name":"makerTraits","type":"uint256"},{"name":"orderHash","type":"bytes32"}],"outputs":[]},
+    {"name":"Swapped","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":false},{"name":"srcToken","type":"address","indexed":true},{"name":"dstToken","type":"address","indexed":true},{"name":"dstReceiver","type":"address","indexed":true},{"name":"spentAmount","type":"uint256","indexed":false},{"name":"returnAmount","type":"uint256","indexed":false}]}
+  ]
+}

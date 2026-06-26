@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "name": "Balancer V2 Flash Loan — zero-fee flash loans via Vault",
+    "note": "Balancer flash loans are FREE (0% fee) unless governance enables a fee. Implement IFlashLoanRecipient. Call vault.flashLoan().",
+    "vault_address_all_chains": "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    "fee": "Currently 0% — Balancer has the lowest fee of all flash loan providers"
+  },
+  "IFlashLoanRecipient": {
+    "description": "Implement receiveFlashLoan() in YOUR contract",
+    "abi": [
+      {"name":"receiveFlashLoan","type":"function","stateMutability":"nonpayable","inputs":[{"name":"tokens","type":"address[]"},{"name":"amounts","type":"uint256[]"},{"name":"feeAmounts","type":"uint256[]"},{"name":"userData","type":"bytes"}],"outputs":[]}
+    ]
+  },
+  "Vault_flashLoan_function": {
+    "description": "Call flashLoan() on the Balancer Vault",
+    "abi": [
+      {"name":"flashLoan","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"tokens","type":"address[]"},{"name":"amounts","type":"uint256[]"},{"name":"userData","type":"bytes"}],"outputs":[]},
+      {"name":"FlashLoan","type":"event","anonymous":false,"inputs":[{"name":"recipient","type":"address","indexed":true},{"name":"token","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"feeAmount","type":"uint256","indexed":false}]}
+    ]
+  }
+}

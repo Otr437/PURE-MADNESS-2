@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "name": "Uniswap V3 Pool",
+    "note": "Each pool is deployed at a unique address. Look up via Factory.getPool(token0, token1, fee). Fee tiers: 100=0.01%, 500=0.05%, 3000=0.3%, 10000=1%",
+    "example_pools": {
+      "ETH_USDC_0.05pct_ethereum": "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640",
+      "ETH_USDC_0.3pct_ethereum":  "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8",
+      "WBTC_USDC_0.3pct_ethereum": "0x99ac8cA7087fA4A2A1FB6357269965A2014ABc35"
+    }
+  },
+  "abi": [
+    {"name":"factory","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"token0","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"token1","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"fee","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint24"}]},
+    {"name":"tickSpacing","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"int24"}]},
+    {"name":"maxLiquidityPerTick","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint128"}]},
+    {"name":"slot0","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"sqrtPriceX96","type":"uint160"},{"name":"tick","type":"int24"},{"name":"observationIndex","type":"uint16"},{"name":"observationCardinality","type":"uint16"},{"name":"observationCardinalityNext","type":"uint16"},{"name":"feeProtocol","type":"uint8"},{"name":"unlocked","type":"bool"}]},
+    {"name":"feeGrowthGlobal0X128","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"feeGrowthGlobal1X128","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"protocolFees","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"token0","type":"uint128"},{"name":"token1","type":"uint128"}]},
+    {"name":"liquidity","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint128"}]},
+    {"name":"ticks","type":"function","stateMutability":"view","inputs":[{"name":"tick","type":"int24"}],"outputs":[{"name":"liquidityGross","type":"uint128"},{"name":"liquidityNet","type":"int128"},{"name":"feeGrowthOutside0X128","type":"uint256"},{"name":"feeGrowthOutside1X128","type":"uint256"},{"name":"tickCumulativeOutside","type":"int56"},{"name":"secondsPerLiquidityOutsideX128","type":"uint160"},{"name":"secondsOutside","type":"uint32"},{"name":"initialized","type":"bool"}]},
+    {"name":"tickBitmap","type":"function","stateMutability":"view","inputs":[{"name":"wordPosition","type":"int16"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"positions","type":"function","stateMutability":"view","inputs":[{"name":"key","type":"bytes32"}],"outputs":[{"name":"_liquidity","type":"uint128"},{"name":"feeGrowthInside0LastX128","type":"uint256"},{"name":"feeGrowthInside1LastX128","type":"uint256"},{"name":"tokensOwed0","type":"uint128"},{"name":"tokensOwed1","type":"uint128"}]},
+    {"name":"observations","type":"function","stateMutability":"view","inputs":[{"name":"index","type":"uint256"}],"outputs":[{"name":"blockTimestamp","type":"uint32"},{"name":"tickCumulative","type":"int56"},{"name":"secondsPerLiquidityCumulativeX128","type":"uint160"},{"name":"initialized","type":"bool"}]},
+    {"name":"initialize","type":"function","stateMutability":"nonpayable","inputs":[{"name":"sqrtPriceX96","type":"uint160"}],"outputs":[]},
+    {"name":"mint","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"tickLower","type":"int24"},{"name":"tickUpper","type":"int24"},{"name":"amount","type":"uint128"},{"name":"data","type":"bytes"}],"outputs":[{"name":"amount0","type":"uint256"},{"name":"amount1","type":"uint256"}]},
+    {"name":"collect","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"tickLower","type":"int24"},{"name":"tickUpper","type":"int24"},{"name":"amount0Requested","type":"uint128"},{"name":"amount1Requested","type":"uint128"}],"outputs":[{"name":"amount0","type":"uint128"},{"name":"amount1","type":"uint128"}]},
+    {"name":"burn","type":"function","stateMutability":"nonpayable","inputs":[{"name":"tickLower","type":"int24"},{"name":"tickUpper","type":"int24"},{"name":"amount","type":"uint128"}],"outputs":[{"name":"amount0","type":"uint256"},{"name":"amount1","type":"uint256"}]},
+    {"name":"swap","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"zeroForOne","type":"bool"},{"name":"amountSpecified","type":"int256"},{"name":"sqrtPriceLimitX96","type":"uint160"},{"name":"data","type":"bytes"}],"outputs":[{"name":"amount0","type":"int256"},{"name":"amount1","type":"int256"}]},
+    {"name":"flash","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"amount0","type":"uint256"},{"name":"amount1","type":"uint256"},{"name":"data","type":"bytes"}],"outputs":[]},
+    {"name":"increaseObservationCardinalityNext","type":"function","stateMutability":"nonpayable","inputs":[{"name":"observationCardinalityNext","type":"uint16"}],"outputs":[]},
+    {"name":"setFeeProtocol","type":"function","stateMutability":"nonpayable","inputs":[{"name":"feeProtocol0","type":"uint8"},{"name":"feeProtocol1","type":"uint8"}],"outputs":[]},
+    {"name":"collectProtocol","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"amount0Requested","type":"uint128"},{"name":"amount1Requested","type":"uint128"}],"outputs":[{"name":"amount0","type":"uint128"},{"name":"amount1","type":"uint128"}]},
+    {"name":"Initialize","type":"event","anonymous":false,"inputs":[{"name":"sqrtPriceX96","type":"uint160","indexed":false},{"name":"tick","type":"int24","indexed":false}]},
+    {"name":"Mint","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":false},{"name":"owner","type":"address","indexed":true},{"name":"tickLower","type":"int24","indexed":true},{"name":"tickUpper","type":"int24","indexed":true},{"name":"amount","type":"uint128","indexed":false},{"name":"amount0","type":"uint256","indexed":false},{"name":"amount1","type":"uint256","indexed":false}]},
+    {"name":"Collect","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"recipient","type":"address","indexed":false},{"name":"tickLower","type":"int24","indexed":true},{"name":"tickUpper","type":"int24","indexed":true},{"name":"amount0","type":"uint128","indexed":false},{"name":"amount1","type":"uint128","indexed":false}]},
+    {"name":"Burn","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"tickLower","type":"int24","indexed":true},{"name":"tickUpper","type":"int24","indexed":true},{"name":"amount","type":"uint128","indexed":false},{"name":"amount0","type":"uint256","indexed":false},{"name":"amount1","type":"uint256","indexed":false}]},
+    {"name":"Swap","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":true},{"name":"recipient","type":"address","indexed":true},{"name":"amount0","type":"int256","indexed":false},{"name":"amount1","type":"int256","indexed":false},{"name":"sqrtPriceX96","type":"uint160","indexed":false},{"name":"liquidity","type":"uint128","indexed":false},{"name":"tick","type":"int24","indexed":false}]},
+    {"name":"Flash","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":true},{"name":"recipient","type":"address","indexed":true},{"name":"amount0","type":"uint256","indexed":false},{"name":"amount1","type":"uint256","indexed":false},{"name":"paid0","type":"uint256","indexed":false},{"name":"paid1","type":"uint256","indexed":false}]}
+  ]
+}

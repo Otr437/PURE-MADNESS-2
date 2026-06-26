@@ -1,0 +1,121 @@
+{
+  "_meta": {
+    "name": "Major Token Contract Addresses Across All Major EVM Chains — 2026",
+    "source": "Verified from official docs: Circle, Etherscan, official token sites",
+    "last_verified": "March 2026"
+  },
+  "WETH": {
+    "ethereum":    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "optimism":    "0x4200000000000000000000000000000000000006",
+    "base":        "0x4200000000000000000000000000000000000006",
+    "arbitrum":    "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+    "polygon":     "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    "bnb":         "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+    "avalanche":   "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB",
+    "zksync":      "0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91",
+    "linea":       "0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34F",
+    "unichain":    "0x4200000000000000000000000000000000000006",
+    "worldchain":  "0x4200000000000000000000000000000000000006",
+    "ink":         "0x4200000000000000000000000000000000000006",
+    "soneium":     "0x4200000000000000000000000000000000000006",
+    "blast":       "0x4200000000000000000000000000000000000023",
+    "sonic":       "0x50c42dEAcD8Fc9773493ED674b675bE577f2634b",
+    "scroll":      "0x5300000000000000000000000000000000000004",
+    "mantle":      "0xdEAddEaDdeadDEadDEADDEaddEADDEAddead1111",
+    "zora":        "0x4200000000000000000000000000000000000006",
+    "celo":        "0x66803FB87aBd4aaC3cbB3fAd02C1d357600272eF",
+    "fantom":      "0x74b23882a30290451A17c44f4F05243b6b58C76d",
+    "gnosis":      "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
+    "moonbeam":    "0xAb3f0245B83feB11d15AAffeFD7AD465a59817eD",
+    "peaq":        "deployed via bridge — check official Peaq bridge"
+  },
+  "USDC": {
+    "ethereum":    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "optimism":    "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+    "base":        "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "arbitrum":    "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    "polygon":     "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+    "avalanche":   "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+    "bnb":         "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+    "zksync":      "0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4",
+    "linea":       "0x176211869cA2b568f2A7D4EE941E073a821EE1ff",
+    "unichain":    "0x078D782b760474a361dDA0AF3839290b0EF57AD6",
+    "worldchain":  "0x79A02482A880bCe3F13E09da970dC34dB4cD24D1",
+    "ink":         "0x2D270e6886d130D724215A266106e6832161EAEd",
+    "celo":        "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+    "sonic":       "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+    "scroll":      "0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4",
+    "mantle":      "0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9",
+    "monad":       "0x754704Bc059F8C67012fEd69BC8A327a5aafb603",
+    "starknet":    "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+  },
+  "USDT": {
+    "ethereum":    "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "optimism":    "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+    "arbitrum":    "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+    "polygon":     "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    "avalanche":   "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
+    "bnb":         "0x55d398326f99059fF775485246999027B3197955",
+    "zksync":      "0x493257fD37EDB34451f62EDf8D2a0C418852bA4C",
+    "linea":       "0xA219439258ca9da29E9Cc4cE5596924745e12B93",
+    "scroll":      "0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df",
+    "sonic":       "0x6047828dc181963ba44974801ff68e538da5eaf9",
+    "starknet":    "0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8"
+  },
+  "WBTC": {
+    "ethereum":    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+    "optimism":    "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
+    "arbitrum":    "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+    "polygon":     "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+    "avalanche":   "0x50b7545627a5162F82A992c33b87aDc75187B218",
+    "bnb":         "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+    "starknet":    "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
+    "base":        "0x0555E30da8f98308EdB960aa94C0Db47230d2B9c",
+    "zksync":      "0xBBeB516fb02a01611cBBE0453Fe3c580D7281011"
+  },
+  "DAI": {
+    "ethereum":    "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "optimism":    "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+    "arbitrum":    "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+    "polygon":     "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+    "avalanche":   "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70",
+    "bnb":         "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3",
+    "zksync":      "0x4B9eb6c0b6ea15176BBF62841C6B2A8a398cb656",
+    "base":        "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
+    "scroll":      "0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97",
+    "starknet":    "0x001108cdbe5d82737b9057590adaf97d34e74b5452f0628161d237746b6fe69e"
+  },
+  "LINK": {
+    "ethereum":    "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+    "optimism":    "0x350a791Bfc2C21F9Ed5d10980Dad2e2638ffa7f6",
+    "arbitrum":    "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4",
+    "polygon":     "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39",
+    "avalanche":   "0x5947BB275c521040051D82396192181b413227A3",
+    "bnb":         "0x404460C6A5EdE2D891e8297795264fDe62ADBB75",
+    "base":        "0x88Fb150BDc53A65fe94Dea0c9BA0a6dAf8C6e196"
+  },
+  "UNI": {
+    "ethereum":    "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+    "optimism":    "0x6fd9d7AD17242c41f7131d257212c54A0e816691",
+    "arbitrum":    "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0",
+    "polygon":     "0xb33EaAd8d922B1083446DC23f610c2567fB5180f",
+    "base":        "0xc3De830EA07524a0761646a6a4e4be0e114a3C83"
+  },
+  "AAVE": {
+    "ethereum":    "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+    "optimism":    "0x76FB31fb4af56892A25e32cFC43De717950c9278",
+    "arbitrum":    "0xba5DdD1f9d7F570dc94a51479a000E3BCE967196",
+    "polygon":     "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
+    "avalanche":   "0x63a72806098Bd3D9520cC43356dD78afe5D386D9",
+    "base":        "0x63706e401c06ac8513145b7fa25c2255f0e47f2a"
+  },
+  "PEAQ": {
+    "ethereum":    "0x7a03a9e96dd867da50e5f28efa38e40237a44941",
+    "peaq_native": "native token of Peaq chain — chain_id 3338",
+    "note": "PEAQ is natively available on Peaq chain via ERC-20 precompile at 0x0000000000000000000000000000000000000802"
+  },
+  "STRK": {
+    "ethereum":    "0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766",
+    "starknet":    "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
+  }
+}

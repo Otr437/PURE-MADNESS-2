@@ -1,0 +1,16 @@
+{
+  "_meta": {
+    "name": "Rocket Pool Deposit Pool — stake ETH, receive rETH",
+    "address_ethereum": "0xDD3f50F8A6CafbE9b31a427582963f465E745AF8",
+    "note": "Send ETH to deposit(), receive rETH. Min 0.01 ETH."
+  },
+  "abi": [
+    {"name":"deposit","type":"function","stateMutability":"payable","inputs":[],"outputs":[]},
+    {"name":"getBalance","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getUserLastDepositBlock","type":"function","stateMutability":"view","inputs":[{"name":"_address","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getExcessBalance","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getMaximumDepositPoolSize","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"DepositReceived","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"time","type":"uint256","indexed":false}]},
+    {"name":"DepositRecycled","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"time","type":"uint256","indexed":false}]}
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "name": "Aave V3 Pool — lending, borrowing, flash loans",
+    "addresses": {
+      "ethereum":  "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+      "optimism":  "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+      "arbitrum":  "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+      "polygon":   "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+      "avalanche": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+      "base":      "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5",
+      "bnb":       "0x6807dc923806fE8Fd134338EABCA509979a7e0cB",
+      "metis":     "0x90df02551bB792286e8D4f13E0e357b4Bf1D6a57",
+      "gnosis":    "0xb50201558B00496A145fE76f7424749556E326D8",
+      "scroll":    "0x11fCfe756c05AD438e312a7fd934381537D3cFfe"
+    }
+  },
+  "abi": [
+    {"name":"supply","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"onBehalfOf","type":"address"},{"name":"referralCode","type":"uint16"}],"outputs":[]},
+    {"name":"supplyWithPermit","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"onBehalfOf","type":"address"},{"name":"referralCode","type":"uint16"},{"name":"deadline","type":"uint256"},{"name":"permitV","type":"uint8"},{"name":"permitR","type":"bytes32"},{"name":"permitS","type":"bytes32"}],"outputs":[]},
+    {"name":"withdraw","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"to","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"borrow","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"interestRateMode","type":"uint256"},{"name":"referralCode","type":"uint16"},{"name":"onBehalfOf","type":"address"}],"outputs":[]},
+    {"name":"repay","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"interestRateMode","type":"uint256"},{"name":"onBehalfOf","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"repayWithPermit","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"interestRateMode","type":"uint256"},{"name":"onBehalfOf","type":"address"},{"name":"deadline","type":"uint256"},{"name":"permitV","type":"uint8"},{"name":"permitR","type":"bytes32"},{"name":"permitS","type":"bytes32"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"repayWithATokens","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"interestRateMode","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"swapBorrowRateMode","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"interestRateMode","type":"uint256"}],"outputs":[]},
+    {"name":"rebalanceStableBorrowRate","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"user","type":"address"}],"outputs":[]},
+    {"name":"setUserUseReserveAsCollateral","type":"function","stateMutability":"nonpayable","inputs":[{"name":"asset","type":"address"},{"name":"useAsCollateral","type":"bool"}],"outputs":[]},
+    {"name":"liquidationCall","type":"function","stateMutability":"nonpayable","inputs":[{"name":"collateralAsset","type":"address"},{"name":"debtAsset","type":"address"},{"name":"user","type":"address"},{"name":"debtToCover","type":"uint256"},{"name":"receiveAToken","type":"bool"}],"outputs":[]},
+    {"name":"flashLoan","type":"function","stateMutability":"nonpayable","inputs":[{"name":"receiverAddress","type":"address"},{"name":"assets","type":"address[]"},{"name":"amounts","type":"uint256[]"},{"name":"interestRateModes","type":"uint256[]"},{"name":"onBehalfOf","type":"address"},{"name":"params","type":"bytes"},{"name":"referralCode","type":"uint16"}],"outputs":[]},
+    {"name":"flashLoanSimple","type":"function","stateMutability":"nonpayable","inputs":[{"name":"receiverAddress","type":"address"},{"name":"asset","type":"address"},{"name":"amount","type":"uint256"},{"name":"params","type":"bytes"},{"name":"referralCode","type":"uint16"}],"outputs":[]},
+    {"name":"getUserAccountData","type":"function","stateMutability":"view","inputs":[{"name":"user","type":"address"}],"outputs":[{"name":"totalCollateralBase","type":"uint256"},{"name":"totalDebtBase","type":"uint256"},{"name":"availableBorrowsBase","type":"uint256"},{"name":"currentLiquidationThreshold","type":"uint256"},{"name":"ltv","type":"uint256"},{"name":"healthFactor","type":"uint256"}]},
+    {"name":"getReserveData","type":"function","stateMutability":"view","inputs":[{"name":"asset","type":"address"}],"outputs":[{"name":"configuration","type":"uint256"},{"name":"liquidityIndex","type":"uint128"},{"name":"currentLiquidityRate","type":"uint128"},{"name":"variableBorrowIndex","type":"uint128"},{"name":"currentVariableBorrowRate","type":"uint128"},{"name":"currentStableBorrowRate","type":"uint128"},{"name":"lastUpdateTimestamp","type":"uint40"},{"name":"id","type":"uint16"},{"name":"aTokenAddress","type":"address"},{"name":"stableDebtTokenAddress","type":"address"},{"name":"variableDebtTokenAddress","type":"address"},{"name":"interestRateStrategyAddress","type":"address"},{"name":"accruedToTreasury","type":"uint128"},{"name":"unbacked","type":"uint128"},{"name":"isolationModeTotalDebt","type":"uint128"}]},
+    {"name":"getReservesList","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address[]"}]},
+    {"name":"Supply","type":"event","anonymous":false,"inputs":[{"name":"reserve","type":"address","indexed":true},{"name":"user","type":"address","indexed":false},{"name":"onBehalfOf","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"referralCode","type":"uint16","indexed":true}]},
+    {"name":"Withdraw","type":"event","anonymous":false,"inputs":[{"name":"reserve","type":"address","indexed":true},{"name":"user","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false}]},
+    {"name":"Borrow","type":"event","anonymous":false,"inputs":[{"name":"reserve","type":"address","indexed":true},{"name":"user","type":"address","indexed":false},{"name":"onBehalfOf","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"interestRateMode","type":"uint8","indexed":false},{"name":"borrowRate","type":"uint256","indexed":false},{"name":"referralCode","type":"uint16","indexed":true}]},
+    {"name":"Repay","type":"event","anonymous":false,"inputs":[{"name":"reserve","type":"address","indexed":true},{"name":"user","type":"address","indexed":true},{"name":"repayer","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"useATokens","type":"bool","indexed":false}]},
+    {"name":"LiquidationCall","type":"event","anonymous":false,"inputs":[{"name":"collateralAsset","type":"address","indexed":true},{"name":"debtAsset","type":"address","indexed":true},{"name":"user","type":"address","indexed":true},{"name":"debtToCover","type":"uint256","indexed":false},{"name":"liquidatedCollateralAmount","type":"uint256","indexed":false},{"name":"liquidator","type":"address","indexed":false},{"name":"receiveAToken","type":"bool","indexed":false}]},
+    {"name":"FlashLoan","type":"event","anonymous":false,"inputs":[{"name":"target","type":"address","indexed":true},{"name":"initiator","type":"address","indexed":false},{"name":"asset","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"interestRateMode","type":"uint8","indexed":false},{"name":"premium","type":"uint256","indexed":false},{"name":"referralCode","type":"uint16","indexed":true}]}
+  ]
+}

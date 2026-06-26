@@ -1,0 +1,135 @@
+{
+  "_meta": {
+    "category": "crypto_exchange_and_data",
+    "description": "CEX, DEX data, market data, price feeds, block explorers",
+    "encrypt": true,
+    "hot_swap": true
+  },
+  "coinbase": {
+    "api_key": "YOUR_COINBASE_API_KEY",
+    "api_secret": "YOUR_COINBASE_API_SECRET",
+    "passphrase": "YOUR_COINBASE_PASSPHRASE",
+    "cdp_api_key_name": "YOUR_CDP_API_KEY_NAME",
+    "cdp_api_key_private": "YOUR_CDP_API_KEY_PRIVATE",
+    "oauth_client_id": "YOUR_COINBASE_OAUTH_CLIENT_ID",
+    "oauth_client_secret": "YOUR_COINBASE_OAUTH_CLIENT_SECRET",
+    "endpoints": {
+      "rest": "https://api.coinbase.com",
+      "advanced_trade": "https://api.coinbase.com/api/v3/brokerage",
+      "cdp": "https://api.developer.coinbase.com"
+    },
+    "docs": "https://docs.cdp.coinbase.com"
+  },
+  "binance": {
+    "api_key": "YOUR_BINANCE_API_KEY",
+    "api_secret": "YOUR_BINANCE_API_SECRET",
+    "endpoints": {
+      "rest": "https://api.binance.com",
+      "us_rest": "https://api.binance.us",
+      "websocket": "wss://stream.binance.com:9443/ws"
+    },
+    "docs": "https://binance-docs.github.io/apidocs"
+  },
+  "kraken": {
+    "api_key": "YOUR_KRAKEN_API_KEY",
+    "api_secret": "YOUR_KRAKEN_API_SECRET",
+    "endpoint": "https://api.kraken.com",
+    "docs": "https://docs.kraken.com/rest"
+  },
+  "okx": {
+    "api_key": "YOUR_OKX_API_KEY",
+    "api_secret": "YOUR_OKX_API_SECRET",
+    "passphrase": "YOUR_OKX_PASSPHRASE",
+    "endpoint": "https://www.okx.com",
+    "docs": "https://www.okx.com/docs-v5"
+  },
+  "bybit": {
+    "api_key": "YOUR_BYBIT_API_KEY",
+    "api_secret": "YOUR_BYBIT_API_SECRET",
+    "endpoint": "https://api.bybit.com",
+    "docs": "https://bybit-exchange.github.io/docs"
+  },
+  "coingecko": {
+    "api_key": "YOUR_COINGECKO_API_KEY",
+    "endpoints": {
+      "pro": "https://pro-api.coingecko.com/api/v3",
+      "free": "https://api.coingecko.com/api/v3"
+    },
+    "note": "Pro key needed for higher rate limits. Free tier = 30 calls/min",
+    "docs": "https://docs.coingecko.com"
+  },
+  "coinmarketcap": {
+    "api_key": "YOUR_CMC_API_KEY",
+    "endpoint": "https://pro-api.coinmarketcap.com/v1",
+    "docs": "https://coinmarketcap.com/api/documentation/v1"
+  },
+  "etherscan": {
+    "api_key": "YOUR_ETHERSCAN_API_KEY",
+    "endpoints": {
+      "ethereum":  "https://api.etherscan.io/api",
+      "sepolia":   "https://api-sepolia.etherscan.io/api",
+      "arbitrum":  "https://api.arbiscan.io/api",
+      "optimism":  "https://api-optimistic.etherscan.io/api",
+      "base":      "https://api.basescan.org/api",
+      "polygon":   "https://api.polygonscan.com/api",
+      "bnb":       "https://api.bscscan.com/api",
+      "avalanche": "https://api.snowscan.xyz/api",
+      "blast":     "https://api.blastscan.io/api",
+      "linea":     "https://api.lineascan.build/api"
+    },
+    "note": "One key works for most Etherscan-family explorers",
+    "docs": "https://docs.etherscan.io"
+  },
+  "the_graph": {
+    "api_key": "YOUR_THE_GRAPH_API_KEY",
+    "gateway": "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/{subgraph_id}",
+    "studio": "https://api.studio.thegraph.com/query/{subgraph_id}/graphql",
+    "docs": "https://thegraph.com/docs"
+  },
+  "dune_analytics": {
+    "api_key": "YOUR_DUNE_API_KEY",
+    "endpoint": "https://api.dune.com/api/v1",
+    "docs": "https://docs.dune.com/api-reference"
+  },
+  "covalent": {
+    "api_key": "YOUR_COVALENT_API_KEY",
+    "endpoint": "https://api.covalenthq.com/v1",
+    "note": "GoldRush — cross-chain NFT + token + wallet APIs",
+    "docs": "https://www.covalenthq.com/docs"
+  },
+  "defi_llama": {
+    "api_key": "YOUR_DEFILLAMA_API_KEY",
+    "endpoint": "https://pro-api.llama.fi",
+    "free_endpoint": "https://api.llama.fi",
+    "note": "TVL, yields, DEX volumes — most endpoints are free",
+    "docs": "https://defillama.com/docs/api"
+  },
+  "zerion": {
+    "api_key": "YOUR_ZERION_API_KEY",
+    "endpoint": "https://api.zerion.io/v1",
+    "note": "Wallet portfolio, NFTs, DeFi positions across chains",
+    "docs": "https://developers.zerion.io"
+  },
+  "zapper": {
+    "api_key": "YOUR_ZAPPER_API_KEY",
+    "endpoint": "https://api.zapper.xyz/v2",
+    "docs": "https://docs.zapper.xyz"
+  },
+  "uniswap_subgraph": {
+    "v3_endpoint": "https://gateway.thegraph.com/api/{the_graph_api_key}/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV",
+    "v2_endpoint": "https://gateway.thegraph.com/api/{the_graph_api_key}/subgraphs/id/A3Np3RQbaBA6oKJgiwDJeo5T3zrYfGHPWFYayMwtNDum",
+    "note": "Requires The Graph API key above"
+  },
+  "birdeye": {
+    "api_key": "YOUR_BIRDEYE_API_KEY",
+    "endpoint": "https://public-api.birdeye.so",
+    "note": "Solana + EVM token data, prices, trending tokens",
+    "docs": "https://docs.birdeye.so"
+  },
+  "nansen": {
+    "api_key": "YOUR_NANSEN_API_KEY",
+    "endpoint": "https://api.nansen.ai",
+    "note": "On-chain analytics, smart money tracking",
+    "docs": "https://docs.nansen.ai"
+  }
+}

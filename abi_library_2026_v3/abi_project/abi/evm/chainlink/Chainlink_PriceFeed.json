@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "name": "Chainlink Price Feed (AggregatorV3Interface)",
+    "note": "Used on ALL chains — Ethereum, Arbitrum, Optimism, Base, Polygon, BNB, Avalanche, etc.",
+    "example_feeds_ethereum": {
+      "ETH_USD":  "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+      "BTC_USD":  "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
+      "USDC_USD": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
+      "LINK_USD": "0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c",
+      "UNI_USD":  "0x553303d460EE0afB37EdFf9bE42922D8FF63220e"
+    }
+  },
+  "abi": [
+    {"name":"decimals","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"description","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"version","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getRoundData","type":"function","stateMutability":"view","inputs":[{"name":"_roundId","type":"uint80"}],"outputs":[{"name":"roundId","type":"uint80"},{"name":"answer","type":"int256"},{"name":"startedAt","type":"uint256"},{"name":"updatedAt","type":"uint256"},{"name":"answeredInRound","type":"uint80"}]},
+    {"name":"latestRoundData","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"roundId","type":"uint80"},{"name":"answer","type":"int256"},{"name":"startedAt","type":"uint256"},{"name":"updatedAt","type":"uint256"},{"name":"answeredInRound","type":"uint80"}]},
+    {"name":"latestAnswer","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"int256"}]},
+    {"name":"latestTimestamp","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"latestRound","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getAnswer","type":"function","stateMutability":"view","inputs":[{"name":"roundId","type":"uint256"}],"outputs":[{"name":"","type":"int256"}]},
+    {"name":"getTimestamp","type":"function","stateMutability":"view","inputs":[{"name":"roundId","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"AnswerUpdated","type":"event","anonymous":false,"inputs":[{"name":"current","type":"int256","indexed":true},{"name":"roundId","type":"uint256","indexed":true},{"name":"updatedAt","type":"uint256","indexed":false}]},
+    {"name":"NewRound","type":"event","anonymous":false,"inputs":[{"name":"roundId","type":"uint256","indexed":true},{"name":"startedBy","type":"address","indexed":true},{"name":"startedAt","type":"uint256","indexed":false}]}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "name": "Curve StableSwap Pool — stablecoin swaps",
+    "note": "Curve pools vary. This is the standard 2-3 token pool ABI (3pool, USDC/USDT, etc.)",
+    "addresses": {
+      "3pool_ethereum":        "0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7",
+      "USDC_USDT_ethereum":    "0xD51a44d3FaE010294C616388b506AcdA1bfAAE46",
+      "stETH_ETH_ethereum":   "0xDC24316b9AE028F1497c275EB9192a3Ea0f67022",
+      "FRAX_USDC_ethereum":   "0xDcEF968d416a41Cdac0ED8702fAC8128A64241A2",
+      "tricrypto2_ethereum":  "0xD51a44d3FaE010294C616388b506AcdA1bfAAE46",
+      "3pool_polygon":        "0x445FE580eF8d70FF569aB36e80c647af338db351",
+      "3pool_arbitrum":       "0x7f90122BF0700F9E7e1F688fe926940E8839F353",
+      "3pool_avalanche":      "0x7f90122BF0700F9E7e1F688fe926940E8839F353"
+    }
+  },
+  "abi": [
+    {"name":"A","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"fee","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"admin_fee","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"owner","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"coins","type":"function","stateMutability":"view","inputs":[{"name":"i","type":"uint256"}],"outputs":[{"name":"","type":"address"}]},
+    {"name":"balances","type":"function","stateMutability":"view","inputs":[{"name":"i","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"get_virtual_price","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"calc_token_amount","type":"function","stateMutability":"view","inputs":[{"name":"amounts","type":"uint256[3]"},{"name":"deposit","type":"bool"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"add_liquidity","type":"function","stateMutability":"nonpayable","inputs":[{"name":"amounts","type":"uint256[3]"},{"name":"min_mint_amount","type":"uint256"}],"outputs":[]},
+    {"name":"get_dy","type":"function","stateMutability":"view","inputs":[{"name":"i","type":"int128"},{"name":"j","type":"int128"},{"name":"dx","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"get_dy_underlying","type":"function","stateMutability":"view","inputs":[{"name":"i","type":"int128"},{"name":"j","type":"int128"},{"name":"dx","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"exchange","type":"function","stateMutability":"nonpayable","inputs":[{"name":"i","type":"int128"},{"name":"j","type":"int128"},{"name":"dx","type":"uint256"},{"name":"min_dy","type":"uint256"}],"outputs":[]},
+    {"name":"remove_liquidity","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_amount","type":"uint256"},{"name":"min_amounts","type":"uint256[3]"}],"outputs":[]},
+    {"name":"remove_liquidity_imbalance","type":"function","stateMutability":"nonpayable","inputs":[{"name":"amounts","type":"uint256[3]"},{"name":"max_burn_amount","type":"uint256"}],"outputs":[]},
+    {"name":"calc_withdraw_one_coin","type":"function","stateMutability":"view","inputs":[{"name":"_token_amount","type":"uint256"},{"name":"i","type":"int128"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"remove_liquidity_one_coin","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_token_amount","type":"uint256"},{"name":"i","type":"int128"},{"name":"min_amount","type":"uint256"}],"outputs":[]},
+    {"name":"TokenExchange","type":"event","anonymous":false,"inputs":[{"name":"buyer","type":"address","indexed":true},{"name":"sold_id","type":"int128","indexed":false},{"name":"tokens_sold","type":"uint256","indexed":false},{"name":"bought_id","type":"int128","indexed":false},{"name":"tokens_bought","type":"uint256","indexed":false}]},
+    {"name":"AddLiquidity","type":"event","anonymous":false,"inputs":[{"name":"provider","type":"address","indexed":true},{"name":"token_amounts","type":"uint256[3]","indexed":false},{"name":"fees","type":"uint256[3]","indexed":false},{"name":"invariant","type":"uint256","indexed":false},{"name":"token_supply","type":"uint256","indexed":false}]},
+    {"name":"RemoveLiquidity","type":"event","anonymous":false,"inputs":[{"name":"provider","type":"address","indexed":true},{"name":"token_amounts","type":"uint256[3]","indexed":false},{"name":"fees","type":"uint256[3]","indexed":false},{"name":"token_supply","type":"uint256","indexed":false}]},
+    {"name":"RemoveLiquidityOne","type":"event","anonymous":false,"inputs":[{"name":"provider","type":"address","indexed":true},{"name":"token_amount","type":"uint256","indexed":false},{"name":"coin_amount","type":"uint256","indexed":false}]}
+  ]
+}

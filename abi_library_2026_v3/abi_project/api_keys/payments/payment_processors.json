@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "category": "payment_processors",
+    "description": "Fiat payment processing, subscriptions, invoicing",
+    "encrypt": true,
+    "hot_swap": true,
+    "rotation_priority": "CRITICAL — these touch real money"
+  },
+  "stripe": {
+    "publishable_key": "pk_live_YOUR_STRIPE_PUBLISHABLE_KEY",
+    "secret_key": "sk_live_YOUR_STRIPE_SECRET_KEY",
+    "webhook_secret": "whsec_YOUR_STRIPE_WEBHOOK_SECRET",
+    "restricted_key": "rk_live_YOUR_STRIPE_RESTRICTED_KEY",
+    "test_publishable_key": "pk_test_YOUR_STRIPE_TEST_PUBLISHABLE_KEY",
+    "test_secret_key": "sk_test_YOUR_STRIPE_TEST_SECRET_KEY",
+    "test_webhook_secret": "whsec_YOUR_STRIPE_TEST_WEBHOOK_SECRET",
+    "endpoint": "https://api.stripe.com/v1",
+    "note": "NEVER expose secret_key client-side. Always use restricted keys where possible.",
+    "docs": "https://stripe.com/docs/api"
+  },
+  "paypal": {
+    "client_id": "YOUR_PAYPAL_CLIENT_ID",
+    "client_secret": "YOUR_PAYPAL_CLIENT_SECRET",
+    "webhook_id": "YOUR_PAYPAL_WEBHOOK_ID",
+    "endpoints": {
+      "live": "https://api-m.paypal.com",
+      "sandbox": "https://api-m.sandbox.paypal.com"
+    },
+    "docs": "https://developer.paypal.com/api/rest"
+  },
+  "square": {
+    "access_token": "YOUR_SQUARE_ACCESS_TOKEN",
+    "application_id": "YOUR_SQUARE_APPLICATION_ID",
+    "location_id": "YOUR_SQUARE_LOCATION_ID",
+    "webhook_signature_key": "YOUR_SQUARE_WEBHOOK_SIGNATURE_KEY",
+    "sandbox_access_token": "YOUR_SQUARE_SANDBOX_ACCESS_TOKEN",
+    "endpoints": {
+      "live": "https://connect.squareup.com",
+      "sandbox": "https://connect.squareupsandbox.com"
+    },
+    "docs": "https://developer.squareup.com/docs"
+  },
+  "braintree": {
+    "merchant_id": "YOUR_BRAINTREE_MERCHANT_ID",
+    "public_key": "YOUR_BRAINTREE_PUBLIC_KEY",
+    "private_key": "YOUR_BRAINTREE_PRIVATE_KEY",
+    "tokenization_key": "YOUR_BRAINTREE_TOKENIZATION_KEY",
+    "note": "PayPal-owned. Good for card + PayPal in one SDK",
+    "docs": "https://developer.paypal.com/braintree/docs"
+  },
+  "adyen": {
+    "api_key": "YOUR_ADYEN_API_KEY",
+    "merchant_account": "YOUR_ADYEN_MERCHANT_ACCOUNT",
+    "client_key": "YOUR_ADYEN_CLIENT_KEY",
+    "webhook_hmac_key": "YOUR_ADYEN_WEBHOOK_HMAC_KEY",
+    "endpoint": "https://checkout-live.adyen.com/v70",
+    "note": "Enterprise-grade, best for global payments",
+    "docs": "https://docs.adyen.com"
+  },
+  "plaid": {
+    "client_id": "YOUR_PLAID_CLIENT_ID",
+    "secret": "YOUR_PLAID_SECRET",
+    "sandbox_secret": "YOUR_PLAID_SANDBOX_SECRET",
+    "webhook_secret": "YOUR_PLAID_WEBHOOK_SECRET",
+    "endpoints": {
+      "sandbox":    "https://sandbox.plaid.com",
+      "production": "https://production.plaid.com"
+    },
+    "note": "Bank account linking, ACH, identity verification",
+    "docs": "https://plaid.com/docs"
+  },
+  "coinbase_commerce": {
+    "api_key": "YOUR_COINBASE_COMMERCE_API_KEY",
+    "webhook_secret": "YOUR_COINBASE_COMMERCE_WEBHOOK_SECRET",
+    "endpoint": "https://api.commerce.coinbase.com",
+    "note": "Accept crypto payments on your platform",
+    "docs": "https://docs.cdp.coinbase.com/commerce/docs"
+  },
+  "bitpay": {
+    "api_key": "YOUR_BITPAY_API_KEY",
+    "api_token": "YOUR_BITPAY_API_TOKEN",
+    "merchant_facade_token": "YOUR_BITPAY_MERCHANT_TOKEN",
+    "endpoint": "https://bitpay.com",
+    "docs": "https://developer.bitpay.com"
+  },
+  "nowpayments": {
+    "api_key": "YOUR_NOWPAYMENTS_API_KEY",
+    "ipn_secret_key": "YOUR_NOWPAYMENTS_IPN_SECRET",
+    "endpoint": "https://api.nowpayments.io/v1",
+    "note": "Accept 300+ cryptocurrencies",
+    "docs": "https://documenter.getpostman.com/view/7907941/2s93JqTRWN"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "name": "Balancer V2 Vault",
+    "addresses": {
+      "ethereum":  "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "arbitrum":  "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "optimism":  "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "polygon":   "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "gnosis":    "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "avalanche": "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "base":      "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "fantom":    "0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce",
+      "zksync":    "0x2a85D84De3ae1B27dB8b4566E5f8dE2e3A702Ea0"
+    }
+  },
+  "abi": [
+    {"name":"swap","type":"function","stateMutability":"payable","inputs":[{"name":"singleSwap","type":"tuple","components":[{"name":"poolId","type":"bytes32"},{"name":"kind","type":"uint8"},{"name":"assetIn","type":"address"},{"name":"assetOut","type":"address"},{"name":"amount","type":"uint256"},{"name":"userData","type":"bytes"}]},{"name":"funds","type":"tuple","components":[{"name":"sender","type":"address"},{"name":"fromInternalBalance","type":"bool"},{"name":"recipient","type":"address"},{"name":"toInternalBalance","type":"bool"}]},{"name":"limit","type":"uint256"},{"name":"deadline","type":"uint256"}],"outputs":[{"name":"amountCalculated","type":"uint256"}]},
+    {"name":"batchSwap","type":"function","stateMutability":"payable","inputs":[{"name":"kind","type":"uint8"},{"name":"swaps","type":"tuple[]","components":[{"name":"poolId","type":"bytes32"},{"name":"assetInIndex","type":"uint256"},{"name":"assetOutIndex","type":"uint256"},{"name":"amount","type":"uint256"},{"name":"userData","type":"bytes"}]},{"name":"assets","type":"address[]"},{"name":"funds","type":"tuple","components":[{"name":"sender","type":"address"},{"name":"fromInternalBalance","type":"bool"},{"name":"recipient","type":"address"},{"name":"toInternalBalance","type":"bool"}]},{"name":"limits","type":"int256[]"},{"name":"deadline","type":"uint256"}],"outputs":[{"name":"assetDeltas","type":"int256[]"}]},
+    {"name":"joinPool","type":"function","stateMutability":"payable","inputs":[{"name":"poolId","type":"bytes32"},{"name":"sender","type":"address"},{"name":"recipient","type":"address"},{"name":"request","type":"tuple","components":[{"name":"assets","type":"address[]"},{"name":"maxAmountsIn","type":"uint256[]"},{"name":"userData","type":"bytes"},{"name":"fromInternalBalance","type":"bool"}]}],"outputs":[]},
+    {"name":"exitPool","type":"function","stateMutability":"nonpayable","inputs":[{"name":"poolId","type":"bytes32"},{"name":"sender","type":"address"},{"name":"recipient","type":"address"},{"name":"request","type":"tuple","components":[{"name":"assets","type":"address[]"},{"name":"minAmountsOut","type":"uint256[]"},{"name":"userData","type":"bytes"},{"name":"toInternalBalance","type":"bool"}]}],"outputs":[]},
+    {"name":"flashLoan","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"tokens","type":"address[]"},{"name":"amounts","type":"uint256[]"},{"name":"userData","type":"bytes"}],"outputs":[]},
+    {"name":"getPool","type":"function","stateMutability":"view","inputs":[{"name":"poolId","type":"bytes32"}],"outputs":[{"name":"","type":"address"},{"name":"","type":"uint8"}]},
+    {"name":"getPoolTokens","type":"function","stateMutability":"view","inputs":[{"name":"poolId","type":"bytes32"}],"outputs":[{"name":"tokens","type":"address[]"},{"name":"balances","type":"uint256[]"},{"name":"lastChangeBlock","type":"uint256"}]},
+    {"name":"getInternalBalance","type":"function","stateMutability":"view","inputs":[{"name":"user","type":"address"},{"name":"tokens","type":"address[]"}],"outputs":[{"name":"balances","type":"uint256[]"}]},
+    {"name":"Swap","type":"event","anonymous":false,"inputs":[{"name":"poolId","type":"bytes32","indexed":true},{"name":"tokenIn","type":"address","indexed":true},{"name":"tokenOut","type":"address","indexed":true},{"name":"amountIn","type":"uint256","indexed":false},{"name":"amountOut","type":"uint256","indexed":false}]},
+    {"name":"FlashLoan","type":"event","anonymous":false,"inputs":[{"name":"recipient","type":"address","indexed":true},{"name":"token","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false},{"name":"feeAmount","type":"uint256","indexed":false}]}
+  ]
+}

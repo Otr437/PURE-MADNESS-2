@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "name": "Jupiter V6 Aggregator — largest DEX aggregator on Solana",
+    "chain": "Solana",
+    "program_id": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4",
+    "api": "https://quote-api.jup.ag/v6",
+    "note": "Jupiter is best used via REST API for quotes, then on-chain for execution"
+  },
+  "rest_api": {
+    "GET /quote": {
+      "params": {"inputMint":"string","outputMint":"string","amount":"number (lamports/smallest unit)","slippageBps":"number","onlyDirectRoutes":"bool","asLegacyTransaction":"bool"},
+      "returns": {"inAmount":"string","outAmount":"string","priceImpactPct":"string","routePlan":"array","otherAmountThreshold":"string"}
+    },
+    "POST /swap": {
+      "body": {"quoteResponse":"object (from /quote)","userPublicKey":"string","wrapAndUnwrapSol":"bool","dynamicComputeUnitLimit":"bool","prioritizationFeeLamports":"number"},
+      "returns": {"swapTransaction":"string (base64 encoded transaction)"}
+    },
+    "GET /tokens": {"returns": "list of all supported tokens with mints, names, decimals"},
+    "GET /price": {"params": {"ids":"comma-separated token mints"},"returns": "price data"}
+  },
+  "instruction_discriminators": {
+    "route":          "e517cb977ae3ad2a",
+    "routeWithTokenLedger": "2936b68b7a1afe63",
+    "sharedAccountsRoute": "c1209b3341d69c81",
+    "exactOutRoute":  "d033ef977b2bed5c"
+  }
+}

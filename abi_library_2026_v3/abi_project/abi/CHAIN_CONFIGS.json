@@ -1,0 +1,33 @@
+{
+  "_meta": {"updated": "March 2026", "note": "Always verify RPCs against chainlist.org or official docs"},
+  "evm_chains": {
+    "ethereum":  {"chain_id": 1,       "rpc": "https://eth.llamarpc.com",           "explorer": "https://etherscan.io",       "native": "ETH",  "block_time_s": 12},
+    "arbitrum":  {"chain_id": 42161,   "rpc": "https://arb1.arbitrum.io/rpc",        "explorer": "https://arbiscan.io",        "native": "ETH",  "block_time_s": 0.25},
+    "optimism":  {"chain_id": 10,      "rpc": "https://mainnet.optimism.io",         "explorer": "https://optimistic.etherscan.io", "native": "ETH", "block_time_s": 2},
+    "base":      {"chain_id": 8453,    "rpc": "https://mainnet.base.org",            "explorer": "https://basescan.org",       "native": "ETH",  "block_time_s": 2},
+    "polygon":   {"chain_id": 137,     "rpc": "https://polygon-rpc.com",             "explorer": "https://polygonscan.com",    "native": "MATIC","block_time_s": 2},
+    "bnb":       {"chain_id": 56,      "rpc": "https://bsc-dataseed.binance.org",    "explorer": "https://bscscan.com",        "native": "BNB",  "block_time_s": 3},
+    "avalanche": {"chain_id": 43114,   "rpc": "https://api.avax.network/ext/bc/C/rpc","explorer": "https://snowtrace.io",      "native": "AVAX", "block_time_s": 2},
+    "unichain":  {"chain_id": 130,     "rpc": "https://mainnet.unichain.org",        "explorer": "https://uniscan.xyz",        "native": "ETH",  "block_time_s": 1},
+    "linea":     {"chain_id": 59144,   "rpc": "https://rpc.linea.build",             "explorer": "https://lineascan.build",    "native": "ETH",  "block_time_s": 2},
+    "scroll":    {"chain_id": 534352,  "rpc": "https://rpc.scroll.io",               "explorer": "https://scrollscan.com",     "native": "ETH",  "block_time_s": 3},
+    "zksync":    {"chain_id": 324,     "rpc": "https://mainnet.era.zksync.io",       "explorer": "https://explorer.zksync.io", "native": "ETH",  "block_time_s": 1},
+    "mantle":    {"chain_id": 5000,    "rpc": "https://rpc.mantle.xyz",              "explorer": "https://explorer.mantle.xyz","native": "MNT",  "block_time_s": 2},
+    "gnosis":    {"chain_id": 100,     "rpc": "https://rpc.gnosischain.com",         "explorer": "https://gnosisscan.io",      "native": "xDAI", "block_time_s": 5},
+    "fantom":    {"chain_id": 250,     "rpc": "https://rpc.ftm.tools",               "explorer": "https://ftmscan.com",        "native": "FTM",  "block_time_s": 1},
+    "moonbeam":  {"chain_id": 1284,    "rpc": "https://rpc.api.moonbeam.network",    "explorer": "https://moonbeam.moonscan.io","native": "GLMR","block_time_s": 12},
+    "peaq":      {"chain_id": 3338,    "rpc": "https://mpfn1.peaq.network",          "explorer": "https://peaq.subscan.io",    "native": "PEAQ", "block_time_s": 6},
+    "monad":     {"chain_id": 10143,   "rpc": "https://testnet-rpc.monad.xyz",       "explorer": "https://testnet.monadexplorer.com", "native": "MON", "block_time_s": 0.5, "note": "TESTNET only as of March 2026"},
+    "megaeth":   {"chain_id": 6342,    "rpc": "https://rpc.megaeth.com",             "explorer": "https://megaexplorer.xyz",   "native": "ETH",  "block_time_s": 0.01, "note": "TESTNET — 10ms blocks"},
+    "hyperevm":  {"chain_id": 999,     "rpc": "https://rpc.hyperliquid.xyz/evm",     "explorer": "https://app.hyperliquid.xyz/explorer", "native": "HYPE", "block_time_s": 1}
+  },
+  "non_evm_chains": {
+    "starknet":  {"chain_id": "SN_MAIN", "rpc": "https://starknet-mainnet.public.blastapi.io", "explorer": "https://starkscan.co", "native": "ETH/STRK"},
+    "solana":    {"cluster": "mainnet-beta", "rpc": "https://api.mainnet-beta.solana.com", "explorer": "https://solscan.io", "native": "SOL", "block_time_s": 0.4},
+    "near":      {"network": "mainnet", "rpc": "https://rpc.mainnet.near.org", "explorer": "https://nearblocks.io", "native": "NEAR", "block_time_s": 1},
+    "cosmos_dydx": {"chain_id": "dydx-mainnet-1", "rpc": "https://dydx-mainnet-full-cosmos.public.blastapi.io", "explorer": "https://www.mintscan.io/dydx", "native": "DYDX"},
+    "hyperliquid_core": {"note": "HyperCore is NOT EVM. Use REST API at api.hyperliquid.xyz", "chain_id": "HyperCore"}
+  },
+  "multicall3_address_all_evm": "0xcA11bde05977b3631167028862bE2a173976CA11",
+  "permit2_address_all_evm": "0x000000000022D473030F116dDEE9F6B43aC78BA3"
+}

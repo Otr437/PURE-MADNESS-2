@@ -1,0 +1,125 @@
+{
+  "_meta": {
+    "category": "developer_tools",
+    "description": "Dev infrastructure — CI/CD, monitoring, error tracking, testing",
+    "encrypt": true,
+    "hot_swap": false,
+    "rotation_priority": "MEDIUM"
+  },
+  "github": {
+    "personal_access_token": "YOUR_GITHUB_PAT",
+    "oauth_app_client_id": "YOUR_GITHUB_OAUTH_CLIENT_ID",
+    "oauth_app_client_secret": "YOUR_GITHUB_OAUTH_CLIENT_SECRET",
+    "webhook_secret": "YOUR_GITHUB_WEBHOOK_SECRET",
+    "app_id": "YOUR_GITHUB_APP_ID",
+    "app_private_key": "YOUR_GITHUB_APP_PRIVATE_KEY",
+    "endpoint": "https://api.github.com",
+    "docs": "https://docs.github.com/rest"
+  },
+  "vercel": {
+    "token": "YOUR_VERCEL_TOKEN",
+    "team_id": "YOUR_VERCEL_TEAM_ID",
+    "project_id": "YOUR_VERCEL_PROJECT_ID",
+    "endpoint": "https://api.vercel.com",
+    "docs": "https://vercel.com/docs/rest-api"
+  },
+  "netlify": {
+    "access_token": "YOUR_NETLIFY_ACCESS_TOKEN",
+    "site_id": "YOUR_NETLIFY_SITE_ID",
+    "webhook_secret": "YOUR_NETLIFY_WEBHOOK_SECRET",
+    "endpoint": "https://api.netlify.com/api/v1",
+    "docs": "https://docs.netlify.com/api/get-started"
+  },
+  "aws": {
+    "access_key_id": "YOUR_AWS_ACCESS_KEY_ID",
+    "secret_access_key": "YOUR_AWS_SECRET_ACCESS_KEY",
+    "session_token": "YOUR_AWS_SESSION_TOKEN",
+    "region": "us-east-1",
+    "note": "NEVER commit these. Use IAM roles in production.",
+    "services_used": ["S3", "Lambda", "DynamoDB", "SQS", "SNS", "CloudFront", "Secrets Manager"],
+    "docs": "https://docs.aws.amazon.com"
+  },
+  "gcp": {
+    "project_id": "YOUR_GCP_PROJECT_ID",
+    "service_account_key": "YOUR_GCP_SERVICE_ACCOUNT_KEY_JSON",
+    "client_email": "YOUR_GCP_CLIENT_EMAIL",
+    "private_key": "YOUR_GCP_PRIVATE_KEY",
+    "docs": "https://cloud.google.com/docs"
+  },
+  "cloudflare": {
+    "api_token": "YOUR_CLOUDFLARE_API_TOKEN",
+    "api_key": "YOUR_CLOUDFLARE_API_KEY",
+    "email": "YOUR_CLOUDFLARE_EMAIL",
+    "account_id": "YOUR_CLOUDFLARE_ACCOUNT_ID",
+    "zone_id": "YOUR_CLOUDFLARE_ZONE_ID",
+    "r2_access_key_id": "YOUR_R2_ACCESS_KEY_ID",
+    "r2_secret_access_key": "YOUR_R2_SECRET_ACCESS_KEY",
+    "workers_ai_token": "YOUR_CLOUDFLARE_WORKERS_AI_TOKEN",
+    "endpoint": "https://api.cloudflare.com/client/v4",
+    "docs": "https://developers.cloudflare.com/api"
+  },
+  "supabase": {
+    "url": "YOUR_SUPABASE_URL",
+    "anon_key": "YOUR_SUPABASE_ANON_KEY",
+    "service_role_key": "YOUR_SUPABASE_SERVICE_ROLE_KEY",
+    "jwt_secret": "YOUR_SUPABASE_JWT_SECRET",
+    "docs": "https://supabase.com/docs"
+  },
+  "planetscale": {
+    "service_token_id": "YOUR_PLANETSCALE_TOKEN_ID",
+    "service_token": "YOUR_PLANETSCALE_SERVICE_TOKEN",
+    "database_url": "YOUR_PLANETSCALE_DATABASE_URL",
+    "docs": "https://planetscale.com/docs/reference/planetscale-api-reference"
+  },
+  "upstash": {
+    "redis_url": "YOUR_UPSTASH_REDIS_URL",
+    "redis_token": "YOUR_UPSTASH_REDIS_TOKEN",
+    "kafka_url": "YOUR_UPSTASH_KAFKA_URL",
+    "kafka_username": "YOUR_UPSTASH_KAFKA_USERNAME",
+    "kafka_password": "YOUR_UPSTASH_KAFKA_PASSWORD",
+    "note": "Serverless Redis + Kafka — great for rate limiting, caching",
+    "docs": "https://docs.upstash.com"
+  },
+  "sentry": {
+    "dsn": "YOUR_SENTRY_DSN",
+    "auth_token": "YOUR_SENTRY_AUTH_TOKEN",
+    "org": "YOUR_SENTRY_ORG",
+    "project": "YOUR_SENTRY_PROJECT",
+    "docs": "https://docs.sentry.io"
+  },
+  "datadog": {
+    "api_key": "YOUR_DATADOG_API_KEY",
+    "app_key": "YOUR_DATADOG_APP_KEY",
+    "endpoint": "https://api.datadoghq.com",
+    "docs": "https://docs.datadoghq.com/api"
+  },
+  "posthog": {
+    "api_key": "YOUR_POSTHOG_API_KEY",
+    "personal_api_key": "YOUR_POSTHOG_PERSONAL_API_KEY",
+    "project_id": "YOUR_POSTHOG_PROJECT_ID",
+    "host": "https://app.posthog.com",
+    "note": "Analytics + feature flags + session recording",
+    "docs": "https://posthog.com/docs"
+  },
+  "mixpanel": {
+    "project_token": "YOUR_MIXPANEL_PROJECT_TOKEN",
+    "api_secret": "YOUR_MIXPANEL_API_SECRET",
+    "service_account_username": "YOUR_MIXPANEL_SA_USERNAME",
+    "service_account_secret": "YOUR_MIXPANEL_SA_SECRET",
+    "docs": "https://developer.mixpanel.com/reference"
+  },
+  "resend": {
+    "api_key": "YOUR_RESEND_API_KEY",
+    "endpoint": "https://api.resend.com",
+    "note": "Transactional email — modern Sendgrid alternative",
+    "docs": "https://resend.com/docs"
+  },
+  "pusher": {
+    "app_id": "YOUR_PUSHER_APP_ID",
+    "key": "YOUR_PUSHER_KEY",
+    "secret": "YOUR_PUSHER_SECRET",
+    "cluster": "YOUR_PUSHER_CLUSTER",
+    "note": "Realtime WebSocket events",
+    "docs": "https://pusher.com/docs"
+  }
+}

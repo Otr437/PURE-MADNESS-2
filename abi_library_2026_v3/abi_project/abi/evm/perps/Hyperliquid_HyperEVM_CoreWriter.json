@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "name": "Hyperliquid HyperEVM CoreWriter System Contract — send trading actions FROM smart contracts to HyperCore",
+    "address": "0x3333333333333333333333333333333333333333",
+    "chain_id": 999,
+    "rpc": "https://rpc.hyperliquid.xyz/evm",
+    "note": "Burns ~25,000 gas, emits log processed by HyperCore. Orders delayed by a few seconds to prevent mempool front-running advantage."
+  },
+  "abi": [
+    {"name":"sendAction","type":"function","stateMutability":"nonpayable","inputs":[{"name":"action","type":"bytes"}],"outputs":[]},
+    {"name":"ActionSent","type":"event","anonymous":false,"inputs":[{"name":"action","type":"bytes","indexed":false}]}
+  ],
+  "precompiles": {
+    "perp_oracle_price": {
+      "address": "0x0000000000000000000000000000000000000807",
+      "note": "Query oracle price for perp asset by index. Returns uint256. Divide by 10^(6-szDecimals)."
+    },
+    "spot_oracle_price": {
+      "address": "0x0000000000000000000000000000000000000808",
+      "note": "Query oracle price for spot asset by index."
+    }
+  },
+  "encoding": {
+    "order": "limitPx and sz: send as 10^8 * human value",
+    "tif": {"1": "Alo", "2": "Gtc", "3": "Ioc"},
+    "cloid": "0 = no cloid, else use as client order ID"
+  }
+}

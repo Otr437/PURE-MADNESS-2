@@ -1,0 +1,85 @@
+{
+  "_meta": {
+    "category": "data_services",
+    "description": "Market data, news, search, weather, maps, misc data APIs",
+    "encrypt": true,
+    "hot_swap": true
+  },
+  "alpha_vantage": {
+    "api_key": "YOUR_ALPHA_VANTAGE_API_KEY",
+    "endpoint": "https://www.alphavantage.co/query",
+    "note": "Stock, forex, crypto market data",
+    "docs": "https://www.alphavantage.co/documentation"
+  },
+  "polygon_io": {
+    "api_key": "YOUR_POLYGON_IO_API_KEY",
+    "endpoint": "https://api.polygon.io",
+    "websocket": "wss://socket.polygon.io",
+    "note": "Real-time + historical stock/crypto/forex data",
+    "docs": "https://polygon.io/docs"
+  },
+  "finnhub": {
+    "api_key": "YOUR_FINNHUB_API_KEY",
+    "endpoint": "https://finnhub.io/api/v1",
+    "websocket": "wss://ws.finnhub.io",
+    "docs": "https://finnhub.io/docs/api"
+  },
+  "newsapi": {
+    "api_key": "YOUR_NEWSAPI_API_KEY",
+    "endpoint": "https://newsapi.org/v2",
+    "docs": "https://newsapi.org/docs"
+  },
+  "openweather": {
+    "api_key": "YOUR_OPENWEATHER_API_KEY",
+    "endpoint": "https://api.openweathermap.org/data/2.5",
+    "docs": "https://openweathermap.org/api"
+  },
+  "serp_api": {
+    "api_key": "YOUR_SERPAPI_API_KEY",
+    "endpoint": "https://serpapi.com/search",
+    "note": "Google, Bing, DuckDuckGo search results as JSON",
+    "docs": "https://serpapi.com/docs"
+  },
+  "browserless": {
+    "api_key": "YOUR_BROWSERLESS_API_KEY",
+    "endpoint": "https://chrome.browserless.io",
+    "note": "Headless Chrome — web scraping, screenshots, PDF",
+    "docs": "https://docs.browserless.io"
+  },
+  "apify": {
+    "api_token": "YOUR_APIFY_API_TOKEN",
+    "endpoint": "https://api.apify.com/v2",
+    "note": "Web scraping actors — Amazon, Twitter, Instagram scrapers",
+    "docs": "https://docs.apify.com"
+  },
+  "twilio": {
+    "account_sid": "YOUR_TWILIO_ACCOUNT_SID",
+    "auth_token": "YOUR_TWILIO_AUTH_TOKEN",
+    "phone_number": "YOUR_TWILIO_PHONE_NUMBER",
+    "messaging_service_sid": "YOUR_TWILIO_MESSAGING_SERVICE_SID",
+    "endpoint": "https://api.twilio.com/2010-04-01",
+    "note": "SMS, voice calls, WhatsApp",
+    "docs": "https://www.twilio.com/docs"
+  },
+  "vonage": {
+    "api_key": "YOUR_VONAGE_API_KEY",
+    "api_secret": "YOUR_VONAGE_API_SECRET",
+    "application_id": "YOUR_VONAGE_APPLICATION_ID",
+    "private_key": "YOUR_VONAGE_PRIVATE_KEY",
+    "note": "SMS + voice alternative to Twilio",
+    "docs": "https://developer.vonage.com"
+  },
+  "ipinfo": {
+    "api_key": "YOUR_IPINFO_API_KEY",
+    "endpoint": "https://ipinfo.io",
+    "note": "IP geolocation, ASN, ISP lookup",
+    "docs": "https://ipinfo.io/developers"
+  },
+  "abstract_api": {
+    "email_validation_key": "YOUR_ABSTRACT_EMAIL_KEY",
+    "phone_validation_key": "YOUR_ABSTRACT_PHONE_KEY",
+    "ip_geo_key": "YOUR_ABSTRACT_IP_KEY",
+    "holidays_key": "YOUR_ABSTRACT_HOLIDAYS_KEY",
+    "docs": "https://docs.abstractapi.com"
+  }
+}

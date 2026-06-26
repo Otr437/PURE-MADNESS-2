@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "category": "email_services",
+    "description": "Email sending, receiving, verification, automation",
+    "encrypt": true,
+    "hot_swap": true
+  },
+  "resend": {
+    "api_key": "YOUR_RESEND_API_KEY",
+    "from_domain": "YOUR_FROM_DOMAIN",
+    "endpoint": "https://api.resend.com",
+    "docs": "https://resend.com/docs"
+  },
+  "sendgrid": {
+    "api_key": "YOUR_SENDGRID_API_KEY",
+    "from_email": "YOUR_FROM_EMAIL",
+    "template_id": "YOUR_SENDGRID_TEMPLATE_ID",
+    "endpoint": "https://api.sendgrid.com/v3",
+    "docs": "https://docs.sendgrid.com"
+  },
+  "mailgun": {
+    "api_key": "YOUR_MAILGUN_API_KEY",
+    "domain": "YOUR_MAILGUN_DOMAIN",
+    "webhook_signing_key": "YOUR_MAILGUN_WEBHOOK_KEY",
+    "endpoints": {
+      "us": "https://api.mailgun.net/v3",
+      "eu": "https://api.eu.mailgun.net/v3"
+    },
+    "docs": "https://documentation.mailgun.com"
+  },
+  "postmark": {
+    "server_token": "YOUR_POSTMARK_SERVER_TOKEN",
+    "account_token": "YOUR_POSTMARK_ACCOUNT_TOKEN",
+    "message_stream": "YOUR_POSTMARK_MESSAGE_STREAM",
+    "webhook_token": "YOUR_POSTMARK_WEBHOOK_TOKEN",
+    "endpoint": "https://api.postmarkapp.com",
+    "docs": "https://postmarkapp.com/developer"
+  },
+  "amazon_ses": {
+    "access_key_id": "YOUR_SES_ACCESS_KEY_ID",
+    "secret_access_key": "YOUR_SES_SECRET_ACCESS_KEY",
+    "region": "us-east-1",
+    "from_email": "YOUR_SES_FROM_EMAIL",
+    "docs": "https://docs.aws.amazon.com/ses"
+  },
+  "mailchimp": {
+    "api_key": "YOUR_MAILCHIMP_API_KEY",
+    "server_prefix": "us1",
+    "list_id": "YOUR_MAILCHIMP_LIST_ID",
+    "endpoint": "https://{server_prefix}.api.mailchimp.com/3.0",
+    "note": "Marketing email lists + automation",
+    "docs": "https://mailchimp.com/developer"
+  },
+  "convertkit": {
+    "api_key": "YOUR_CONVERTKIT_API_KEY",
+    "api_secret": "YOUR_CONVERTKIT_API_SECRET",
+    "form_id": "YOUR_CONVERTKIT_FORM_ID",
+    "sequence_id": "YOUR_CONVERTKIT_SEQUENCE_ID",
+    "endpoint": "https://api.convertkit.com/v3",
+    "docs": "https://developers.convertkit.com"
+  },
+  "gmail_smtp": {
+    "email": "YOUR_GMAIL_ADDRESS",
+    "app_password": "YOUR_GMAIL_APP_PASSWORD",
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "note": "Use App Password — NOT your real Gmail password. Enable 2FA first.",
+    "docs": "https://support.google.com/accounts/answer/185833"
+  },
+  "imap_config": {
+    "host": "YOUR_IMAP_HOST",
+    "port": 993,
+    "username": "YOUR_EMAIL_USERNAME",
+    "password": "YOUR_EMAIL_PASSWORD",
+    "tls": true,
+    "note": "For reading/parsing incoming emails programmatically"
+  }
+}

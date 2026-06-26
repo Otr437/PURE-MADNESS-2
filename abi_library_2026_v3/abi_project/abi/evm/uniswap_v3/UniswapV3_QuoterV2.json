@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "name": "Uniswap V3 QuoterV2 — get swap quotes off-chain",
+    "addresses": {
+      "ethereum":  "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
+      "optimism":  "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
+      "arbitrum":  "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
+      "polygon":   "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
+      "base":      "0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a",
+      "bnb":       "0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997",
+      "avalanche": "0xbe0F5544EC67e9B3b2D979aaA43f18Fd87E6257F",
+      "celo":      "0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8",
+      "blast":     "0x6Cdcd65e03c1CEc3730AeeCd45bc140D57A25C77",
+      "zora":      "0x11867e1b3348F3ce4FcC170BC5af3d23E07E64Df"
+    }
+  },
+  "abi": [
+    {"name":"quoteExactInputSingle","type":"function","stateMutability":"nonpayable","inputs":[{"name":"params","type":"tuple","components":[{"name":"tokenIn","type":"address"},{"name":"tokenOut","type":"address"},{"name":"amountIn","type":"uint256"},{"name":"fee","type":"uint24"},{"name":"sqrtPriceLimitX96","type":"uint160"}]}],"outputs":[{"name":"amountOut","type":"uint256"},{"name":"sqrtPriceX96After","type":"uint160"},{"name":"initializedTicksCrossed","type":"uint32"},{"name":"gasEstimate","type":"uint256"}]},
+    {"name":"quoteExactInput","type":"function","stateMutability":"nonpayable","inputs":[{"name":"path","type":"bytes"},{"name":"amountIn","type":"uint256"}],"outputs":[{"name":"amountOut","type":"uint256"},{"name":"sqrtPriceX96AfterList","type":"uint160[]"},{"name":"initializedTicksCrossedList","type":"uint32[]"},{"name":"gasEstimate","type":"uint256"}]},
+    {"name":"quoteExactOutputSingle","type":"function","stateMutability":"nonpayable","inputs":[{"name":"params","type":"tuple","components":[{"name":"tokenIn","type":"address"},{"name":"tokenOut","type":"address"},{"name":"amount","type":"uint256"},{"name":"fee","type":"uint24"},{"name":"sqrtPriceLimitX96","type":"uint160"}]}],"outputs":[{"name":"amountIn","type":"uint256"},{"name":"sqrtPriceX96After","type":"uint160"},{"name":"initializedTicksCrossed","type":"uint32"},{"name":"gasEstimate","type":"uint256"}]},
+    {"name":"quoteExactOutput","type":"function","stateMutability":"nonpayable","inputs":[{"name":"path","type":"bytes"},{"name":"amountOut","type":"uint256"}],"outputs":[{"name":"amountIn","type":"uint256"},{"name":"sqrtPriceX96AfterList","type":"uint160[]"},{"name":"initializedTicksCrossedList","type":"uint32[]"},{"name":"gasEstimate","type":"uint256"}]}
+  ]
+}

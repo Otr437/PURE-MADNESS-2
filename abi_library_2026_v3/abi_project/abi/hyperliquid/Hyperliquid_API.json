@@ -1,0 +1,99 @@
+{
+  "_meta": {
+    "name": "Hyperliquid — L1 orderbook perps + spot. HyperCore (trading) + HyperEVM (smart contracts).",
+    "architecture": "NOT EVM ABI-based. Uses REST API + WebSocket + EIP-712 signed actions. HyperEVM system contract at 0x3333...3333 bridges to HyperCore.",
+    "endpoints": {
+      "mainnet_info":      "https://api.hyperliquid.xyz/info",
+      "mainnet_exchange":  "https://api.hyperliquid.xyz/exchange",
+      "mainnet_ws":        "wss://api.hyperliquid.xyz/ws",
+      "testnet_info":      "https://api.hyperliquid-testnet.xyz/info",
+      "testnet_exchange":  "https://api.hyperliquid-testnet.xyz/exchange",
+      "explorer":          "https://app.hyperliquid.xyz/explorer"
+    },
+    "hyperevm": {
+      "chain_id": 999,
+      "rpc": "https://rpc.hyperliquid.xyz/evm",
+      "system_contract": "0x3333333333333333333333333333333333333333",
+      "HYPE_token": "native gas token",
+      "precompile_oracle_perp": "0x0000000000000000000000000000000000000807",
+      "precompile_oracle_spot": "0x0000000000000000000000000000000000000808"
+    },
+    "HYPE_token": {
+      "note": "Native HYPE staking, validator delegation, trading fee discounts. HYPE on EVM = same as HyperCore HYPE.",
+      "total_supply": "1,000,000,000",
+      "airdrop_to_early_users": "310,000,000 (31%)"
+    },
+    "fee_structure": {
+      "maker": "-0.001% (rebate) to 0.012%",
+      "taker": "0.0315% to 0.045%",
+      "spot_maker": "0.04%",
+      "spot_taker": "0.07%",
+      "note": "Fees tiered by 14-day rolling volume. HYPE staking gives additional discounts."
+    }
+  },
+  "info_endpoint_requests": {
+    "get_all_mids": {"type": "allMids"},
+    "get_meta": {"type": "meta"},
+    "get_meta_and_asset_ctxs": {"type": "metaAndAssetCtxs"},
+    "get_user_state": {"type": "clearinghouseState", "user": "0xADDRESS"},
+    "get_open_orders": {"type": "openOrders", "user": "0xADDRESS"},
+    "get_order_status": {"type": "orderStatus", "user": "0xADDRESS", "oid": 12345},
+    "get_user_fills": {"type": "userFills", "user": "0xADDRESS"},
+    "get_l2_book": {"type": "l2Book", "coin": "BTC"},
+    "get_candles": {"type": "candleSnapshot", "req": {"coin": "ETH", "interval": "1h", "startTime": 1700000000000}},
+    "get_funding_history": {"type": "fundingHistory", "coin": "BTC", "startTime": 1700000000000},
+    "get_spot_meta": {"type": "spotMeta"},
+    "get_spot_clearinghouse": {"type": "spotClearinghouseState", "user": "0xADDRESS"},
+    "get_vault_details": {"type": "vaultDetails", "vaultAddress": "0xVAULT"},
+    "get_perp_dex_meta": {"type": "perpDexMeta"}
+  },
+  "exchange_actions": {
+    "note": "All actions signed via EIP-712. POST to /exchange. Use hyperliquid-python-sdk or hyperliquid-ts SDK.",
+    "place_order": {
+      "action": {"type": "order", "orders": [{"a": 0, "b": true, "p": "29000", "s": "0.1", "r": false, "t": {"limit": {"tif": "Gtc"}}}], "grouping": "na"},
+      "params": {"a=assetIndex, b=isBuy, p=price, s=size, r=reduceOnly, tif=Gtc|Ioc|Alo"}
+    },
+    "cancel_order": {
+      "action": {"type": "cancel", "cancels": [{"a": 0, "o": 12345}]}
+    },
+    "modify_order": {
+      "action": {"type": "modify", "oid": 12345, "order": {"a": 0, "b": true, "p": "30000", "s": "0.1", "r": false, "t": {"limit": {"tif": "Gtc"}}}}
+    },
+    "market_order": {
+      "action": {"type": "order", "orders": [{"a": 0, "b": true, "p": "0", "s": "0.1", "r": false, "t": {"trigger": {"isMarket": true, "tpsl": "tp", "triggerPx": "0"}}}]}
+    },
+    "update_leverage": {
+      "action": {"type": "updateLeverage", "asset": 0, "isCross": true, "leverage": 10}
+    },
+    "update_isolated_margin": {
+      "action": {"type": "updateIsolatedMargin", "asset": 0, "isBuy": true, "ntli": 100}
+    },
+    "usd_class_transfer": {
+      "action": {"type": "usdClassTransfer", "amount": "100", "toPerp": true}
+    },
+    "spot_send": {
+      "action": {"type": "spotSend", "hyperliquidChain": "Mainnet", "signatureChainId": "0x66eee", "destination": "0xADDR", "token": "USDC:0xeb62eee3685fc4c43992febcd9e75443", "amount": "100", "time": 1700000000000}
+    },
+    "withdraw": {
+      "action": {"type": "withdraw3", "hyperliquidChain": "Mainnet", "signatureChainId": "0x66eee", "destination": "0xETH_ADDR", "amount": "100", "time": 1700000000000}
+    },
+    "vault_transfer": {
+      "action": {"type": "vaultTransfer", "vaultAddress": "0xVAULT", "isDeposit": true, "usd": "1000"}
+    }
+  },
+  "websocket_subscriptions": {
+    "trades": {"type": "subscribe", "subscription": {"type": "trades", "coin": "BTC"}},
+    "l2_book": {"type": "subscribe", "subscription": {"type": "l2Book", "coin": "ETH"}},
+    "candle": {"type": "subscribe", "subscription": {"type": "candle", "coin": "ETH", "interval": "1m"}},
+    "all_mids": {"type": "subscribe", "subscription": {"type": "allMids"}},
+    "user_fills": {"type": "subscribe", "subscription": {"type": "userFills", "user": "0xADDR"}},
+    "user_orders": {"type": "subscribe", "subscription": {"type": "orderUpdates", "user": "0xADDR"}},
+    "notification": {"type": "subscribe", "subscription": {"type": "notification", "user": "0xADDR"}}
+  },
+  "sdks": {
+    "python": "pip install hyperliquid-python",
+    "typescript": "npm install @nktkas/hyperliquid",
+    "rust": "github.com/hyperliquid-dex/hyperliquid-rust-sdk",
+    "ccxt": "npm install ccxt  # exchange id: 'hyperliquid'"
+  }
+}

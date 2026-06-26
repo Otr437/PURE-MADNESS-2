@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "name": "Ekubo Core — singleton AMM, #1 DEX on StarkNet by TVL",
+    "chain": "StarkNet Mainnet",
+    "addresses": {
+      "core_mainnet":    "0x00000005dd3D2F4429AF886cD1a3b08289DBcEa99A294197E9eB43b0e0325b4b",
+      "positions_mainnet":"0x02e0af29598b407c8716b17f6d2795eca1b471413fa03fb145a5e33722184067",
+      "router_v3_mainnet":"0x0199741822c2dc722f6f605204f35e56dbc23bceed54818168c4c49e4fb8737e",
+      "twamm_extension":  "0x043e4f09c32d13d43a880e85f69f7de93ceda62d6cf2581a582c6db635548fdc",
+      "oracle_extension":  "0x005e470ff654d834983a46b8f29dfa99963d5044b993cb7b9c92243a69dab38f",
+      "limit_orders_ext":  "0x050ed6ab03aef492cd062e25facf40ceef63294c53d12b514226f8fb4753266e"
+    }
+  },
+  "abi": [
+    {"name":"lock","type":"function","inputs":[{"name":"data","type":"Array<felt252>"}],"outputs":[{"name":"","type":"Array<felt252>"}]},
+    {"name":"swap","type":"function","inputs":[{"name":"pool_key","type":"PoolKey"},{"name":"params","type":"SwapParameters"}],"outputs":[{"name":"delta","type":"Delta"}]},
+    {"name":"update_position","type":"function","inputs":[{"name":"pool_key","type":"PoolKey"},{"name":"params","type":"UpdatePositionParameters"}],"outputs":[{"name":"delta","type":"Delta"}]},
+    {"name":"collect_fees","type":"function","inputs":[{"name":"pool_key","type":"PoolKey"},{"name":"salt","type":"felt252"},{"name":"bounds","type":"Bounds"}],"outputs":[{"name":"delta","type":"Delta"}]},
+    {"name":"withdraw","type":"function","inputs":[{"name":"token_address","type":"ContractAddress"},{"name":"recipient","type":"ContractAddress"},{"name":"amount","type":"u128"}],"outputs":[]},
+    {"name":"pay","type":"function","inputs":[{"name":"token_address","type":"ContractAddress"}],"outputs":[{"name":"amount","type":"u128"}]},
+    {"name":"mint_and_deposit","type":"function","inputs":[{"name":"token_address","type":"ContractAddress"},{"name":"to","type":"ContractAddress"},{"name":"amount","type":"u128"}],"outputs":[]},
+    {"name":"burn_and_withdraw","type":"function","inputs":[{"name":"token_address","type":"ContractAddress"},{"name":"recipient","type":"ContractAddress"},{"name":"amount","type":"u128"}],"outputs":[]},
+    {"name":"get_pool_price","type":"function","stateMutability":"view","inputs":[{"name":"pool_key","type":"PoolKey"}],"outputs":[{"name":"sqrtRatioX128","type":"u256"},{"name":"tick","type":"i129"}]},
+    {"name":"get_pool_liquidity","type":"function","stateMutability":"view","inputs":[{"name":"pool_key","type":"PoolKey"}],"outputs":[{"name":"","type":"u128"}]},
+    {"name":"get_pool_fees_per_liquidity","type":"function","stateMutability":"view","inputs":[{"name":"pool_key","type":"PoolKey"}],"outputs":[{"name":"fee0_per_liquidity","type":"u256"},{"name":"fee1_per_liquidity","type":"u256"}]},
+    {"name":"get_tick_liquidity_delta","type":"function","stateMutability":"view","inputs":[{"name":"pool_key","type":"PoolKey"},{"name":"index","type":"i129"}],"outputs":[{"name":"","type":"i129"}]},
+    {"name":"get_position_with_fees","type":"function","stateMutability":"view","inputs":[{"name":"pool_key","type":"PoolKey"},{"name":"owner","type":"ContractAddress"},{"name":"salt","type":"felt252"},{"name":"bounds","type":"Bounds"}],"outputs":[{"name":"position","type":"PositionWithFees"}]},
+    {"name":"Swapped","type":"event","keys":[{"name":"pool_key","type":"PoolKey"},{"name":"locker","type":"ContractAddress"}],"data":[{"name":"delta","type":"Delta"},{"name":"sqrt_ratio_after","type":"u256"},{"name":"tick_after","type":"i129"},{"name":"liquidity_after","type":"u128"}]},
+    {"name":"PositionUpdated","type":"event","keys":[{"name":"pool_key","type":"PoolKey"},{"name":"owner","type":"ContractAddress"},{"name":"salt","type":"felt252"},{"name":"bounds","type":"Bounds"}],"data":[{"name":"delta","type":"Delta"}]}
+  ]
+}

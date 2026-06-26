@@ -1,0 +1,152 @@
+{
+  "_meta": {
+    "name": "Major DeFi Governance Token Addresses — verified March 2026",
+    "note": "All are ERC-20 compatible. Use ERC20_standard.json ABI for interactions."
+  },
+  "tokens": {
+    "UNI": {
+      "ethereum": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+      "arbitrum": "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0",
+      "optimism": "0x6fd9d7AD17242c41f7131d257212c54A0e816691",
+      "base":     "0x2D4eA186E4b4C9F30A4a4E2e7d5D41a5cBDA1B8",
+      "description": "Uniswap governance token"
+    },
+    "COMP": {
+      "ethereum": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+      "arbitrum": "0x354A6dA3fcde098F8389cad84b0182725c6C91dE",
+      "description": "Compound governance token"
+    },
+    "AAVE": {
+      "ethereum": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+      "polygon":  "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
+      "arbitrum": "0xba5DdD1f9d7F570dc94a51479a000E3BCE967196",
+      "avalanche":"0x63a72806098Bd3D9520cC43356dD78afe5D386D9",
+      "description": "Aave governance + safety module staking token"
+    },
+    "stkAAVE": {
+      "ethereum": "0x4da27a545c0c5B758a6BA100e3a049001de870f5",
+      "description": "Staked AAVE — stake for safety module rewards + governance power"
+    },
+    "GHO": {
+      "ethereum": "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f",
+      "description": "Aave native stablecoin (GHO)"
+    },
+    "CRV": {
+      "ethereum": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+      "arbitrum": "0x11cDb42B0EB46D95f990BeDD4695A6e3fA034978",
+      "polygon":  "0x172370d5Cd63279eFa6d502DAB29171933a610AF",
+      "description": "Curve DAO token"
+    },
+    "veCRV": {
+      "ethereum": "0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2",
+      "description": "Vote-escrowed CRV — lock CRV for up to 4 years for voting + fee revenue"
+    },
+    "CVX": {
+      "ethereum": "0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B",
+      "description": "Convex Finance — CRV yield booster"
+    },
+    "LDO": {
+      "ethereum": "0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32",
+      "description": "Lido DAO governance token"
+    },
+    "RPL": {
+      "ethereum": "0xD33526068D116cE69F19A9ee46F0bd304F21A51f",
+      "description": "Rocket Pool governance + node operator collateral (min 10% of ETH value)"
+    },
+    "EIGEN": {
+      "ethereum": "0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83",
+      "description": "EigenLayer intersubjective staking token"
+    },
+    "GMX": {
+      "arbitrum":  "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
+      "avalanche": "0x62edc0692BD897D2295872a9FFCac5425011c661",
+      "description": "GMX governance + fee-sharing token (stake for esGMX + ETH/AVAX fees)"
+    },
+    "GLP": {
+      "arbitrum":  "0x5402B5F40310bDED796c7D0F3FF6683f5C0cFfdf",
+      "avalanche": "0x01234181085565ed162a948b6a5e88758CD7c7b8",
+      "description": "GMX V1 liquidity token (deprecated — use GM pools in V2)"
+    },
+    "MORPHO": {
+      "ethereum": "0x58D97B57bB95320F9a05dC918AEF65434969c2B2",
+      "base":     "0xBAa5CC21fd487B8Fcc2F632f8F4E4B1E4359E2de",
+      "description": "Morpho governance token"
+    },
+    "ZRO": {
+      "ethereum": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+      "description": "LayerZero governance token (absorbed STG via 1 STG = 0.08634 ZRO swap, Aug 2025)"
+    },
+    "STG": {
+      "ethereum":  "0xAf5191B0De278C7286d6C7CC6ab6BB8A73bA2Cd6",
+      "note":      "DEPRECATED — STG→ZRO swap completed Aug 2025 via LayerZero acquisition",
+      "description": "Former Stargate governance token"
+    },
+    "HYPE": {
+      "hyperliquid_native": "native gas token on HyperEVM chain_id=999",
+      "description": "Hyperliquid native token — staking, validator delegation, fee discounts"
+    },
+    "DYDX": {
+      "ethereum":   "0x92D6C1e31e14520e676a687F0a93788B716BEff5",
+      "dydx_chain": "adydx native denom",
+      "description": "dYdX governance + staking for Cosmos validator set"
+    },
+    "BAL": {
+      "ethereum":  "0xba100000625a3754423978a60c9317c58a424e3D",
+      "polygon":   "0x9a71012B13CA4d3D0Cdc72A177DF3ef03b0E76A7",
+      "arbitrum":  "0x040d1EdC9569d4Bab2D15287Dc5A4F10F56a56B5",
+      "description": "Balancer governance token"
+    },
+    "veBAL": {
+      "ethereum": "0xC128a9954e6c874eA3d62ce62B468bA073093F25",
+      "description": "Vote-escrowed BAL/WETH BPT — lock for voting + protocol fee revenue"
+    },
+    "SUSHI": {
+      "ethereum": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2",
+      "arbitrum": "0xd4d42F0b6DEF4CE0383636770eF773390d85c61A",
+      "polygon":  "0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a",
+      "description": "SushiSwap governance token"
+    },
+    "1INCH": {
+      "ethereum": "0x111111111117dC0aa78b770fA6A738034120C302",
+      "polygon":  "0x9c2C5fd7b07E95EE044DDeba0E97a665F142394f",
+      "description": "1inch Network governance + utility token"
+    },
+    "PENDLE": {
+      "ethereum": "0x808507121B80c02388fAd14726482e061B8da827",
+      "arbitrum": "0x0c880f6761F1af8d9Aa9C466984b80DAb9a8c9e8",
+      "base":     "0x27b56b9E1Eb7e42dD29aBD1C90e2b5Fc13a7B67",
+      "description": "Pendle Finance — yield tokenization and trading"
+    },
+    "ENA": {
+      "ethereum": "0x57e114B691Db790C35207b2e685D4A43181e6061",
+      "description": "Ethena governance token (USDe stablecoin issuer)"
+    },
+    "USDe": {
+      "ethereum": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
+      "description": "Ethena synthetic dollar — delta-neutral ETH staking + short perp"
+    },
+    "sUSDe": {
+      "ethereum": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497",
+      "description": "Staked USDe — stake USDe to earn ETH staking + funding rate yield"
+    },
+    "weETH": {
+      "ethereum": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+      "arbitrum": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+      "base":     "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A",
+      "description": "Wrapped eETH — EtherFi liquid restaking token (LRT)"
+    },
+    "ezETH": {
+      "ethereum": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+      "arbitrum": "0x2416092f143378750bb29b79eD961ab195CcEea5",
+      "description": "Renzo liquid restaking token (LRT)"
+    },
+    "rsETH": {
+      "ethereum": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
+      "description": "KelpDAO liquid restaking token (LRT)"
+    },
+    "ETHFI": {
+      "ethereum": "0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB",
+      "description": "EtherFi governance token"
+    }
+  }
+}

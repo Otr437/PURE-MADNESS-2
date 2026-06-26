@@ -1,0 +1,123 @@
+{
+  "_meta": {
+    "category": "ai_models",
+    "description": "LLM and AI model API keys",
+    "encrypt": true,
+    "hot_swap": true,
+    "rotation_priority": "HIGH — usage-based billing"
+  },
+  "anthropic": {
+    "api_key": "YOUR_ANTHROPIC_API_KEY",
+    "endpoint": "https://api.anthropic.com/v1",
+    "models": {
+      "claude_opus_4":   "claude-opus-4-6",
+      "claude_sonnet_4": "claude-sonnet-4-6",
+      "claude_haiku_4":  "claude-haiku-4-5-20251001"
+    },
+    "note": "Use claude-sonnet-4-6 for most tasks — best cost/performance",
+    "docs": "https://docs.anthropic.com"
+  },
+  "openai": {
+    "api_key": "YOUR_OPENAI_API_KEY",
+    "organization_id": "YOUR_OPENAI_ORG_ID",
+    "project_id": "YOUR_OPENAI_PROJECT_ID",
+    "endpoint": "https://api.openai.com/v1",
+    "models": {
+      "gpt4o":       "gpt-4o",
+      "gpt4o_mini":  "gpt-4o-mini",
+      "o1":          "o1",
+      "o3_mini":     "o3-mini",
+      "tts":         "tts-1",
+      "whisper":     "whisper-1",
+      "embeddings":  "text-embedding-3-large",
+      "dall_e":      "dall-e-3"
+    },
+    "docs": "https://platform.openai.com/docs"
+  },
+  "google_gemini": {
+    "api_key": "YOUR_GOOGLE_GEMINI_API_KEY",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta",
+    "models": {
+      "gemini_2_flash":    "gemini-2.0-flash",
+      "gemini_2_pro":      "gemini-2.0-pro",
+      "gemini_1_5_flash":  "gemini-1.5-flash",
+      "gemini_1_5_pro":    "gemini-1.5-pro"
+    },
+    "docs": "https://ai.google.dev/api"
+  },
+  "groq": {
+    "api_key": "YOUR_GROQ_API_KEY",
+    "endpoint": "https://api.groq.com/openai/v1",
+    "note": "Fastest inference — LLaMA, Mixtral, Gemma at extreme speed",
+    "models": {
+      "llama_70b":  "llama-3.3-70b-versatile",
+      "llama_8b":   "llama-3.1-8b-instant",
+      "mixtral":    "mixtral-8x7b-32768"
+    },
+    "docs": "https://console.groq.com/docs"
+  },
+  "mistral": {
+    "api_key": "YOUR_MISTRAL_API_KEY",
+    "endpoint": "https://api.mistral.ai/v1",
+    "models": {
+      "mistral_large": "mistral-large-latest",
+      "mistral_small": "mistral-small-latest",
+      "codestral":     "codestral-latest"
+    },
+    "docs": "https://docs.mistral.ai"
+  },
+  "together_ai": {
+    "api_key": "YOUR_TOGETHER_AI_API_KEY",
+    "endpoint": "https://api.together.xyz/v1",
+    "note": "Run open-source models — LLaMA, Qwen, DeepSeek",
+    "docs": "https://docs.together.ai"
+  },
+  "hugging_face": {
+    "api_key": "YOUR_HUGGINGFACE_API_KEY",
+    "token": "YOUR_HUGGINGFACE_TOKEN",
+    "endpoint": "https://api-inference.huggingface.co/models",
+    "docs": "https://huggingface.co/docs/api-inference"
+  },
+  "replicate": {
+    "api_key": "YOUR_REPLICATE_API_KEY",
+    "endpoint": "https://api.replicate.com/v1",
+    "note": "Run any open-source model — image, video, audio, code",
+    "docs": "https://replicate.com/docs"
+  },
+  "elevenlabs": {
+    "api_key": "YOUR_ELEVENLABS_API_KEY",
+    "endpoint": "https://api.elevenlabs.io/v1",
+    "note": "Text-to-speech, voice cloning",
+    "docs": "https://elevenlabs.io/docs"
+  },
+  "stability_ai": {
+    "api_key": "YOUR_STABILITY_AI_API_KEY",
+    "endpoint": "https://api.stability.ai",
+    "note": "Image generation — Stable Diffusion",
+    "docs": "https://platform.stability.ai/docs"
+  },
+  "cohere": {
+    "api_key": "YOUR_COHERE_API_KEY",
+    "endpoint": "https://api.cohere.com/v2",
+    "note": "Embeddings, RAG, reranking",
+    "docs": "https://docs.cohere.com"
+  },
+  "deepseek": {
+    "api_key": "YOUR_DEEPSEEK_API_KEY",
+    "endpoint": "https://api.deepseek.com/v1",
+    "note": "Strong reasoning + coding at low cost",
+    "docs": "https://api-docs.deepseek.com"
+  },
+  "perplexity": {
+    "api_key": "YOUR_PERPLEXITY_API_KEY",
+    "endpoint": "https://api.perplexity.ai",
+    "note": "Online search-augmented LLM",
+    "docs": "https://docs.perplexity.ai"
+  },
+  "openrouter": {
+    "api_key": "YOUR_OPENROUTER_API_KEY",
+    "endpoint": "https://openrouter.ai/api/v1",
+    "note": "Route to cheapest/best model automatically. Supports all major providers.",
+    "docs": "https://openrouter.ai/docs"
+  }
+}

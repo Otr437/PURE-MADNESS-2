@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "name": "SushiSwap V3 SwapRouter (RouteProcessor4)",
+    "addresses": {
+      "ethereum":  "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "arbitrum":  "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "optimism":  "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "polygon":   "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "base":      "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "bnb":       "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "avalanche": "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "linea":     "0x827179dD56d07A7eeA32e3873493835da2866976"
+    }
+  },
+  "abi": [
+    {"name":"processRoute","type":"function","stateMutability":"payable","inputs":[{"name":"tokenIn","type":"address"},{"name":"amountIn","type":"uint256"},{"name":"tokenOut","type":"address"},{"name":"amountOutMin","type":"uint256"},{"name":"to","type":"address"},{"name":"route","type":"bytes"}],"outputs":[{"name":"amountOut","type":"uint256"}]},
+    {"name":"transferValueAndprocessRoute","type":"function","stateMutability":"payable","inputs":[{"name":"transferValueTo","type":"address"},{"name":"amountValueTransfer","type":"uint256"},{"name":"tokenIn","type":"address"},{"name":"amountIn","type":"uint256"},{"name":"tokenOut","type":"address"},{"name":"amountOutMin","type":"uint256"},{"name":"to","type":"address"},{"name":"route","type":"bytes"}],"outputs":[{"name":"amountOut","type":"uint256"}]},
+    {"name":"Route","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"tokenIn","type":"address","indexed":false},{"name":"tokenOut","type":"address","indexed":false},{"name":"amountIn","type":"uint256","indexed":false},{"name":"amountOutMin","type":"uint256","indexed":false},{"name":"amountOut","type":"uint256","indexed":false}]}
+  ]
+}

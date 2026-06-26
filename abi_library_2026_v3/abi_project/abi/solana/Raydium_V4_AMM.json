@@ -1,0 +1,18 @@
+{
+  "_meta": {
+    "name": "Raydium V4 AMM — major Solana AMM",
+    "chain": "Solana",
+    "program_id": "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8",
+    "serum_program": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin"
+  },
+  "instruction_discriminators": {
+    "swap_base_in":   9,
+    "swap_base_out":  11,
+    "add_liquidity":  3,
+    "remove_liquidity": 4,
+    "initialize":     1
+  },
+  "accounts_layout": {
+    "swap": ["token_program","amm","amm_authority","amm_open_orders","amm_target_orders","pool_coin_token_account","pool_pc_token_account","serum_program","serum_market","serum_bids","serum_asks","serum_event_queue","serum_coin_vault","serum_pc_vault","serum_vault_signer","user_source_token_account","user_destination_token_account","user_source_owner"]
+  }
+}

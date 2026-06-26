@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "name": "Uniswap V2 Factory",
+    "addresses": {
+      "ethereum": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+      "base":     "0x8909Dc15e40173Ff4699343b6eB8132c65e18eC6",
+      "arbitrum": "0xf1D7CC64Fb4452F05c498126312eBE29f30Fbcf9",
+      "optimism": "0x0c3c1c532F1e39EdF36BE9Fe0bE1410313E074Bf",
+      "polygon":  "0x9e5A52f57b3038F1B8EeE45F28b3C1967e22799C",
+      "bnb":      "0x8909Dc15e40173Ff4699343b6eB8132c65e18eC6",
+      "avalanche":"0x9e5A52f57b3038F1B8EeE45F28b3C1967e22799C"
+    }
+  },
+  "abi": [
+    {"name":"feeTo","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"feeToSetter","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"getPair","type":"function","stateMutability":"view","inputs":[{"name":"tokenA","type":"address"},{"name":"tokenB","type":"address"}],"outputs":[{"name":"pair","type":"address"}]},
+    {"name":"allPairs","type":"function","stateMutability":"view","inputs":[{"name":"","type":"uint256"}],"outputs":[{"name":"pair","type":"address"}]},
+    {"name":"allPairsLength","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"createPair","type":"function","stateMutability":"nonpayable","inputs":[{"name":"tokenA","type":"address"},{"name":"tokenB","type":"address"}],"outputs":[{"name":"pair","type":"address"}]},
+    {"name":"setFeeTo","type":"function","stateMutability":"nonpayable","inputs":[{"name":"","type":"address"}],"outputs":[]},
+    {"name":"setFeeToSetter","type":"function","stateMutability":"nonpayable","inputs":[{"name":"","type":"address"}],"outputs":[]},
+    {"name":"PairCreated","type":"event","anonymous":false,"inputs":[{"name":"token0","type":"address","indexed":true},{"name":"token1","type":"address","indexed":true},{"name":"pair","type":"address","indexed":false},{"name":"","type":"uint256","indexed":false}]}
+  ]
+}

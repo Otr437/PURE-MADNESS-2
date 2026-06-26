@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "name": "JediSwap V1 Pair/Pool (StarkNet)",
+    "note": "Get pair address from Factory.get_pair(token0, token1)"
+  },
+  "abi": [
+    {"name":"token0","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"address","type":"felt"}]},
+    {"name":"token1","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"address","type":"felt"}]},
+    {"name":"get_reserves","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"reserve0","type":"Uint256"},{"name":"reserve1","type":"Uint256"},{"name":"block_timestamp_last","type":"felt"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"totalSupply","type":"Uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"account","type":"felt"}],"outputs":[{"name":"balance","type":"Uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"felt"},{"name":"spender","type":"felt"}],"outputs":[{"name":"remaining","type":"Uint256"}]},
+    {"name":"transfer","type":"function","inputs":[{"name":"recipient","type":"felt"},{"name":"amount","type":"Uint256"}],"outputs":[{"name":"success","type":"felt"}]},
+    {"name":"approve","type":"function","inputs":[{"name":"spender","type":"felt"},{"name":"amount","type":"Uint256"}],"outputs":[{"name":"success","type":"felt"}]},
+    {"name":"mint","type":"function","inputs":[{"name":"to","type":"felt"}],"outputs":[{"name":"liquidity","type":"Uint256"}]},
+    {"name":"burn","type":"function","inputs":[{"name":"to","type":"felt"}],"outputs":[{"name":"amount0","type":"Uint256"},{"name":"amount1","type":"Uint256"}]},
+    {"name":"swap","type":"function","inputs":[{"name":"amount0Out","type":"Uint256"},{"name":"amount1Out","type":"Uint256"},{"name":"to","type":"felt"}],"outputs":[]},
+    {"name":"Swap","type":"event","keys":[],"data":[{"name":"sender","type":"felt"},{"name":"amount0In","type":"Uint256"},{"name":"amount1In","type":"Uint256"},{"name":"amount0Out","type":"Uint256"},{"name":"amount1Out","type":"Uint256"},{"name":"to","type":"felt"}]},
+    {"name":"Sync","type":"event","keys":[],"data":[{"name":"reserve0","type":"Uint256"},{"name":"reserve1","type":"Uint256"}]},
+    {"name":"Mint","type":"event","keys":[],"data":[{"name":"sender","type":"felt"},{"name":"amount0","type":"Uint256"},{"name":"amount1","type":"Uint256"}]},
+    {"name":"Burn","type":"event","keys":[],"data":[{"name":"sender","type":"felt"},{"name":"amount0","type":"Uint256"},{"name":"amount1","type":"Uint256"},{"name":"to","type":"felt"}]}
+  ]
+}

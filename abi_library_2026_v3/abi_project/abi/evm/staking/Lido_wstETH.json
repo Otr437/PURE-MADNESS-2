@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "name": "Lido wstETH — wrapped stETH, NON-rebasing, value-accruing ERC-20. USE THIS for DeFi integrations.",
+    "addresses": {
+      "ethereum":    "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+      "optimism":    "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
+      "arbitrum":    "0x5979D7b546E38E414F7E9822514be443A4800529",
+      "polygon":     "0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD",
+      "base":        "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+      "zksync":      "0x703b52F2b28fEbcB60E1372858AF5b18849FE867",
+      "bnb":         "0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C",
+      "linea":       "0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F",
+      "scroll":      "0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32",
+      "mantle":      "0x458ed78EB972a369799fb278c0243b25e5242A83",
+      "unichain":    "0xc02fE7317D4eb8753a02c35fe019786854A92001",
+      "worldchain":  "0x58Dda3A32Cc79a8f96B2B80B1A40D8B0fC2Cbf74",
+      "soneium":     "0x9D36d6B60D1b30EA90d1027DEe7d05eb76E7F3Cd"
+    }
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"symbol","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"decimals","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"account","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"transfer","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"sender","type":"address"},{"name":"recipient","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"approve","type":"function","stateMutability":"nonpayable","inputs":[{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"wrap","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_stETHAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"unwrap","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_wstETHAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getWstETHByStETH","type":"function","stateMutability":"view","inputs":[{"name":"_stETHAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"getStETHByWstETH","type":"function","stateMutability":"view","inputs":[{"name":"_wstETHAmount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"stEthPerToken","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"tokensPerStEth","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"stETH","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"permit","type":"function","stateMutability":"nonpayable","inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"},{"name":"value","type":"uint256"},{"name":"deadline","type":"uint256"},{"name":"v","type":"uint8"},{"name":"r","type":"bytes32"},{"name":"s","type":"bytes32"}],"outputs":[]},
+    {"name":"Transfer","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]},
+    {"name":"Approval","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"spender","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]}
+  ]
+}

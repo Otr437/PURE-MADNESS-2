@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "name": "Uniswap V3 Factory",
+    "addresses": {
+      "ethereum":  "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "optimism":  "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "base":      "0x33128a8fC17869897dcE68Ed026d694621f6FDfD",
+      "arbitrum":  "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "polygon":   "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "bnb":       "0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7",
+      "avalanche": "0x740b1c1de25031C31FF4fC9A62f554A55cdC1baD",
+      "celo":      "0xAfE208a311B21f13EF87E33A90049fC17A7acDEc",
+      "blast":     "0x792edAdE80af5fC680d96a2eD80A44247D2Cf6Fd",
+      "zora":      "0x7145F8aeef1f6510E92164038E1B6F8cB2c42Cbb"
+    }
+  },
+  "abi": [
+    {"name":"owner","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"feeAmountTickSpacing","type":"function","stateMutability":"view","inputs":[{"name":"fee","type":"uint24"}],"outputs":[{"name":"","type":"int24"}]},
+    {"name":"getPool","type":"function","stateMutability":"view","inputs":[{"name":"tokenA","type":"address"},{"name":"tokenB","type":"address"},{"name":"fee","type":"uint24"}],"outputs":[{"name":"pool","type":"address"}]},
+    {"name":"createPool","type":"function","stateMutability":"nonpayable","inputs":[{"name":"tokenA","type":"address"},{"name":"tokenB","type":"address"},{"name":"fee","type":"uint24"}],"outputs":[{"name":"pool","type":"address"}]},
+    {"name":"setOwner","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_owner","type":"address"}],"outputs":[]},
+    {"name":"enableFeeAmount","type":"function","stateMutability":"nonpayable","inputs":[{"name":"fee","type":"uint24"},{"name":"tickSpacing","type":"int24"}],"outputs":[]},
+    {"name":"PoolCreated","type":"event","anonymous":false,"inputs":[{"name":"token0","type":"address","indexed":true},{"name":"token1","type":"address","indexed":true},{"name":"fee","type":"uint24","indexed":true},{"name":"tickSpacing","type":"int24","indexed":false},{"name":"pool","type":"address","indexed":false}]},
+    {"name":"FeeAmountEnabled","type":"event","anonymous":false,"inputs":[{"name":"fee","type":"uint24","indexed":true},{"name":"tickSpacing","type":"int24","indexed":true}]},
+    {"name":"OwnerChanged","type":"event","anonymous":false,"inputs":[{"name":"oldOwner","type":"address","indexed":true},{"name":"newOwner","type":"address","indexed":true}]}
+  ]
+}

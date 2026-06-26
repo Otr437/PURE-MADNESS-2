@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "name": "EigenLayer EigenPodManager — native ETH restaking via validator withdrawal credentials",
+    "address_ethereum": "0x91E677b07F7AF907ec9a428aafA9fc14a0d3A338",
+    "flow": "1. createPod() — deploys your EigenPod 2. Set validator withdrawal credentials to EigenPod address 3. stake(pubkey, sig, depositDataRoot) — deposits 32 ETH 4. verifyWithdrawalCredentials() — after beacon chain activation 5. Delegate via DelegationManager"
+  },
+  "abi": [
+    {"name":"createPod","type":"function","stateMutability":"nonpayable","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"stake","type":"function","stateMutability":"payable","inputs":[{"name":"pubkey","type":"bytes"},{"name":"signature","type":"bytes"},{"name":"depositDataRoot","type":"bytes32"}],"outputs":[]},
+    {"name":"recordBeaconChainETHBalanceUpdate","type":"function","stateMutability":"nonpayable","inputs":[{"name":"podOwner","type":"address"},{"name":"sharesDelta","type":"int256"}],"outputs":[]},
+    {"name":"ownerToPod","type":"function","stateMutability":"view","inputs":[{"name":"podOwner","type":"address"}],"outputs":[{"name":"","type":"address"}]},
+    {"name":"getPod","type":"function","stateMutability":"view","inputs":[{"name":"podOwner","type":"address"}],"outputs":[{"name":"","type":"address"}]},
+    {"name":"hasPod","type":"function","stateMutability":"view","inputs":[{"name":"podOwner","type":"address"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"numPods","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"podOwnerDepositShares","type":"function","stateMutability":"view","inputs":[{"name":"podOwner","type":"address"}],"outputs":[{"name":"","type":"int256"}]},
+    {"name":"beaconChainSlashingFactor","type":"function","stateMutability":"view","inputs":[{"name":"staker","type":"address"}],"outputs":[{"name":"","type":"uint64"}]},
+    {"name":"PodDeployed","type":"event","anonymous":false,"inputs":[{"name":"eigenPod","type":"address","indexed":true},{"name":"podOwner","type":"address","indexed":true}]},
+    {"name":"BeaconChainETHDeposited","type":"event","anonymous":false,"inputs":[{"name":"podOwner","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false}]}
+  ]
+}

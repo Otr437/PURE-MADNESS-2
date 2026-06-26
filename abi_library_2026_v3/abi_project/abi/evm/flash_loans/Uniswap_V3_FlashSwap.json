@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "name": "Uniswap V3 Flash Swap — zero-fee flash loans via V3 Pool flash()",
+    "note": "V3 pools support flash swaps. Borrow any token, repay in same tx. Fee = pool fee tier (0.01%-1%). Implement uniswapV3FlashCallback() in your contract.",
+    "fee": "Pool fee tier: 0.01% (100), 0.05% (500), 0.3% (3000), 1% (10000)"
+  },
+  "IUniswapV3FlashCallback": {
+    "description": "Implement in YOUR contract — called by pool after flash",
+    "abi": [
+      {"name":"uniswapV3FlashCallback","type":"function","stateMutability":"nonpayable","inputs":[{"name":"fee0","type":"uint256"},{"name":"fee1","type":"uint256"},{"name":"data","type":"bytes"}],"outputs":[]}
+    ]
+  },
+  "Pool_flash_function": {
+    "description": "Call flash() on the V3 POOL to initiate. Pool calls back uniswapV3FlashCallback() on your contract.",
+    "abi": [
+      {"name":"flash","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"amount0","type":"uint256"},{"name":"amount1","type":"uint256"},{"name":"data","type":"bytes"}],"outputs":[]},
+      {"name":"Flash","type":"event","anonymous":false,"inputs":[{"name":"sender","type":"address","indexed":true},{"name":"recipient","type":"address","indexed":true},{"name":"amount0","type":"uint256","indexed":false},{"name":"amount1","type":"uint256","indexed":false},{"name":"paid0","type":"uint256","indexed":false},{"name":"paid1","type":"uint256","indexed":false}]}
+    ]
+  }
+}

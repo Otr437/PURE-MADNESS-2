@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "name": "ERC20 Standard",
+    "note": "Works for USDC, USDT, WBTC, DAI, LINK, UNI, AAVE, COMP, CAKE, PEAQ, STRK, NEAR (bridged), and all standard ERC-20 tokens",
+    "addresses": {
+      "WETH_ethereum":   "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "USDC_ethereum":   "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "USDT_ethereum":   "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "WBTC_ethereum":   "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "DAI_ethereum":    "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "LINK_ethereum":   "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+      "UNI_ethereum":    "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+      "AAVE_ethereum":   "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+      "USDC_arbitrum":   "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "USDC_base":       "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "USDC_optimism":   "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+      "USDC_polygon":    "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+      "USDC_avalanche":  "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+      "USDC_bnb":        "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      "USDC_zksync":     "0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4",
+      "USDC_linea":      "0x176211869cA2b568f2A7D4EE941E073a821EE1ff",
+      "USDC_sonic":      "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+      "USDC_unichain":   "0x078D782b760474a361dDA0AF3839290b0EF57AD6",
+      "USDC_worldchain": "0x79A02482A880bCe3F13E09da970dC34dB4cD24D1",
+      "USDC_ink":        "0x2D270e6886d130D724215A266106e6832161EAEd",
+      "USDC_starknet":   "0x033068F6539f8e6e6b131e6B2B814e6c34A5224bC66947c47DaB9dFeE93b35fb",
+      "PEAQ_ethereum":   "0x7a03a9e96dd867da50e5f28efa38e40237a44941",
+      "STRK_ethereum":   "0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766"
+    }
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"symbol","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"decimals","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"account","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"transfer","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"approve","type":"function","stateMutability":"nonpayable","inputs":[{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"increaseAllowance","type":"function","stateMutability":"nonpayable","inputs":[{"name":"spender","type":"address"},{"name":"addedValue","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"decreaseAllowance","type":"function","stateMutability":"nonpayable","inputs":[{"name":"spender","type":"address"},{"name":"subtractedValue","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"Transfer","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]},
+    {"name":"Approval","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"spender","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]}
+  ]
+}

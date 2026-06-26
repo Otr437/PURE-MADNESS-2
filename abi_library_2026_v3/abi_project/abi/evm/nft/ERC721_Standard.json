@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "name": "ERC-721 NFT Standard",
+    "notable_contracts": {
+      "Bored_Ape_ethereum":    "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+      "CryptoPunks_ethereum":  "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB",
+      "Azuki_ethereum":        "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+      "Uniswap_V3_Positions":  "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+      "Seaport_ethereum":      "0x0000000000000068F116a894984e2DB1123eB395"
+    }
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"symbol","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"tokenURI","type":"function","stateMutability":"view","inputs":[{"name":"tokenId","type":"uint256"}],"outputs":[{"name":"","type":"string"}]},
+    {"name":"ownerOf","type":"function","stateMutability":"view","inputs":[{"name":"tokenId","type":"uint256"}],"outputs":[{"name":"owner","type":"address"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"}],"outputs":[{"name":"balance","type":"uint256"}]},
+    {"name":"getApproved","type":"function","stateMutability":"view","inputs":[{"name":"tokenId","type":"uint256"}],"outputs":[{"name":"operator","type":"address"}]},
+    {"name":"isApprovedForAll","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"operator","type":"address"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"tokenOfOwnerByIndex","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"index","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"tokenByIndex","type":"function","stateMutability":"view","inputs":[{"name":"index","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"supportsInterface","type":"function","stateMutability":"view","inputs":[{"name":"interfaceId","type":"bytes4"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"outputs":[]},
+    {"name":"safeTransferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"outputs":[]},
+    {"name":"safeTransferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"},{"name":"data","type":"bytes"}],"outputs":[]},
+    {"name":"approve","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"outputs":[]},
+    {"name":"setApprovalForAll","type":"function","stateMutability":"nonpayable","inputs":[{"name":"operator","type":"address"},{"name":"approved","type":"bool"}],"outputs":[]},
+    {"name":"Transfer","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"tokenId","type":"uint256","indexed":true}]},
+    {"name":"Approval","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"approved","type":"address","indexed":true},{"name":"tokenId","type":"uint256","indexed":true}]},
+    {"name":"ApprovalForAll","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"operator","type":"address","indexed":true},{"name":"approved","type":"bool","indexed":false}]}
+  ]
+}

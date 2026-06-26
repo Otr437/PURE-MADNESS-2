@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "name": "AVNU Exchange — leading DEX aggregator on StarkNet",
+    "chain": "StarkNet Mainnet",
+    "addresses": {
+      "exchange_mainnet": "0x04270219d365d6b017231b52e92b3fb5d7c8378b05e9abc97724537a80e93b0f",
+      "exchange_sepolia": "0x02c56e8b00dbe2a71e57472685378fc8988bba947e9a99b26a00fade2b4fe7c2"
+    }
+  },
+  "abi": [
+    {"name":"multi_route_swap","type":"function","inputs":[{"name":"sell_token_address","type":"ContractAddress"},{"name":"sell_token_amount","type":"u256"},{"name":"buy_token_address","type":"ContractAddress"},{"name":"buy_token_amount","type":"u256"},{"name":"buy_token_min_amount","type":"u256"},{"name":"beneficiary","type":"ContractAddress"},{"name":"integrator_fee_amount_bps","type":"u128"},{"name":"integrator_fee_recipient","type":"ContractAddress"},{"name":"routes","type":"Array<Route>"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"swap_exact_token_to","type":"function","inputs":[{"name":"sell_token_address","type":"ContractAddress"},{"name":"sell_token_amount","type":"u256"},{"name":"sell_token_max_amount","type":"u256"},{"name":"buy_token_address","type":"ContractAddress"},{"name":"buy_token_amount","type":"u256"},{"name":"beneficiary","type":"ContractAddress"},{"name":"routes","type":"Array<Route>"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"get_adapter_class_hash","type":"function","stateMutability":"view","inputs":[{"name":"exchange_address","type":"ContractAddress"}],"outputs":[{"name":"","type":"ClassHash"}]},
+    {"name":"get_fees_recipient","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"ContractAddress"}]},
+    {"name":"get_fees_bps_0","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"u128"}]},
+    {"name":"get_fees_bps_1","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"u128"}]},
+    {"name":"get_owner","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"ContractAddress"}]},
+    {"name":"Swap","type":"event","keys":[{"name":"taker_address","type":"ContractAddress"}],"data":[{"name":"sell_address","type":"ContractAddress"},{"name":"sell_amount","type":"u256"},{"name":"buy_address","type":"ContractAddress"},{"name":"buy_amount","type":"u256"},{"name":"beneficiary","type":"ContractAddress"}]}
+  ]
+}

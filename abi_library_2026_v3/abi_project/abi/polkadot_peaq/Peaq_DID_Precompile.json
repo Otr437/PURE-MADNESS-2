@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "name": "Peaq DID (Machine Identity) Precompile",
+    "chain": "Peaq",
+    "note": "Decentralized Identifiers for machines, robots, vehicles, IoT devices — core DePIN primitive on Peaq",
+    "address": "0x0000000000000000000000000000000000000800"
+  },
+  "abi": [
+    {"name":"add_attribute","type":"function","stateMutability":"nonpayable","inputs":[{"name":"did_account","type":"address"},{"name":"name","type":"bytes"},{"name":"value","type":"bytes"},{"name":"valid_for","type":"uint32"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"update_attribute","type":"function","stateMutability":"nonpayable","inputs":[{"name":"did_account","type":"address"},{"name":"name","type":"bytes"},{"name":"value","type":"bytes"},{"name":"valid_for","type":"uint32"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"read_attribute","type":"function","stateMutability":"view","inputs":[{"name":"did_account","type":"address"},{"name":"name","type":"bytes"}],"outputs":[{"name":"value","type":"bytes"},{"name":"validity","type":"uint32"},{"name":"created","type":"uint64"}]},
+    {"name":"remove_attribute","type":"function","stateMutability":"nonpayable","inputs":[{"name":"did_account","type":"address"},{"name":"name","type":"bytes"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"AttributeAdded","type":"event","anonymous":false,"inputs":[{"name":"did_account","type":"address","indexed":true},{"name":"name","type":"bytes","indexed":false},{"name":"value","type":"bytes","indexed":false},{"name":"valid_for","type":"uint32","indexed":false},{"name":"created","type":"uint64","indexed":false}]},
+    {"name":"AttributeUpdated","type":"event","anonymous":false,"inputs":[{"name":"did_account","type":"address","indexed":true},{"name":"name","type":"bytes","indexed":false},{"name":"value","type":"bytes","indexed":false},{"name":"valid_for","type":"uint32","indexed":false}]},
+    {"name":"AttributeRemoved","type":"event","anonymous":false,"inputs":[{"name":"did_account","type":"address","indexed":true},{"name":"name","type":"bytes","indexed":false},{"name":"block_number","type":"uint64","indexed":false}]}
+  ]
+}

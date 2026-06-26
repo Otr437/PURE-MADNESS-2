@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "name": "Peaq Network — EVM-compatible Polkadot parachain (DePIN chain)",
+    "chain": "Peaq",
+    "chain_id": 3338,
+    "rpc": "https://mpfn1.peaq.network",
+    "explorer": "https://peaq.subscan.io",
+    "native_token": "PEAQ",
+    "token_standard": "ERC-20 compatible via pallet-EVM",
+    "addresses": {
+      "PEAQ_ERC20_precompile": "0x0000000000000000000000000000000000000802",
+      "PEAQ_ethereum_token":   "0x7a03a9e96dd867da50e5f28efa38e40237a44941",
+      "MachineX_DEX": "deployed on Peaq mainnet — check https://machinex.io for current router address",
+      "note": "Peaq uses the ERC-20 Native Token Precompile at 0x...0802 to interact with PEAQ as if it were a standard ERC-20 without needing a wrapped token"
+    },
+    "machine_economy_features": {
+      "DID_contract":     "Machine Identity (DID) precompile on Peaq",
+      "machine_nft":      "mNFT — tokenized machines",
+      "pay_per_use":      "micropayment access control",
+      "revenue_sharing":  "automated on-chain reward distribution"
+    }
+  },
+  "abi": [
+    {"name":"name","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"symbol","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+    {"name":"decimals","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"totalSupply","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"who","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"allowance","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"transfer","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"transferFrom","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"approve","type":"function","stateMutability":"nonpayable","inputs":[{"name":"spender","type":"address"},{"name":"value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"Transfer","type":"event","anonymous":false,"inputs":[{"name":"from","type":"address","indexed":true},{"name":"to","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]},
+    {"name":"Approval","type":"event","anonymous":false,"inputs":[{"name":"owner","type":"address","indexed":true},{"name":"spender","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}]}
+  ]
+}

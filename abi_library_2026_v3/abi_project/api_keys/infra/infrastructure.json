@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "category": "infrastructure",
+    "description": "Storage, CDN, queues, auth, monitoring, secrets management",
+    "encrypt": true,
+    "hot_swap": false,
+    "rotation_priority": "HIGH — infrastructure keys = full access"
+  },
+  "redis": {
+    "url": "YOUR_REDIS_URL",
+    "password": "YOUR_REDIS_PASSWORD",
+    "host": "YOUR_REDIS_HOST",
+    "port": 6379,
+    "tls": true,
+    "note": "Use for session caching, rate limiting, hot swap key storage"
+  },
+  "mongodb": {
+    "uri": "YOUR_MONGODB_URI",
+    "database": "YOUR_DATABASE_NAME",
+    "docs": "https://www.mongodb.com/docs/drivers"
+  },
+  "postgres": {
+    "connection_string": "YOUR_POSTGRES_CONNECTION_STRING",
+    "host": "YOUR_POSTGRES_HOST",
+    "port": 5432,
+    "database": "YOUR_DATABASE_NAME",
+    "username": "YOUR_POSTGRES_USER",
+    "password": "YOUR_POSTGRES_PASSWORD",
+    "ssl": true
+  },
+  "pinecone": {
+    "api_key": "YOUR_PINECONE_API_KEY",
+    "environment": "YOUR_PINECONE_ENVIRONMENT",
+    "index_name": "YOUR_PINECONE_INDEX_NAME",
+    "endpoint": "https://api.pinecone.io",
+    "note": "Vector DB for AI/RAG embeddings",
+    "docs": "https://docs.pinecone.io"
+  },
+  "weaviate": {
+    "api_key": "YOUR_WEAVIATE_API_KEY",
+    "url": "YOUR_WEAVIATE_URL",
+    "note": "Open-source vector DB alternative to Pinecone",
+    "docs": "https://weaviate.io/developers/weaviate"
+  },
+  "cloudinary": {
+    "cloud_name": "YOUR_CLOUDINARY_CLOUD_NAME",
+    "api_key": "YOUR_CLOUDINARY_API_KEY",
+    "api_secret": "YOUR_CLOUDINARY_API_SECRET",
+    "upload_preset": "YOUR_CLOUDINARY_UPLOAD_PRESET",
+    "endpoint": "https://api.cloudinary.com/v1_1",
+    "note": "Image/video CDN, transformation, optimization",
+    "docs": "https://cloudinary.com/documentation"
+  },
+  "aws_s3": {
+    "access_key_id": "YOUR_S3_ACCESS_KEY_ID",
+    "secret_access_key": "YOUR_S3_SECRET_ACCESS_KEY",
+    "bucket_name": "YOUR_S3_BUCKET_NAME",
+    "region": "us-east-1",
+    "endpoint": "https://s3.amazonaws.com",
+    "docs": "https://docs.aws.amazon.com/s3"
+  },
+  "auth0": {
+    "domain": "YOUR_AUTH0_DOMAIN.auth0.com",
+    "client_id": "YOUR_AUTH0_CLIENT_ID",
+    "client_secret": "YOUR_AUTH0_CLIENT_SECRET",
+    "audience": "YOUR_AUTH0_AUDIENCE",
+    "management_api_token": "YOUR_AUTH0_MANAGEMENT_TOKEN",
+    "note": "Auth-as-a-service — JWT, OAuth2, SAML",
+    "docs": "https://auth0.com/docs"
+  },
+  "clerk": {
+    "publishable_key": "pk_live_YOUR_CLERK_PUBLISHABLE_KEY",
+    "secret_key": "sk_live_YOUR_CLERK_SECRET_KEY",
+    "webhook_secret": "whsec_YOUR_CLERK_WEBHOOK_SECRET",
+    "note": "Auth for modern apps — great DX for Web3+Web2",
+    "docs": "https://clerk.com/docs"
+  },
+  "vault_hashicorp": {
+    "token": "YOUR_VAULT_TOKEN",
+    "address": "YOUR_VAULT_ADDRESS",
+    "role_id": "YOUR_VAULT_ROLE_ID",
+    "secret_id": "YOUR_VAULT_SECRET_ID",
+    "note": "HashiCorp Vault — enterprise secrets management. Use this to store/retrieve all other keys.",
+    "docs": "https://developer.hashicorp.com/vault/docs"
+  },
+  "doppler": {
+    "token": "YOUR_DOPPLER_TOKEN",
+    "project": "YOUR_DOPPLER_PROJECT",
+    "config": "YOUR_DOPPLER_CONFIG",
+    "note": "Secrets manager — syncs env vars across environments/services",
+    "docs": "https://docs.doppler.com"
+  }
+}

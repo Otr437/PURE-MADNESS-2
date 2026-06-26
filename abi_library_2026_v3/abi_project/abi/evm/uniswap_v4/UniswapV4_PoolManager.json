@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "name": "Uniswap V4 PoolManager — singleton contract holding ALL V4 pools",
+    "deployed": "January 2025",
+    "addresses": {
+      "ethereum":   "0x000000000004444c5dc75cB358380D2e3dE08A90",
+      "unichain":   "0x1F98400000000000000000000000000000000004",
+      "optimism":   "0x9a13f98cb987694c9f086b1f5eb990eea8264ec3",
+      "base":       "0x498581ff718922c3f8e6a244956af099b2652b2b",
+      "arbitrum":   "0x360e68faccca8ca495c1b759fd9eee466db9fb32",
+      "polygon":    "0x67366782805870060151383f4bbff9dab53e5cd6",
+      "bnb":        "0x28e2ea090877bf75740558f6bfb36a5ffee9e9df",
+      "avalanche":  "0x06380c0e0912312b5150364b9dc4542ba0dbbc85",
+      "blast":      "0x1631559198a9e474033433b2958dabc135ab6446",
+      "zora":       "0x0575338e4c17006ae181b47900a84404247ca30f",
+      "worldchain": "0xb1860d529182ac3bc1f51fa2abd56662b7d13f33",
+      "ink":        "0x360e68faccca8ca495c1b759fd9eee466db9fb32",
+      "soneium":    "0x360e68faccca8ca495c1b759fd9eee466db9fb32",
+      "celo":       "0x288dc841A52FCA2707c6947B3A777c5E56cd87BC",
+      "monad":      "0x188d586ddcf52439676ca21a244753fa19f9ea8e",
+      "megaeth":    "0xacb7e78fa05d562e0a5d3089ec896d57d057d38e"
+    }
+  },
+  "abi": [
+    {"name":"initialize","type":"function","stateMutability":"nonpayable","inputs":[{"name":"key","type":"tuple","components":[{"name":"currency0","type":"address"},{"name":"currency1","type":"address"},{"name":"fee","type":"uint24"},{"name":"tickSpacing","type":"int24"},{"name":"hooks","type":"address"}]},{"name":"sqrtPriceX96","type":"uint160"}],"outputs":[{"name":"tick","type":"int24"}]},
+    {"name":"unlock","type":"function","stateMutability":"nonpayable","inputs":[{"name":"data","type":"bytes"}],"outputs":[{"name":"result","type":"bytes"}]},
+    {"name":"swap","type":"function","stateMutability":"nonpayable","inputs":[{"name":"key","type":"tuple","components":[{"name":"currency0","type":"address"},{"name":"currency1","type":"address"},{"name":"fee","type":"uint24"},{"name":"tickSpacing","type":"int24"},{"name":"hooks","type":"address"}]},{"name":"params","type":"tuple","components":[{"name":"zeroForOne","type":"bool"},{"name":"amountSpecified","type":"int256"},{"name":"sqrtPriceLimitX96","type":"uint160"}]},{"name":"hookData","type":"bytes"}],"outputs":[{"name":"swapDelta","type":"int256"}]},
+    {"name":"modifyLiquidity","type":"function","stateMutability":"nonpayable","inputs":[{"name":"key","type":"tuple","components":[{"name":"currency0","type":"address"},{"name":"currency1","type":"address"},{"name":"fee","type":"uint24"},{"name":"tickSpacing","type":"int24"},{"name":"hooks","type":"address"}]},{"name":"params","type":"tuple","components":[{"name":"tickLower","type":"int24"},{"name":"tickUpper","type":"int24"},{"name":"liquidityDelta","type":"int256"},{"name":"salt","type":"bytes32"}]},{"name":"hookData","type":"bytes"}],"outputs":[{"name":"callerDelta","type":"int256"},{"name":"feesAccrued","type":"int256"}]},
+    {"name":"donate","type":"function","stateMutability":"nonpayable","inputs":[{"name":"key","type":"tuple","components":[{"name":"currency0","type":"address"},{"name":"currency1","type":"address"},{"name":"fee","type":"uint24"},{"name":"tickSpacing","type":"int24"},{"name":"hooks","type":"address"}]},{"name":"amount0","type":"uint256"},{"name":"amount1","type":"uint256"},{"name":"hookData","type":"bytes"}],"outputs":[{"name":"delta","type":"int256"}]},
+    {"name":"sync","type":"function","stateMutability":"nonpayable","inputs":[{"name":"currency","type":"address"}],"outputs":[]},
+    {"name":"take","type":"function","stateMutability":"nonpayable","inputs":[{"name":"currency","type":"address"},{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[]},
+    {"name":"settle","type":"function","stateMutability":"payable","inputs":[],"outputs":[{"name":"paid","type":"uint256"}]},
+    {"name":"settleFor","type":"function","stateMutability":"payable","inputs":[{"name":"recipient","type":"address"}],"outputs":[{"name":"paid","type":"uint256"}]},
+    {"name":"clear","type":"function","stateMutability":"nonpayable","inputs":[{"name":"currency","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[]},
+    {"name":"mint","type":"function","stateMutability":"nonpayable","inputs":[{"name":"to","type":"address"},{"name":"id","type":"uint256"},{"name":"amount","type":"uint256"}],"outputs":[]},
+    {"name":"burn","type":"function","stateMutability":"nonpayable","inputs":[{"name":"from","type":"address"},{"name":"id","type":"uint256"},{"name":"amount","type":"uint256"}],"outputs":[]},
+    {"name":"updateDynamicLPFee","type":"function","stateMutability":"nonpayable","inputs":[{"name":"key","type":"tuple","components":[{"name":"currency0","type":"address"},{"name":"currency1","type":"address"},{"name":"fee","type":"uint24"},{"name":"tickSpacing","type":"int24"},{"name":"hooks","type":"address"}]},{"name":"newDynamicLPFee","type":"uint24"}],"outputs":[]},
+    {"name":"setProtocolFee","type":"function","stateMutability":"nonpayable","inputs":[{"name":"key","type":"tuple","components":[{"name":"currency0","type":"address"},{"name":"currency1","type":"address"},{"name":"fee","type":"uint24"},{"name":"tickSpacing","type":"int24"},{"name":"hooks","type":"address"}]},{"name":"newProtocolFee","type":"uint24"}],"outputs":[]},
+    {"name":"collectProtocolFees","type":"function","stateMutability":"nonpayable","inputs":[{"name":"recipient","type":"address"},{"name":"currency","type":"address"},{"name":"amount","type":"uint256"}],"outputs":[{"name":"amountCollected","type":"uint256"}]},
+    {"name":"getLiquidity","type":"function","stateMutability":"view","inputs":[{"name":"id","type":"bytes32"}],"outputs":[{"name":"liquidity","type":"uint128"}]},
+    {"name":"getSlot0","type":"function","stateMutability":"view","inputs":[{"name":"id","type":"bytes32"}],"outputs":[{"name":"sqrtPriceX96","type":"uint160"},{"name":"tick","type":"int24"},{"name":"protocolFee","type":"uint24"},{"name":"lpFee","type":"uint24"}]},
+    {"name":"getCurrencyDelta","type":"function","stateMutability":"view","inputs":[{"name":"locker","type":"address"},{"name":"currency","type":"address"}],"outputs":[{"name":"","type":"int256"}]},
+    {"name":"balanceOf","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"id","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"isOperator","type":"function","stateMutability":"view","inputs":[{"name":"owner","type":"address"},{"name":"operator","type":"address"}],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"Initialize","type":"event","anonymous":false,"inputs":[{"name":"id","type":"bytes32","indexed":true},{"name":"currency0","type":"address","indexed":true},{"name":"currency1","type":"address","indexed":true},{"name":"fee","type":"uint24","indexed":false},{"name":"tickSpacing","type":"int24","indexed":false},{"name":"hooks","type":"address","indexed":false},{"name":"sqrtPriceX96","type":"uint160","indexed":false},{"name":"tick","type":"int24","indexed":false}]},
+    {"name":"ModifyLiquidity","type":"event","anonymous":false,"inputs":[{"name":"id","type":"bytes32","indexed":true},{"name":"sender","type":"address","indexed":true},{"name":"tickLower","type":"int24","indexed":false},{"name":"tickUpper","type":"int24","indexed":false},{"name":"liquidityDelta","type":"int256","indexed":false},{"name":"salt","type":"bytes32","indexed":false}]},
+    {"name":"Swap","type":"event","anonymous":false,"inputs":[{"name":"id","type":"bytes32","indexed":true},{"name":"sender","type":"address","indexed":true},{"name":"amount0","type":"int128","indexed":false},{"name":"amount1","type":"int128","indexed":false},{"name":"sqrtPriceX96","type":"uint160","indexed":false},{"name":"liquidity","type":"uint128","indexed":false},{"name":"tick","type":"int24","indexed":false},{"name":"fee","type":"uint24","indexed":false}]},
+    {"name":"Donate","type":"event","anonymous":false,"inputs":[{"name":"id","type":"bytes32","indexed":true},{"name":"sender","type":"address","indexed":true},{"name":"amount0","type":"uint256","indexed":false},{"name":"amount1","type":"uint256","indexed":false}]}
+  ]
+}

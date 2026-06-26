@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "name": "NEAR Protocol Fungible Token Standard (NEP-141)",
+    "chain": "NEAR",
+    "note": "NEAR uses account IDs not hex addresses. Calls are JSON RPC view calls or function calls.",
+    "major_tokens": {
+      "USDC":  "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+      "USDT":  "usdt.tether-token.near",
+      "WBTC":  "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near",
+      "ETH":   "aurora",
+      "WETH":  "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near",
+      "NEAR_wrapped": "wrap.near"
+    },
+    "major_dexes": {
+      "REF_Finance_router": "v2.ref-finance.near",
+      "REF_Finance_exchange": "exchange.ref-finance.near"
+    }
+  },
+  "methods": {
+    "view": [
+      {"name":"ft_balance_of","params":{"account_id":"string"},"returns":"string (U128)"},
+      {"name":"ft_total_supply","params":{},"returns":"string (U128)"},
+      {"name":"ft_metadata","params":{},"returns":{"spec":"string","name":"string","symbol":"string","icon":"string|null","reference":"string|null","reference_hash":"string|null","decimals":"number"}},
+      {"name":"storage_balance_of","params":{"account_id":"string"},"returns":{"total":"string","available":"string"}},
+      {"name":"storage_balance_bounds","params":{},"returns":{"min":"string","max":"string|null"}}
+    ],
+    "change": [
+      {"name":"ft_transfer","params":{"receiver_id":"string","amount":"string (U128)","memo":"string|null"},"deposit":"1 yoctoNEAR"},
+      {"name":"ft_transfer_call","params":{"receiver_id":"string","amount":"string (U128)","memo":"string|null","msg":"string"},"deposit":"1 yoctoNEAR"},
+      {"name":"storage_deposit","params":{"account_id":"string|null","registration_only":"bool|null"},"deposit":"varies"},
+      {"name":"storage_withdraw","params":{"amount":"string (U128)|null"},"deposit":"1 yoctoNEAR"},
+      {"name":"storage_unregister","params":{"force":"bool|null"},"deposit":"1 yoctoNEAR"}
+    ]
+  }
+}

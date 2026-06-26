@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "category": "social_apis",
+    "description": "Social media APIs — posting, reading, auth, bots",
+    "encrypt": true,
+    "hot_swap": true
+  },
+  "twitter_x": {
+    "api_key": "YOUR_TWITTER_API_KEY",
+    "api_secret": "YOUR_TWITTER_API_SECRET",
+    "bearer_token": "YOUR_TWITTER_BEARER_TOKEN",
+    "access_token": "YOUR_TWITTER_ACCESS_TOKEN",
+    "access_token_secret": "YOUR_TWITTER_ACCESS_TOKEN_SECRET",
+    "client_id": "YOUR_TWITTER_CLIENT_ID",
+    "client_secret": "YOUR_TWITTER_CLIENT_SECRET",
+    "endpoint": "https://api.twitter.com/2",
+    "docs": "https://developer.twitter.com/en/docs"
+  },
+  "discord": {
+    "bot_token": "YOUR_DISCORD_BOT_TOKEN",
+    "client_id": "YOUR_DISCORD_CLIENT_ID",
+    "client_secret": "YOUR_DISCORD_CLIENT_SECRET",
+    "guild_id": "YOUR_DISCORD_GUILD_ID",
+    "webhook_url": "YOUR_DISCORD_WEBHOOK_URL",
+    "public_key": "YOUR_DISCORD_PUBLIC_KEY",
+    "endpoint": "https://discord.com/api/v10",
+    "docs": "https://discord.com/developers/docs"
+  },
+  "telegram": {
+    "bot_token": "YOUR_TELEGRAM_BOT_TOKEN",
+    "bot_username": "YOUR_TELEGRAM_BOT_USERNAME",
+    "chat_id": "YOUR_TELEGRAM_CHAT_ID",
+    "webhook_secret": "YOUR_TELEGRAM_WEBHOOK_SECRET",
+    "endpoint": "https://api.telegram.org/bot{bot_token}",
+    "docs": "https://core.telegram.org/bots/api"
+  },
+  "slack": {
+    "bot_token": "YOUR_SLACK_BOT_TOKEN",
+    "app_token": "YOUR_SLACK_APP_TOKEN",
+    "signing_secret": "YOUR_SLACK_SIGNING_SECRET",
+    "client_id": "YOUR_SLACK_CLIENT_ID",
+    "client_secret": "YOUR_SLACK_CLIENT_SECRET",
+    "webhook_url": "YOUR_SLACK_WEBHOOK_URL",
+    "channel_id": "YOUR_SLACK_CHANNEL_ID",
+    "endpoint": "https://slack.com/api",
+    "docs": "https://api.slack.com"
+  },
+  "reddit": {
+    "client_id": "YOUR_REDDIT_CLIENT_ID",
+    "client_secret": "YOUR_REDDIT_CLIENT_SECRET",
+    "username": "YOUR_REDDIT_USERNAME",
+    "password": "YOUR_REDDIT_PASSWORD",
+    "user_agent": "YOUR_APP_NAME/1.0 by YOUR_USERNAME",
+    "endpoint": "https://oauth.reddit.com",
+    "docs": "https://www.reddit.com/dev/api"
+  },
+  "linkedin": {
+    "client_id": "YOUR_LINKEDIN_CLIENT_ID",
+    "client_secret": "YOUR_LINKEDIN_CLIENT_SECRET",
+    "access_token": "YOUR_LINKEDIN_ACCESS_TOKEN",
+    "organization_id": "YOUR_LINKEDIN_ORG_ID",
+    "endpoint": "https://api.linkedin.com/v2",
+    "docs": "https://learn.microsoft.com/en-us/linkedin"
+  },
+  "instagram": {
+    "access_token": "YOUR_INSTAGRAM_ACCESS_TOKEN",
+    "app_id": "YOUR_INSTAGRAM_APP_ID",
+    "app_secret": "YOUR_INSTAGRAM_APP_SECRET",
+    "business_account_id": "YOUR_INSTAGRAM_BUSINESS_ACCOUNT_ID",
+    "endpoint": "https://graph.instagram.com",
+    "docs": "https://developers.facebook.com/docs/instagram"
+  }
+}

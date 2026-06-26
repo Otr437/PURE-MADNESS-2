@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "category": "wallets_and_web3",
+    "description": "Wallet SDKs, Web3 auth, on-ramps, paymaster services",
+    "encrypt": true,
+    "hot_swap": true
+  },
+  "walletconnect": {
+    "project_id": "YOUR_WALLETCONNECT_PROJECT_ID",
+    "endpoint": "https://cloud.walletconnect.com",
+    "note": "Required for WalletConnect v2 modal in any dApp",
+    "docs": "https://docs.walletconnect.com"
+  },
+  "dynamic": {
+    "environment_id": "YOUR_DYNAMIC_ENVIRONMENT_ID",
+    "api_key": "YOUR_DYNAMIC_API_KEY",
+    "endpoint": "https://app.dynamic.xyz/api/v0",
+    "note": "Web3 + social login — embedded wallets",
+    "docs": "https://docs.dynamic.xyz"
+  },
+  "privy": {
+    "app_id": "YOUR_PRIVY_APP_ID",
+    "app_secret": "YOUR_PRIVY_APP_SECRET",
+    "verification_key": "YOUR_PRIVY_VERIFICATION_KEY",
+    "endpoint": "https://auth.privy.io",
+    "note": "Embedded wallets, email/social login → crypto onboarding",
+    "docs": "https://docs.privy.io"
+  },
+  "thirdweb": {
+    "client_id": "YOUR_THIRDWEB_CLIENT_ID",
+    "secret_key": "YOUR_THIRDWEB_SECRET_KEY",
+    "endpoint": "https://api.thirdweb.com",
+    "note": "Smart wallets, account abstraction, paymaster",
+    "docs": "https://portal.thirdweb.com"
+  },
+  "biconomy": {
+    "api_key": "YOUR_BICONOMY_API_KEY",
+    "bundler_url": "YOUR_BICONOMY_BUNDLER_URL",
+    "paymaster_url": "YOUR_BICONOMY_PAYMASTER_URL",
+    "note": "Account abstraction, gasless transactions, paymasters",
+    "docs": "https://docs.biconomy.io"
+  },
+  "stackup": {
+    "api_key": "YOUR_STACKUP_API_KEY",
+    "bundler_url": "https://api.stackup.sh/v1/node/{api_key}",
+    "note": "ERC-4337 bundler + paymaster",
+    "docs": "https://docs.stackup.sh"
+  },
+  "moonpay": {
+    "api_key": "YOUR_MOONPAY_API_KEY",
+    "secret_key": "YOUR_MOONPAY_SECRET_KEY",
+    "endpoint": "https://api.moonpay.com",
+    "widget_url": "https://buy.moonpay.com",
+    "note": "Fiat on-ramp — credit card → crypto",
+    "docs": "https://dev.moonpay.com"
+  },
+  "transak": {
+    "api_key": "YOUR_TRANSAK_API_KEY",
+    "secret_key": "YOUR_TRANSAK_SECRET_KEY",
+    "endpoint": "https://api.transak.com",
+    "note": "Fiat on-ramp, 100+ countries",
+    "docs": "https://docs.transak.com"
+  },
+  "onramper": {
+    "api_key": "YOUR_ONRAMPER_API_KEY",
+    "endpoint": "https://onramper.com/api",
+    "note": "Aggregates multiple on-ramp providers",
+    "docs": "https://docs.onramper.com"
+  },
+  "avnu_paymaster": {
+    "api_key": "YOUR_AVNU_PAYMASTER_API_KEY",
+    "endpoint": "https://starknet.api.avnu.fi",
+    "note": "AVNU Paymaster for StarkNet — pay gas in any token",
+    "docs": "https://doc.avnu.fi/starknet-paymaster"
+  }
+}

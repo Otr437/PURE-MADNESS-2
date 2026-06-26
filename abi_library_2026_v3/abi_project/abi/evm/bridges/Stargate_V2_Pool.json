@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "name": "Stargate V2 / LayerZero OFT — cross-chain bridge (acquired by LayerZero Labs Aug 2025)",
+    "note": "Stargate V2 implements the IOFT (Omnichain Fungible Token) interface. Use quoteSend() then send() for all bridging. LayerZero acquired Stargate in Aug 2025 — now unified stack.",
+    "api": "https://mainnet.stargate-api.com/v1/metadata?version=v2",
+    "lz_scan": "https://layerzeroscan.com",
+    "addresses": {
+      "note": "Pool addresses vary by chain+token. Query the API or check https://stargate.finance for current addresses",
+      "USDC_pool_ethereum":  "0xc026395860Db2d07ee33e05fE50ed7bD583189C7",
+      "USDT_pool_ethereum":  "0x933597a323Eb81cAe705C5bC29985172fd5A3973",
+      "ETH_pool_ethereum":   "0x77b2043768d28E9C9aB44E1aBfC95944bcE57931",
+      "USDC_pool_arbitrum":  "0xe8CDF27AcD73a434D661C84887215F7598e7d0d3",
+      "USDC_pool_base":      "0x27a16dc786820B16E5c9028b75B99F6f604b5d26",
+      "USDC_pool_optimism":  "0xcE8CcA271Ebc0533920C83d39F417ED6A0abB7D0",
+      "USDC_pool_polygon":   "0x9Aa02D4Fae7F58b8E8f34c66E756cC734DAc7fe4",
+      "LZ_endpoint_ethereum": "0x1a44076050125825900e736c501f859c50fE728c"
+    },
+    "layerzero_chain_ids": {
+      "ethereum":  30101,
+      "arbitrum":  30110,
+      "optimism":  30111,
+      "polygon":   30109,
+      "base":      30184,
+      "bnb":       30102,
+      "avalanche": 30106,
+      "linea":     30183,
+      "scroll":    30214,
+      "solana":    30168
+    }
+  },
+  "abi": [
+    {"name":"send","type":"function","stateMutability":"payable","inputs":[{"name":"_sendParam","type":"tuple","components":[{"name":"dstEid","type":"uint32"},{"name":"to","type":"bytes32"},{"name":"amountLD","type":"uint256"},{"name":"minAmountLD","type":"uint256"},{"name":"extraOptions","type":"bytes"},{"name":"composeMsg","type":"bytes"},{"name":"oftCmd","type":"bytes"}]},{"name":"_fee","type":"tuple","components":[{"name":"nativeFee","type":"uint256"},{"name":"lzTokenFee","type":"uint256"}]},{"name":"_refundAddress","type":"address"}],"outputs":[{"name":"msgReceipt","type":"tuple","components":[{"name":"guid","type":"bytes32"},{"name":"nonce","type":"uint64"},{"name":"fee","type":"tuple","components":[{"name":"nativeFee","type":"uint256"},{"name":"lzTokenFee","type":"uint256"}]}]},{"name":"oftReceipt","type":"tuple","components":[{"name":"amountSentLD","type":"uint256"},{"name":"amountReceivedLD","type":"uint256"}]}]},
+    {"name":"quoteSend","type":"function","stateMutability":"view","inputs":[{"name":"_sendParam","type":"tuple","components":[{"name":"dstEid","type":"uint32"},{"name":"to","type":"bytes32"},{"name":"amountLD","type":"uint256"},{"name":"minAmountLD","type":"uint256"},{"name":"extraOptions","type":"bytes"},{"name":"composeMsg","type":"bytes"},{"name":"oftCmd","type":"bytes"}]},{"name":"_payInLzToken","type":"bool"}],"outputs":[{"name":"msgFee","type":"tuple","components":[{"name":"nativeFee","type":"uint256"},{"name":"lzTokenFee","type":"uint256"}]}]},
+    {"name":"token","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]},
+    {"name":"approvalRequired","type":"function","stateMutability":"pure","inputs":[],"outputs":[{"name":"","type":"bool"}]},
+    {"name":"sharedDecimals","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint8"}]},
+    {"name":"OFTSent","type":"event","anonymous":false,"inputs":[{"name":"guid","type":"bytes32","indexed":true},{"name":"dstEid","type":"uint32","indexed":false},{"name":"fromAddress","type":"address","indexed":true},{"name":"amountSentLD","type":"uint256","indexed":false},{"name":"amountReceivedLD","type":"uint256","indexed":false}]},
+    {"name":"OFTReceived","type":"event","anonymous":false,"inputs":[{"name":"guid","type":"bytes32","indexed":true},{"name":"srcEid","type":"uint32","indexed":false},{"name":"toAddress","type":"address","indexed":true},{"name":"amountReceivedLD","type":"uint256","indexed":false}]}
+  ]
+}

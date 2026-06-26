@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "name": "LayerZero V2 Endpoint — cross-chain messaging infrastructure (controls 85% of cross-chain messaging market 2025)",
+    "addresses": {
+      "ethereum":  "0x1a44076050125825900e736c501f859c50fE728c",
+      "arbitrum":  "0x1a44076050125825900e736c501f859c50fE728c",
+      "optimism":  "0x1a44076050125825900e736c501f859c50fE728c",
+      "base":      "0x1a44076050125825900e736c501f859c50fE728c",
+      "polygon":   "0x1a44076050125825900e736c501f859c50fE728c",
+      "bnb":       "0x1a44076050125825900e736c501f859c50fE728c",
+      "avalanche": "0x1a44076050125825900e736c501f859c50fE728c",
+      "note":      "Same address on ALL chains"
+    }
+  },
+  "abi": [
+    {"name":"send","type":"function","stateMutability":"payable","inputs":[{"name":"_params","type":"tuple","components":[{"name":"dstEid","type":"uint32"},{"name":"receiver","type":"bytes32"},{"name":"message","type":"bytes"},{"name":"options","type":"bytes"},{"name":"payInLzToken","type":"bool"}]},{"name":"_refundAddress","type":"address"}],"outputs":[{"name":"receipt","type":"tuple","components":[{"name":"guid","type":"bytes32"},{"name":"nonce","type":"uint64"},{"name":"fee","type":"tuple","components":[{"name":"nativeFee","type":"uint256"},{"name":"lzTokenFee","type":"uint256"}]}]}]},
+    {"name":"quote","type":"function","stateMutability":"view","inputs":[{"name":"_params","type":"tuple","components":[{"name":"dstEid","type":"uint32"},{"name":"receiver","type":"bytes32"},{"name":"message","type":"bytes"},{"name":"options","type":"bytes"},{"name":"payInLzToken","type":"bool"}]},{"name":"_sender","type":"address"}],"outputs":[{"name":"fee","type":"tuple","components":[{"name":"nativeFee","type":"uint256"},{"name":"lzTokenFee","type":"uint256"}]}]},
+    {"name":"verify","type":"function","stateMutability":"nonpayable","inputs":[{"name":"_origin","type":"tuple","components":[{"name":"srcEid","type":"uint32"},{"name":"sender","type":"bytes32"},{"name":"nonce","type":"uint64"}]},{"name":"_receiver","type":"address"},{"name":"_payloadHash","type":"bytes32"}],"outputs":[]},
+    {"name":"lzReceive","type":"function","stateMutability":"payable","inputs":[{"name":"_origin","type":"tuple","components":[{"name":"srcEid","type":"uint32"},{"name":"sender","type":"bytes32"},{"name":"nonce","type":"uint64"}]},{"name":"_receiver","type":"address"},{"name":"_guid","type":"bytes32"},{"name":"_message","type":"bytes"},{"name":"_extraData","type":"bytes"}],"outputs":[]},
+    {"name":"eid","type":"function","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint32"}]},
+    {"name":"delegates","type":"function","stateMutability":"view","inputs":[{"name":"","type":"address"}],"outputs":[{"name":"","type":"address"}]},
+    {"name":"PacketSent","type":"event","anonymous":false,"inputs":[{"name":"encodedPayload","type":"bytes","indexed":false},{"name":"options","type":"bytes","indexed":false},{"name":"sendLibrary","type":"address","indexed":false}]},
+    {"name":"PacketVerified","type":"event","anonymous":false,"inputs":[{"name":"origin","type":"tuple","indexed":false,"components":[{"name":"srcEid","type":"uint32"},{"name":"sender","type":"bytes32"},{"name":"nonce","type":"uint64"}]},{"name":"receiver","type":"address","indexed":false},{"name":"payloadHash","type":"bytes32","indexed":false}]},
+    {"name":"PacketDelivered","type":"event","anonymous":false,"inputs":[{"name":"origin","type":"tuple","indexed":false,"components":[{"name":"srcEid","type":"uint32"},{"name":"sender","type":"bytes32"},{"name":"nonce","type":"uint64"}]},{"name":"receiver","type":"address","indexed":false}]}
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "_meta": {
+    "name": "Curve Router — multi-hop swaps across Curve pools",
+    "addresses": {
+      "ethereum":  "0x99a58482BD75cbab83b27EC03CA68fF489b5788f",
+      "polygon":   "0x2a426b3Bb4fa87488387545f15D01d81352732F9",
+      "arbitrum":  "0x2191718CD32d02B8E60BAdFFeA33E4B5DD9A0A0D",
+      "optimism":  "0xF0d4c12A5768D806021F80a262B4d39d26C58b8D",
+      "avalanche": "0x0B0d4e2CC43E7Eb0bF2B48Fc4e8ef382F8FB9D60"
+    }
+  },
+  "abi": [
+    {"name":"exchange","type":"function","stateMutability":"payable","inputs":[{"name":"_route","type":"address[11]"},{"name":"_swap_params","type":"uint256[5][5]"},{"name":"_amount","type":"uint256"},{"name":"_min_dy","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"exchange","type":"function","stateMutability":"payable","inputs":[{"name":"_route","type":"address[11]"},{"name":"_swap_params","type":"uint256[5][5]"},{"name":"_amount","type":"uint256"},{"name":"_min_dy","type":"uint256"},{"name":"_pools","type":"address[5]"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"get_dy","type":"function","stateMutability":"view","inputs":[{"name":"_route","type":"address[11]"},{"name":"_swap_params","type":"uint256[5][5]"},{"name":"_amount","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}]},
+    {"name":"get_dy","type":"function","stateMutability":"view","inputs":[{"name":"_route","type":"address[11]"},{"name":"_swap_params","type":"uint256[5][5]"},{"name":"_amount","type":"uint256"},{"name":"_pools","type":"address[5]"}],"outputs":[{"name":"","type":"uint256"}]}
+  ]
+}

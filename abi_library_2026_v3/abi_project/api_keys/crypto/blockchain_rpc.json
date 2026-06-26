@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "category": "blockchain_rpc",
+    "description": "RPC node provider API keys",
+    "rotation_priority": "HIGH",
+    "encrypt": true,
+    "hot_swap": true
+  },
+  "infura": {
+    "api_key": "YOUR_INFURA_API_KEY",
+    "project_id": "YOUR_INFURA_PROJECT_ID",
+    "api_secret": "YOUR_INFURA_API_SECRET",
+    "endpoints": {
+      "ethereum":  "https://mainnet.infura.io/v3/{api_key}",
+      "sepolia":   "https://sepolia.infura.io/v3/{api_key}",
+      "arbitrum":  "https://arbitrum-mainnet.infura.io/v3/{api_key}",
+      "optimism":  "https://optimism-mainnet.infura.io/v3/{api_key}",
+      "polygon":   "https://polygon-mainnet.infura.io/v3/{api_key}",
+      "base":      "https://base-mainnet.infura.io/v3/{api_key}",
+      "linea":     "https://linea-mainnet.infura.io/v3/{api_key}",
+      "bnb":       "https://bsc-mainnet.infura.io/v3/{api_key}",
+      "avalanche": "https://avalanche-mainnet.infura.io/v3/{api_key}",
+      "starknet":  "https://starknet-mainnet.infura.io/v3/{api_key}"
+    },
+    "docs": "https://docs.infura.io"
+  },
+  "alchemy": {
+    "api_key": "YOUR_ALCHEMY_API_KEY",
+    "endpoints": {
+      "ethereum":  "https://eth-mainnet.g.alchemy.com/v2/{api_key}",
+      "sepolia":   "https://eth-sepolia.g.alchemy.com/v2/{api_key}",
+      "arbitrum":  "https://arb-mainnet.g.alchemy.com/v2/{api_key}",
+      "optimism":  "https://opt-mainnet.g.alchemy.com/v2/{api_key}",
+      "base":      "https://base-mainnet.g.alchemy.com/v2/{api_key}",
+      "polygon":   "https://polygon-mainnet.g.alchemy.com/v2/{api_key}",
+      "starknet":  "https://starknet-mainnet.g.alchemy.com/v2/{api_key}",
+      "zksync":    "https://zksync-mainnet.g.alchemy.com/v2/{api_key}",
+      "solana":    "https://solana-mainnet.g.alchemy.com/v2/{api_key}",
+      "worldchain":"https://worldchain-mainnet.g.alchemy.com/v2/{api_key}"
+    },
+    "websocket": "wss://eth-mainnet.g.alchemy.com/v2/{api_key}",
+    "docs": "https://docs.alchemy.com"
+  },
+  "quicknode": {
+    "api_key": "YOUR_QUICKNODE_API_KEY",
+    "http_endpoint": "YOUR_QUICKNODE_HTTP_ENDPOINT",
+    "wss_endpoint": "YOUR_QUICKNODE_WSS_ENDPOINT",
+    "note": "QuickNode gives dedicated endpoint URLs — store full URL",
+    "docs": "https://www.quicknode.com/docs"
+  },
+  "ankr": {
+    "api_key": "YOUR_ANKR_API_KEY",
+    "endpoints": {
+      "ethereum":  "https://rpc.ankr.com/eth/{api_key}",
+      "arbitrum":  "https://rpc.ankr.com/arbitrum/{api_key}",
+      "polygon":   "https://rpc.ankr.com/polygon/{api_key}",
+      "base":      "https://rpc.ankr.com/base/{api_key}",
+      "bnb":       "https://rpc.ankr.com/bsc/{api_key}",
+      "avalanche": "https://rpc.ankr.com/avalanche/{api_key}",
+      "solana":    "https://rpc.ankr.com/solana/{api_key}",
+      "near":      "https://rpc.ankr.com/near/{api_key}",
+      "starknet":  "https://rpc.ankr.com/starknet/{api_key}"
+    },
+    "docs": "https://www.ankr.com/docs"
+  },
+  "blast_api": {
+    "api_key": "YOUR_BLAST_API_KEY",
+    "endpoints": {
+      "ethereum":  "https://eth-mainnet.blastapi.io/{api_key}",
+      "starknet":  "https://starknet-mainnet.blastapi.io/{api_key}",
+      "arbitrum":  "https://arbitrum-one.blastapi.io/{api_key}",
+      "solana":    "https://solana-mainnet.blastapi.io/{api_key}"
+    },
+    "docs": "https://docs.blastapi.io"
+  },
+  "drpc": {
+    "api_key": "YOUR_DRPC_API_KEY",
+    "note": "Decentralized RPC — good fallback when others fail",
+    "docs": "https://drpc.org/docs"
+  },
+  "chainstack": {
+    "api_key": "YOUR_CHAINSTACK_API_KEY",
+    "node_url": "YOUR_CHAINSTACK_NODE_URL",
+    "docs": "https://docs.chainstack.com"
+  },
+  "moralis": {
+    "api_key": "YOUR_MORALIS_API_KEY",
+    "note": "NFT + token metadata + wallet history APIs",
+    "docs": "https://docs.moralis.io"
+  },
+  "peaq_rpc": {
+    "rpc_url": "https://mpfn1.peaq.network",
+    "note": "Public — no key required for peaq mainnet",
+    "chain_id": 3338
+  }
+}

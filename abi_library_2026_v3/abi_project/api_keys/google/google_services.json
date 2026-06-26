@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "category": "google_services",
+    "description": "Google Cloud, Maps, Firebase, Workspace, OAuth",
+    "encrypt": true,
+    "hot_swap": false
+  },
+  "google_oauth": {
+    "client_id": "YOUR_GOOGLE_OAUTH_CLIENT_ID",
+    "client_secret": "YOUR_GOOGLE_OAUTH_CLIENT_SECRET",
+    "redirect_uri": "YOUR_REDIRECT_URI",
+    "refresh_token": "YOUR_GOOGLE_REFRESH_TOKEN",
+    "note": "Used for Sign In with Google",
+    "docs": "https://developers.google.com/identity/protocols/oauth2"
+  },
+  "google_maps": {
+    "api_key": "YOUR_GOOGLE_MAPS_API_KEY",
+    "services": ["Maps JavaScript API", "Geocoding API", "Places API", "Directions API", "Distance Matrix"],
+    "note": "Restrict by HTTP referrer and IP in GCP console",
+    "docs": "https://developers.google.com/maps/documentation"
+  },
+  "firebase": {
+    "api_key": "YOUR_FIREBASE_API_KEY",
+    "auth_domain": "YOUR_PROJECT.firebaseapp.com",
+    "project_id": "YOUR_FIREBASE_PROJECT_ID",
+    "storage_bucket": "YOUR_PROJECT.appspot.com",
+    "messaging_sender_id": "YOUR_MESSAGING_SENDER_ID",
+    "app_id": "YOUR_FIREBASE_APP_ID",
+    "measurement_id": "YOUR_FIREBASE_MEASUREMENT_ID",
+    "admin_service_account": "YOUR_FIREBASE_ADMIN_SERVICE_ACCOUNT_JSON",
+    "docs": "https://firebase.google.com/docs"
+  },
+  "google_cloud": {
+    "project_id": "YOUR_GCP_PROJECT_ID",
+    "api_key": "YOUR_GCP_API_KEY",
+    "service_account_email": "YOUR_SERVICE_ACCOUNT@project.iam.gserviceaccount.com",
+    "service_account_key_json": "YOUR_SERVICE_ACCOUNT_KEY_JSON",
+    "services_used": ["Vision API", "Speech-to-Text", "Text-to-Speech", "Translate", "BigQuery", "Pub/Sub"],
+    "docs": "https://cloud.google.com/docs"
+  },
+  "google_sheets": {
+    "api_key": "YOUR_GOOGLE_SHEETS_API_KEY",
+    "oauth_client_id": "YOUR_SHEETS_OAUTH_CLIENT_ID",
+    "oauth_client_secret": "YOUR_SHEETS_OAUTH_CLIENT_SECRET",
+    "spreadsheet_id": "YOUR_SPREADSHEET_ID",
+    "docs": "https://developers.google.com/sheets/api"
+  },
+  "google_search_console": {
+    "api_key": "YOUR_SEARCH_CONSOLE_API_KEY",
+    "docs": "https://developers.google.com/webmaster-tools"
+  },
+  "youtube": {
+    "api_key": "YOUR_YOUTUBE_API_KEY",
+    "oauth_client_id": "YOUR_YOUTUBE_OAUTH_CLIENT_ID",
+    "oauth_client_secret": "YOUR_YOUTUBE_OAUTH_CLIENT_SECRET",
+    "channel_id": "YOUR_YOUTUBE_CHANNEL_ID",
+    "docs": "https://developers.google.com/youtube/v3"
+  },
+  "google_analytics": {
+    "measurement_id": "G-YOUR_MEASUREMENT_ID",
+    "api_secret": "YOUR_GA4_API_SECRET",
+    "property_id": "YOUR_GA4_PROPERTY_ID",
+    "service_account_key": "YOUR_GA4_SERVICE_ACCOUNT_KEY",
+    "docs": "https://developers.google.com/analytics"
+  }
+}
