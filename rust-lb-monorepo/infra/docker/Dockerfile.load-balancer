@@ -1,0 +1,66 @@
+# syntax=docker/dockerfile:1.7
+# ---- Build stage ----
+FROM rust:1.79-slim-bookworm AS builder
+
+WORKDIR /app
+
+# Install build deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pkg-config \
+    libssl-dev \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy workspace manifests and lock file first (cache layer)
+COPY Cargo.toml Cargo.lock ./
+COPY packages/lb-core/Cargo.toml packages/lb-core/
+COPY packages/metrics/Cargo.toml packages/metrics/
+COPY packages/tracing/Cargo.toml packages/tracing/
+COPY services/load-balancer/Cargo.toml services/load-balancer/
+COPY services/shard-manager/Cargo.toml services/shard-manager/
+COPY services/health-checker/Cargo.toml services/health-checker/
+
+# Create stub src files so cargo fetch succeeds
+RUN mkdir -p packages/lb-core/src packages/metrics/src packages/tracing/src \
+    services/load-balancer/src services/shard-manager/src services/health-checker/src \
+    && echo "fn main() {}" > services/load-balancer/src/main.rs \
+    && echo "fn main() {}" > services/shard-manager/src/main.rs \
+    && echo "fn main() {}" > services/health-checker/src/main.rs \
+    && echo "" > packages/lb-core/src/lib.rs \
+    && echo "" > packages/metrics/src/lib.rs \
+    && echo "" > packages/tracing/src/lib.rs
+
+# Fetch and cache dependencies
+RUN cargo fetch
+
+# Now copy actual source
+COPY packages/ packages/
+COPY services/load-balancer/ services/load-balancer/
+
+# Build release binary
+RUN cargo build --release --bin load-balancer
+
+# ---- Final stage ----
+FROM debian:bookworm-slim AS runtime
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Non-root user
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+
+WORKDIR /app
+
+COPY --from=builder /app/target/release/load-balancer /app/load-balancer
+COPY services/load-balancer/config/ /app/config/
+
+RUN chown -R appuser:appgroup /app
+USER appuser
+
+EXPOSE 8080 9090
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget -qO- http://localhost:9090/health || exit 1
+
+ENTRYPOINT ["/app/load-balancer"]

@@ -1,0 +1,98 @@
+version: "3.9"
+
+services:
+  load-balancer:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.load-balancer
+    image: rust-lb/load-balancer:local
+    container_name: load-balancer
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+    environment:
+      LB__SERVER__BIND_ADDR: "0.0.0.0"
+      LB__SERVER__PORT: "8080"
+      LB__SERVER__ADMIN_PORT: "9090"
+      LB__OBSERVABILITY__LOG_LEVEL: "info"
+      LB__OBSERVABILITY__LOG_FORMAT: "json"
+    volumes:
+      - ../../services/load-balancer/config:/app/config:ro
+    depends_on:
+      shard-manager:
+        condition: service_healthy
+      health-checker:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - lb-net
+
+  shard-manager:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.shard-manager
+    image: rust-lb/shard-manager:local
+    container_name: shard-manager
+    ports:
+      - "7070:7070"
+    environment:
+      SHARD_MANAGER_BIND: "0.0.0.0:7070"
+      SHARD_MANAGER_LOG_LEVEL: "info"
+      SHARD_MANAGER_VIRTUAL_NODES: "150"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:7070/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - lb-net
+
+  health-checker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.health-checker
+    image: rust-lb/health-checker:local
+    container_name: health-checker
+    ports:
+      - "6060:6060"
+    environment:
+      HC_BIND: "0.0.0.0:6060"
+      HC_LOG_LEVEL: "info"
+    volumes:
+      - ../../services/health-checker/config:/app/config:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:6060/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - lb-net
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+    restart: unless-stopped
+    networks:
+      - lb-net
+
+networks:
+  lb-net:
+    driver: bridge

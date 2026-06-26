@@ -1,0 +1,26 @@
+[check]
+interval_secs = 10
+timeout_secs = 5
+healthy_threshold = 2
+unhealthy_threshold = 3
+path = "/health"
+expected_status = 200
+kind = "http"
+
+[[backends]]
+id = "backend-1"
+host = "127.0.0.1"
+port = 8001
+tls = false
+
+[[backends]]
+id = "backend-2"
+host = "127.0.0.1"
+port = 8002
+tls = false
+
+[[backends]]
+id = "backend-3"
+host = "127.0.0.1"
+port = 8003
+tls = false

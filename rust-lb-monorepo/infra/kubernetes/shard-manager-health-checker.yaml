@@ -1,0 +1,235 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shard-manager
+  namespace: rust-lb
+  labels:
+    app: shard-manager
+    version: "1.0.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shard-manager
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: shard-manager
+        version: "1.0.0"
+    spec:
+      serviceAccountName: shard-manager-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: shard-manager
+          image: rust-lb/shard-manager:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 7070
+              protocol: TCP
+          env:
+            - name: SHARD_MANAGER_BIND
+              value: "0.0.0.0:7070"
+            - name: SHARD_MANAGER_LOG_LEVEL
+              value: "info"
+            - name: SHARD_MANAGER_VIRTUAL_NODES
+              value: "150"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7070
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 7070
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: shard-manager-sa
+  namespace: rust-lb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shard-manager
+  namespace: rust-lb
+spec:
+  selector:
+    app: shard-manager
+  ports:
+    - name: http
+      port: 7070
+      targetPort: 7070
+  type: ClusterIP
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: shard-manager-pdb
+  namespace: rust-lb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: shard-manager
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: health-checker
+  namespace: rust-lb
+  labels:
+    app: health-checker
+    version: "1.0.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: health-checker
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: health-checker
+        version: "1.0.0"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "6060"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: health-checker-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: health-checker
+          image: rust-lb/health-checker:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 6060
+              protocol: TCP
+          env:
+            - name: HC_BIND
+              value: "0.0.0.0:6060"
+            - name: HC_LOG_LEVEL
+              value: "info"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "32Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 6060
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 6060
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: health-checker-config
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: health-checker-sa
+  namespace: rust-lb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: health-checker
+  namespace: rust-lb
+spec:
+  selector:
+    app: health-checker
+  ports:
+    - name: http
+      port: 6060
+      targetPort: 6060
+  type: ClusterIP
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: health-checker-pdb
+  namespace: rust-lb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: health-checker

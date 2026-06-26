@@ -1,0 +1,23 @@
+# CODEOWNERS — every directory has an assigned owner (teams, not individuals)
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global fallback
+*                                   @org/team-platform
+
+# Shared packages
+/packages/lb-core/                  @org/team-platform
+/packages/metrics/                  @org/team-platform
+/packages/tracing/                  @org/team-platform
+
+# Services
+/services/load-balancer/            @org/team-networking
+/services/shard-manager/            @org/team-data
+/services/health-checker/           @org/team-networking
+
+# Infrastructure
+/infra/                             @org/team-infra
+/infra/docker/                      @org/team-infra
+/infra/kubernetes/                  @org/team-infra
+
+# CI/CD
+/.github/                           @org/team-platform

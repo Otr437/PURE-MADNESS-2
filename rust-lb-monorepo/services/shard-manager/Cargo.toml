@@ -1,0 +1,32 @@
+[package]
+name = "shard-manager"
+version = "1.0.0"
+edition = "2021"
+description = "Shard topology management API — register, reassign, and query shards"
+
+[[bin]]
+name = "shard-manager"
+path = "src/main.rs"
+
+[dependencies]
+lb-core = { path = "../../packages/lb-core" }
+metrics-core = { path = "../../packages/metrics" }
+lb-tracing = { path = "../../packages/tracing" }
+
+tokio = { workspace = true }
+axum = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+uuid = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+dashmap = { workspace = true }
+arc-swap = { workspace = true }
+config = { workspace = true }
+dotenvy = { workspace = true }
+chrono = { workspace = true }
+parking_lot = { workspace = true }
+clap = { workspace = true }
+tower-http = { workspace = true }

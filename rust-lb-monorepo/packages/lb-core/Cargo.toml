@@ -1,0 +1,28 @@
+[package]
+name = "lb-core"
+version = "1.0.0"
+edition = "2021"
+description = "Shared types, traits, and utilities for the load balancer system"
+license = "MIT"
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+uuid = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+dashmap = { workspace = true }
+arc-swap = { workspace = true }
+rand = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
+chrono = { workspace = true }
+bytes = { workspace = true }
+futures = { workspace = true }
+parking_lot = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }

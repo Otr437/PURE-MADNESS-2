@@ -1,0 +1,193 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rust-lb
+  labels:
+    app.kubernetes.io/managed-by: "manual"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-balancer
+  namespace: rust-lb
+  labels:
+    app: load-balancer
+    version: "1.0.0"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: load-balancer
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: load-balancer
+        version: "1.0.0"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: load-balancer-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 40
+      containers:
+        - name: load-balancer
+          image: rust-lb/load-balancer:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: proxy
+              containerPort: 8080
+              protocol: TCP
+            - name: admin
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: LB__OBSERVABILITY__LOG_FORMAT
+              value: "json"
+            - name: LB__OBSERVABILITY__LOG_LEVEL
+              value: "info"
+            - name: LB__SERVER__GRACEFUL_SHUTDOWN_TIMEOUT_SECS
+              value: "30"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 9090
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: config
+          configMap:
+            name: load-balancer-config
+        - name: tmp
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: load-balancer-sa
+  namespace: rust-lb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-balancer
+  namespace: rust-lb
+  labels:
+    app: load-balancer
+spec:
+  selector:
+    app: load-balancer
+  ports:
+    - name: proxy
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    - name: admin
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: load-balancer-pdb
+  namespace: rust-lb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: load-balancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: load-balancer-netpol
+  namespace: rust-lb
+spec:
+  podSelector:
+    matchLabels:
+      app: load-balancer
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - ports:
+        - port: 8080
+        - port: 9090
+  egress:
+    - {}
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: load-balancer-hpa
+  namespace: rust-lb
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: load-balancer
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80

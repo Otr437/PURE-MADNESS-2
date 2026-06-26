@@ -1,0 +1,13 @@
+[package]
+name = "metrics-core"
+version = "1.0.0"
+edition = "2021"
+description = "Prometheus metrics instrumentation for the load balancer"
+
+[dependencies]
+tokio = { workspace = true }
+prometheus = { workspace = true }
+tracing = { workspace = true }
+serde = { workspace = true }
+anyhow = { workspace = true }
+lb-core = { path = "../../packages/lb-core" }

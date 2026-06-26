@@ -1,0 +1,93 @@
+# Load Balancer Configuration
+# All values can be overridden with env vars prefixed LB__
+# Example: LB__SERVER__PORT=9000
+
+[server]
+bind_addr = "0.0.0.0"
+port = 8080
+admin_port = 9090
+max_connections = 10000
+request_timeout_ms = 30000
+keepalive_secs = 75
+graceful_shutdown_timeout_secs = 30
+
+# Algorithm options:
+# round_robin | weighted_round_robin | least_connections |
+# weighted_least_connections | random | ip_hash | url_hash |
+# least_response_time | consistent_hash
+[algorithm]
+kind = "round_robin"
+
+# For consistent_hash:
+# [algorithm]
+# kind = "consistent_hash"
+# virtual_nodes = 150
+
+[[backends]]
+host = "127.0.0.1"
+port = 8001
+weight = 1
+connect_timeout_ms = 1000
+request_timeout_ms = 10000
+tls = false
+tls_verify = true
+
+[[backends]]
+host = "127.0.0.1"
+port = 8002
+weight = 1
+connect_timeout_ms = 1000
+request_timeout_ms = 10000
+tls = false
+tls_verify = true
+
+[[backends]]
+host = "127.0.0.1"
+port = 8003
+weight = 2
+connect_timeout_ms = 1000
+request_timeout_ms = 10000
+tls = false
+tls_verify = true
+
+[health_check]
+interval_secs = 10
+timeout_secs = 5
+healthy_threshold = 2
+unhealthy_threshold = 3
+path = "/health"
+expected_status = 200
+kind = "http"
+
+[observability]
+metrics_enabled = true
+metrics_path = "/metrics"
+tracing_enabled = false
+log_level = "info"
+log_format = "json"
+
+# Optional sharding (comment out to disable)
+# [sharding]
+# enabled = true
+# key_header = "x-shard-key"
+# [sharding.strategy]
+# kind = "consistent_hash"
+# virtual_nodes = 150
+#
+# [[sharding.shards]]
+# id = 0
+# backend_ids = ["127.0.0.1:8001"]
+# replica_count = 1
+#
+# [[sharding.shards]]
+# id = 1
+# backend_ids = ["127.0.0.1:8002"]
+# replica_count = 1
+
+# Optional rate limiting
+# [rate_limit]
+# enabled = true
+# requests_per_second = 1000
+# burst_size = 2000
+# [rate_limit.key_strategy]
+# type = "client_ip"
